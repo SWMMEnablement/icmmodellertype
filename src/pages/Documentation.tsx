@@ -36,7 +36,7 @@ const Documentation = () => {
   const [activeTab, setActiveTab] = useState<TabType>("icm");
   const [expandedType, setExpandedType] = useState<string | null>(null);
   const [compareType1, setCompareType1] = useState<string>("DASP");
-  const [compareType2, setCompareType2] = useState<string>("BMIR");
+  const [compareType2, setCompareType2] = useState<string>("BMSR");
 
   const tabs = [
     { id: "icm" as TabType, label: "ICM Modeler Types", icon: Droplets },
@@ -188,8 +188,8 @@ const Documentation = () => {
             <div className="prose prose-slate max-w-none">
               <h2 className="font-display text-3xl font-bold text-foreground mb-4">ICM Modeler Personality Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Based on four dimensions of modeling workflow preferences, there are 16 distinct ICM modeler types. 
-                Each represents a unique combination of approaches to hydraulic modeling in InfoWorks ICM.
+                Based on four dimensions of modeling workflow preferences, there are 10 distinct ICM modeler types. 
+                A 20-question assessment (5 per dimension) determines your unique combination of approaches to hydraulic modeling in InfoWorks ICM.
               </p>
             </div>
 
@@ -211,7 +211,7 @@ const Documentation = () => {
               ))}
             </div>
 
-            {/* All 16 Types */}
+            {/* All 10 Types */}
             <div className="space-y-3">
               {Object.entries(personalities).map(([code, type]) => (
                 <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
@@ -687,27 +687,34 @@ const Documentation = () => {
 
             <div className="bg-card rounded-xl border border-border overflow-hidden">
               <div className="px-6 py-4 border-b border-border bg-muted/30">
-                <h3 className="font-display text-lg font-semibold text-foreground">Type Determination</h3>
+                <h3 className="font-display text-lg font-semibold text-foreground">Type Determination & Mapping</h3>
               </div>
               <pre className="p-6 overflow-x-auto text-sm">
                 <code className="text-muted-foreground">{`const getPersonalityType = () => {
-  // Compare scores for each dimension
-  const type = [
+  // Compare scores for each dimension (from 20 questions, 5 per dimension)
+  const rawType = [
     scores.D >= scores.B ? 'D' : 'B',  // Detail vs Big-picture
     scores.A >= scores.M ? 'A' : 'M',  // Automated vs Manual
     scores.S >= scores.I ? 'S' : 'I',  // Systematic vs Intuitive
     scores.P >= scores.R ? 'P' : 'R',  // Perfectionist vs Pragmatic
   ].join('');
   
-  return personalities[type]; // e.g., "DASP" -> The Precision Engineer
-};`}</code>
+  // Map 16 possible combinations to 10 distinct types
+  const resolvedType = resolveType(rawType);
+  return personalities[resolvedType];
+};
+
+// Type mapping consolidates similar types:
+// DAIR → DASR, DMIR → DMSR, BAIR → BASR, BMIR → BMSR
+// DMIP → DMSP, BAIP → BASP`}</code>
               </pre>
             </div>
 
             <div className="bg-muted/50 rounded-xl p-6">
               <h3 className="font-display text-lg font-semibold text-foreground mb-2">Limitations</h3>
               <ul className="text-sm text-muted-foreground space-y-2">
-                <li>• <strong>10 questions is limited</strong> — A full assessment would have 40+ questions for statistical reliability</li>
+                <li>• <strong>20 questions provides better coverage</strong> — 5 questions per dimension improves reliability over fewer questions</li>
+                <li>• <strong>10 types balance detail with clarity</strong> — Similar combinations merged for more actionable insights</li>
                 <li>• <strong>Self-reporting bias</strong> — People may answer aspirationally rather than accurately</li>
                 <li>• <strong>Context matters</strong> — Your modeling style may vary by project type, client, or deadline pressure</li>
                 <li>• <strong>For fun, not hiring</strong> — This is a self-reflection tool, not a performance predictor</li>
