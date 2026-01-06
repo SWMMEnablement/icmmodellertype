@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp } from "lucide-react";
-import { personalities } from "@/data/personalities";
+import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight } from "lucide-react";
+import { personalities, PersonalityType } from "@/data/personalities";
 
-type TabType = "icm" | "mbti" | "methodology";
+type TabType = "icm" | "mbti" | "methodology" | "compare";
 
 const mbtiTypes = [
   { type: "INTJ", name: "The Architect", desc: "Strategic, independent, and determined. Imaginative thinkers who turn theories into action." },
@@ -25,15 +25,119 @@ const mbtiTypes = [
   { type: "ESFP", name: "The Entertainer", desc: "Spontaneous, energetic, enthusiastic. Love life and bring fun everywhere." },
 ];
 
+const dimensionLabels: Record<number, { name: string; options: [string, string] }> = {
+  0: { name: "Approach", options: ["Detail-Focused", "Big-Picture"] },
+  1: { name: "Workflow", options: ["Automated", "Manual"] },
+  2: { name: "Problem Solving", options: ["Systematic", "Intuitive"] },
+  3: { name: "Quality", options: ["Perfectionist", "Pragmatic"] },
+};
+
 const Documentation = () => {
   const [activeTab, setActiveTab] = useState<TabType>("icm");
   const [expandedType, setExpandedType] = useState<string | null>(null);
+  const [compareType1, setCompareType1] = useState<string>("DASP");
+  const [compareType2, setCompareType2] = useState<string>("BMIR");
 
   const tabs = [
     { id: "icm" as TabType, label: "ICM Modeler Types", icon: Droplets },
+    { id: "compare" as TabType, label: "Compare Types", icon: GitCompare },
     { id: "mbti" as TabType, label: "Myers-Briggs Types", icon: Brain },
     { id: "methodology" as TabType, label: "Methodology & Code", icon: Code2 },
   ];
+
+  const getSharedTraits = (type1: string, type2: string) => {
+    const shared: number[] = [];
+    const different: number[] = [];
+    for (let i = 0; i < 4; i++) {
+      if (type1[i] === type2[i]) {
+        shared.push(i);
+      } else {
+        different.push(i);
+      }
+    }
+    return { shared, different };
+  };
+
+  const getTraitLabel = (type: string, index: number): string => {
+    const char = type[index];
+    const labels: Record<string, string> = {
+      D: "Detail-Focused",
+      B: "Big-Picture",
+      A: "Automated",
+      M: "Manual",
+      S: "Systematic",
+      I: "Intuitive",
+      P: "Perfectionist",
+      R: "Pragmatic",
+    };
+    return labels[char] || char;
+  };
+
+  const type1 = personalities[compareType1];
+  const type2 = personalities[compareType2];
+  const comparison = getSharedTraits(compareType1, compareType2);
+
+  const TypeSelector = ({ value, onChange, label }: { value: string; onChange: (v: string) => void; label: string }) => (
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-muted-foreground">{label}</label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full p-3 rounded-xl bg-card border border-border text-foreground font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+      >
+        {Object.entries(personalities).map(([code, type]) => (
+          <option key={code} value={code}>
+            {code} — {type.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  const TypeCard = ({ type, code, side }: { type: PersonalityType; code: string; side: "left" | "right" }) => (
+    <div className="bg-card rounded-2xl border border-border overflow-hidden">
+      <div className={`bg-gradient-to-r ${type.color} p-6 text-center`}>
+        <h3 className="font-mono text-3xl font-bold text-white mb-1">{code}</h3>
+        <p className="text-white/90 font-medium">{type.name}</p>
+      </div>
+      <div className="p-5 space-y-4">
+        <p className="text-sm text-muted-foreground leading-relaxed">{type.description}</p>
+        
+        <div>
+          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Strengths</h4>
+          <div className="flex flex-wrap gap-1.5">
+            {type.strengths.map((s, i) => (
+              <span key={i} className="px-2 py-1 rounded-full bg-primary/10 text-primary text-xs">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Growth Areas</h4>
+          <div className="flex flex-wrap gap-1.5">
+            {type.growth.map((g, i) => (
+              <span key={i} className="px-2 py-1 rounded-full bg-secondary/10 text-secondary text-xs">
+                {g}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Go-To Tools</h4>
+          <div className="flex flex-wrap gap-1.5">
+            {type.tools.map((t, i) => (
+              <span key={i} className="px-2 py-1 rounded-full bg-muted text-muted-foreground text-xs">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,6 +266,125 @@ const Documentation = () => {
                   )}
                 </div>
               ))}
+            </div>
+          </motion.div>
+        )}
+
+        {activeTab === "compare" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            <div className="prose prose-slate max-w-none">
+              <h2 className="font-display text-3xl font-bold text-foreground mb-4">Compare Modeler Types</h2>
+              <p className="text-muted-foreground text-lg mb-8">
+                Select two ICM modeler types to see how they compare. Discover shared strengths and key differences.
+              </p>
+            </div>
+
+            {/* Selectors */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <TypeSelector value={compareType1} onChange={setCompareType1} label="First Type" />
+              <TypeSelector value={compareType2} onChange={setCompareType2} label="Second Type" />
+            </div>
+
+            {/* Similarity Summary */}
+            <div className="bg-card rounded-2xl border border-border p-6">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type1.color}`}>
+                  {compareType1}
+                </span>
+                <ArrowLeftRight className="w-6 h-6 text-muted-foreground" />
+                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type2.color}`}>
+                  {compareType2}
+                </span>
+              </div>
+
+              <div className="text-center mb-6">
+                <div className="text-4xl font-bold text-foreground mb-1">
+                  {Math.round((comparison.shared.length / 4) * 100)}%
+                </div>
+                <div className="text-sm text-muted-foreground">Similarity</div>
+              </div>
+
+              {/* Dimension Comparison */}
+              <div className="space-y-3">
+                {[0, 1, 2, 3].map((i) => {
+                  const isShared = comparison.shared.includes(i);
+                  return (
+                    <div
+                      key={i}
+                      className={`flex items-center justify-between p-4 rounded-xl ${
+                        isShared ? "bg-primary/10" : "bg-muted/50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        {isShared ? (
+                          <Check className="w-5 h-5 text-primary" />
+                        ) : (
+                          <X className="w-5 h-5 text-muted-foreground" />
+                        )}
+                        <span className="font-medium text-foreground">{dimensionLabels[i].name}</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm">
+                        <span className={isShared ? "text-primary font-medium" : "text-muted-foreground"}>
+                          {getTraitLabel(compareType1, i)}
+                        </span>
+                        {!isShared && (
+                          <>
+                            <span className="text-muted-foreground/50">vs</span>
+                            <span className="text-muted-foreground">
+                              {getTraitLabel(compareType2, i)}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Side by Side Cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <TypeCard type={type1} code={compareType1} side="left" />
+              <TypeCard type={type2} code={compareType2} side="right" />
+            </div>
+
+            {/* Collaboration Insights */}
+            <div className="bg-muted/50 rounded-2xl p-6">
+              <h3 className="font-display text-lg font-semibold text-foreground mb-4">Working Together</h3>
+              {comparison.shared.length === 4 ? (
+                <p className="text-muted-foreground">
+                  These types are identical! Great for consistency, but consider bringing in diverse perspectives 
+                  for challenging projects.
+                </p>
+              ) : comparison.shared.length >= 3 ? (
+                <p className="text-muted-foreground">
+                  High compatibility! These modelers will likely collaborate smoothly with shared approaches. 
+                  The one difference in <strong>{dimensionLabels[comparison.different[0]].name.toLowerCase()}</strong> can 
+                  provide valuable balance.
+                </p>
+              ) : comparison.shared.length === 2 ? (
+                <p className="text-muted-foreground">
+                  Balanced pairing with meaningful differences. These types can complement each other well—one 
+                  brings {getTraitLabel(compareType1, comparison.different[0]).toLowerCase()} while the other 
+                  brings {getTraitLabel(compareType2, comparison.different[0]).toLowerCase()} perspectives.
+                </p>
+              ) : comparison.shared.length === 1 ? (
+                <p className="text-muted-foreground">
+                  Diverse pairing! These modelers approach work very differently. This can create powerful 
+                  collaboration if both respect each other&apos;s styles, but may require clear communication 
+                  about workflows and expectations.
+                </p>
+              ) : (
+                <p className="text-muted-foreground">
+                  Opposite types! Maximum diversity in approach. This pairing can either be highly complementary 
+                  (covering all bases) or challenging (different priorities). Success depends on mutual respect 
+                  and clear role definition.
+                </p>
+              )}
             </div>
           </motion.div>
         )}
