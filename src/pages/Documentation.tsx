@@ -436,6 +436,168 @@ const Documentation = () => {
               ))}
             </div>
 
+            {/* MBTI to ICM Mapping Table */}
+            <div className="bg-card rounded-xl border border-border overflow-hidden mt-8">
+              <div className="px-6 py-4 border-b border-border bg-muted/30">
+                <h3 className="font-display text-lg font-semibold text-foreground">MBTI ↔ ICM Conceptual Parallels</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  While the frameworks are independent, some dimensions share conceptual overlap.
+                </p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border bg-muted/20">
+                      <th className="px-6 py-3 text-left font-semibold text-foreground">ICM Dimension</th>
+                      <th className="px-6 py-3 text-left font-semibold text-foreground">MBTI Parallel</th>
+                      <th className="px-6 py-3 text-left font-semibold text-foreground">Similarity</th>
+                      <th className="px-6 py-3 text-left font-semibold text-foreground">Key Difference</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-border">
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-mono font-bold">S/I</span>
+                        <span className="ml-2 text-foreground">Systematic vs Intuitive</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">S/N</span>
+                        <span className="ml-2 text-foreground">Sensing vs iNtuition</span>
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        <span className="text-primary font-medium">Strong</span> — Both contrast data-driven vs. pattern-based thinking
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        ICM focuses on calibration approach; MBTI is about information processing
+                      </td>
+                    </tr>
+                    <tr className="border-b border-border">
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-mono font-bold">P/R</span>
+                        <span className="ml-2 text-foreground">Perfectionist vs Pragmatic</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">J/P</span>
+                        <span className="ml-2 text-foreground">Judging vs Perceiving</span>
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        <span className="text-yellow-600 font-medium">Moderate</span> — Both involve structure vs. flexibility
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        ICM is about deliverable standards; MBTI is about lifestyle orientation
+                      </td>
+                    </tr>
+                    <tr className="border-b border-border">
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-mono font-bold">D/B</span>
+                        <span className="ml-2 text-foreground">Detail vs Big-Picture</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">S/N</span>
+                        <span className="ml-2 text-foreground">Sensing vs iNtuition</span>
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        <span className="text-yellow-600 font-medium">Moderate</span> — Sensors often prefer details, Intuitives see patterns
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        ICM is about model granularity; MBTI is about perception style
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-mono font-bold">A/M</span>
+                        <span className="ml-2 text-foreground">Automated vs Manual</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-muted-foreground italic">No direct parallel</span>
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        <span className="text-muted-foreground font-medium">Weak</span> — This is domain-specific to modeling workflows
+                      </td>
+                      <td className="px-6 py-4 text-muted-foreground">
+                        MBTI doesn&apos;t measure tool/automation preferences
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* MBTI to ICM Predictions */}
+            <div className="bg-card rounded-xl border border-border overflow-hidden mt-6">
+              <div className="px-6 py-4 border-b border-border bg-muted/30">
+                <h3 className="font-display text-lg font-semibold text-foreground">Predicting ICM Type from MBTI</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Probabilistic tendencies based on conceptual overlap. These are patterns, not deterministic mappings.
+                </p>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-muted/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">INTJ / ISTJ</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">Tend toward:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Systematic (S)</span>
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Perfectionist (P)</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Strong preference for structure and thoroughness</p>
+                  </div>
+
+                  <div className="bg-muted/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">ENTP / ENFP</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">Tend toward:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Intuitive (I)</span>
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Big-Picture (B)</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Prefer exploration and strategic modeling</p>
+                  </div>
+
+                  <div className="bg-muted/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">ISTP / ESTP</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">Tend toward:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Pragmatic (R)</span>
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Manual (M)</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Hands-on, results-focused approach</p>
+                  </div>
+
+                  <div className="bg-muted/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-2 py-1 rounded bg-secondary/20 text-secondary text-xs font-mono font-bold">INTP / ENTJ</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">Tend toward:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Automated (A)</span>
+                      <span className="px-2 py-1 rounded bg-primary/10 text-primary text-xs font-medium">Systematic (S)</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">Efficiency-driven, system builders</p>
+                  </div>
+                </div>
+
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 mt-4">
+                  <div className="flex gap-3">
+                    <div className="text-yellow-600 text-lg">⚠️</div>
+                    <div>
+                      <h4 className="font-semibold text-foreground text-sm mb-1">Important Caveat</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Your MBTI type does <strong>not determine</strong> your ICM type. These correlations are observational tendencies, 
+                        not rules. An INTJ could absolutely be a Big-Picture Pragmatist (BMIR) based on their specific 
+                        modeling experience, training, and project contexts. Always take the quiz for accurate results!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="bg-muted/50 rounded-xl p-6 mt-8">
               <h3 className="font-display text-lg font-semibold text-foreground mb-2">About MBTI Accuracy</h3>
               <p className="text-sm text-muted-foreground">
