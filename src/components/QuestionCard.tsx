@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Question } from "@/data/questions";
 import { dimensionDescriptions } from "@/data/personalities";
-import { ArrowRight, Check, Blend } from "lucide-react";
+import { ArrowLeft, Blend } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -13,24 +12,21 @@ import {
 interface QuestionCardProps {
   question: Question;
   onAnswer: (selectedTrait: string) => void;
+  onGoBack?: () => void;
   questionNumber: number;
   totalQuestions: number;
+  canGoBack: boolean;
 }
 
-export const QuestionCard = ({ question, onAnswer, questionNumber, totalQuestions }: QuestionCardProps) => {
-  const [selectedOption, setSelectedOption] = useState<'A' | 'B' | 'C' | null>(null);
-
-  const handleSubmit = () => {
-    if (!selectedOption) return;
-    
-    const trait = selectedOption === 'A' 
+export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, totalQuestions, canGoBack }: QuestionCardProps) => {
+  const handleOptionClick = (optionKey: 'A' | 'B' | 'C') => {
+    const trait = optionKey === 'A' 
       ? question.optionA.trait 
-      : selectedOption === 'B' 
+      : optionKey === 'B' 
         ? question.optionB.trait 
         : question.optionC.trait;
     
     onAnswer(trait);
-    setSelectedOption(null);
   };
 
   // Get dimension info for Option C tooltip
@@ -51,39 +47,46 @@ export const QuestionCard = ({ question, onAnswer, questionNumber, totalQuestion
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="w-full max-w-3xl mx-auto"
     >
-      <div className="mb-8 text-center">
+      {/* Header with question number and back button */}
+      <div className="flex items-center justify-between mb-8">
+        {canGoBack ? (
+          <motion.button
+            onClick={onGoBack}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm font-medium">Go Back</span>
+          </motion.button>
+        ) : (
+          <div />
+        )}
         <span className="text-sm font-medium text-muted-foreground tracking-wider uppercase">
           Question {questionNumber} of {totalQuestions}
         </span>
+        <div className="w-20" /> {/* Spacer for centering */}
       </div>
 
       <h2 className="font-display text-2xl md:text-3xl text-center mb-10 text-foreground leading-relaxed">
         {question.text}
       </h2>
 
-      {/* Option Cards */}
+      {/* Option Cards - Click to answer and proceed */}
       <TooltipProvider>
-        <div className="flex flex-col gap-4 mb-8">
+        <div className="flex flex-col gap-4">
           {options.map((option) => (
             <Tooltip key={option.key}>
               <TooltipTrigger asChild>
                 <motion.button
-                  onClick={() => setSelectedOption(option.key)}
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  className={`relative p-5 rounded-xl bg-card shadow-soft border-2 transition-all text-left ${
-                    selectedOption === option.key 
-                      ? option.key === 'A' 
-                        ? 'border-primary ring-2 ring-primary/30' 
-                        : option.key === 'B'
-                          ? 'border-secondary ring-2 ring-secondary/30'
-                          : 'border-purple-500 ring-2 ring-purple-500/30'
-                      : 'border-border hover:border-muted-foreground/50'
-                  }`}
+                  onClick={() => handleOptionClick(option.key)}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative p-5 rounded-xl bg-card shadow-soft border-2 border-border hover:border-muted-foreground/50 transition-all text-left group"
                 >
                   <div className="flex items-start gap-4">
-                    <span className={`w-10 h-10 rounded-full ${option.gradient} flex items-center justify-center text-primary-foreground font-semibold text-sm shrink-0`}>
-                      {selectedOption === option.key ? <Check className="w-5 h-5" /> : option.key}
+                    <span className={`w-10 h-10 rounded-full ${option.gradient} flex items-center justify-center text-primary-foreground font-semibold text-sm shrink-0 group-hover:scale-110 transition-transform`}>
+                      {option.key}
                     </span>
                     <div className="flex-1 pt-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -114,36 +117,10 @@ export const QuestionCard = ({ question, onAnswer, questionNumber, totalQuestion
         </div>
       </TooltipProvider>
 
-      {/* Selection indicator */}
-      <div className="text-center mb-6">
-        <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${
-          selectedOption === null
-            ? 'bg-muted text-muted-foreground' 
-            : selectedOption === 'A'
-              ? 'gradient-cool text-primary-foreground'
-              : selectedOption === 'B'
-                ? 'gradient-warm text-primary-foreground'
-                : 'gradient-hybrid text-primary-foreground'
-        }`}>
-          {selectedOption === null ? 'Select an option' : `Option ${selectedOption} selected`}
-        </span>
-      </div>
-
-      {/* Continue Button */}
-      <motion.button
-        whileHover={{ scale: selectedOption ? 1.02 : 1 }}
-        whileTap={{ scale: selectedOption ? 0.98 : 1 }}
-        onClick={handleSubmit}
-        disabled={!selectedOption}
-        className={`w-full py-4 rounded-xl font-semibold shadow-glow flex items-center justify-center gap-2 transition-all ${
-          selectedOption 
-            ? 'gradient-cool text-primary-foreground hover:opacity-90 cursor-pointer' 
-            : 'bg-muted text-muted-foreground cursor-not-allowed'
-        }`}
-      >
-        Continue
-        <ArrowRight className="w-5 h-5" />
-      </motion.button>
+      {/* Hint text */}
+      <p className="text-center text-muted-foreground text-sm mt-6">
+        Click an option to continue
+      </p>
     </motion.div>
   );
 };
