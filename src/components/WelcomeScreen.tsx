@@ -66,17 +66,24 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           Start the Assessment
         </motion.button>
 
+        {/* Separator */}
+        <div className="mt-12 mb-8 flex items-center gap-4 max-w-xs mx-auto">
+          <div className="flex-1 h-px bg-border" />
+          <span className="text-xs text-muted-foreground/60 uppercase tracking-wider">or</span>
+          <div className="flex-1 h-px bg-border" />
+        </div>
+
         {/* Documentation Link */}
         <Link
           to="/docs"
-          className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <BookOpen className="w-4 h-4" />
           <span>View Documentation & Personality Types</span>
         </Link>
 
         {/* Disclaimer */}
-        <p className="mt-4 text-sm text-muted-foreground/70">
+        <p className="mt-8 text-sm text-muted-foreground/70">
           For ICM InfoWorks users. Just for fun—embrace your modeling style!
         </p>
       </motion.div>
