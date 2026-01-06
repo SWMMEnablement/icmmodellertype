@@ -18,13 +18,14 @@ const Index = () => {
     A: 0, M: 0, X: 0, // Automated vs Manual vs Hybrid
     S: 0, I: 0, Y: 0, // Systematic vs Intuitive vs Hybrid
     P: 0, R: 0, Z: 0, // Perfectionist vs Pragmatic vs Hybrid
+    MA_CTX: 0, WS_CTX: 0, PS_CTX: 0, DQ_CTX: 0, // Context-dependent
   });
 
   const handleStart = useCallback(() => {
     setGameState("quiz");
     setCurrentQuestion(0);
     setAnswerHistory([]);
-    setScores({ D: 0, B: 0, H: 0, A: 0, M: 0, X: 0, S: 0, I: 0, Y: 0, P: 0, R: 0, Z: 0 });
+    setScores({ D: 0, B: 0, H: 0, A: 0, M: 0, X: 0, S: 0, I: 0, Y: 0, P: 0, R: 0, Z: 0, MA_CTX: 0, WS_CTX: 0, PS_CTX: 0, DQ_CTX: 0 });
   }, []);
 
   const handleAnswer = useCallback((selectedTrait: string) => {
