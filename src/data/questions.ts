@@ -1,4 +1,9 @@
-export type Dimension = 'EI' | 'SN' | 'TF' | 'JP';
+export type Dimension = 'MA' | 'WS' | 'PS' | 'DQ';
+
+// MA = Modeling Approach (Detail vs BigPicture)
+// WS = Workflow Style (Automated vs Manual)
+// PS = Problem Solving (Methodical vs Intuitive)
+// DQ = Data Quality (Perfectionist vs Pragmatic)
 
 export interface Question {
   id: number;
@@ -15,138 +20,138 @@ export interface Question {
 }
 
 export const questions: Question[] = [
-  // E/I Dimension (3 questions)
+  // MA - Modeling Approach (3 questions)
   {
     id: 1,
-    text: "At a party, you typically...",
-    dimension: 'EI',
+    text: "When starting a new network model, you first...",
+    dimension: 'MA',
     optionA: {
-      text: "Talk to many people, including strangers",
-      trait: 'E'
+      text: "Focus on getting every pipe, manhole, and connection exactly right from the start",
+      trait: 'D' // Detail
     },
     optionB: {
-      text: "Talk deeply with a few people you know",
-      trait: 'I'
+      text: "Build a simplified skeleton model to understand system behavior first",
+      trait: 'B' // BigPicture
     }
   },
   {
     id: 2,
-    text: "After a long week, you recharge by...",
-    dimension: 'EI',
+    text: "Your typical model includes...",
+    dimension: 'MA',
     optionA: {
-      text: "Going out with friends or to social events",
-      trait: 'E'
+      text: "Every lateral, gully, and minor connection in the network",
+      trait: 'D'
     },
     optionB: {
-      text: "Spending quiet time alone or with one close person",
-      trait: 'I'
+      text: "Strategic simplifications—aggregate subcatchments, key trunk sewers only",
+      trait: 'B'
     }
   },
   {
     id: 3,
-    text: "When solving problems, you prefer to...",
-    dimension: 'EI',
+    text: "When reviewing someone else's model, you...",
+    dimension: 'MA',
     optionA: {
-      text: "Think out loud and discuss with others",
-      trait: 'E'
+      text: "Check individual node and link properties systematically",
+      trait: 'D'
     },
     optionB: {
-      text: "Reflect internally before sharing your thoughts",
-      trait: 'I'
+      text: "Run scenarios and analyze overall system response patterns",
+      trait: 'B'
     }
   },
-  // S/N Dimension (2 questions)
+  // WS - Workflow Style (3 questions)
   {
     id: 4,
-    text: "You are more drawn to...",
-    dimension: 'SN',
+    text: "For repetitive modeling tasks, you prefer to...",
+    dimension: 'WS',
     optionA: {
-      text: "Facts, details, and what's real right now",
-      trait: 'S'
+      text: "Write Ruby scripts or use Open Data Import/Export Centre",
+      trait: 'A' // Automated
     },
     optionB: {
-      text: "Ideas, possibilities, and what could be",
-      trait: 'N'
+      text: "Do it manually—you know exactly what's happening at each step",
+      trait: 'M' // Manual
     }
   },
   {
     id: 5,
-    text: "When learning something new, you prefer...",
-    dimension: 'SN',
+    text: "When setting up multiple scenarios, you...",
+    dimension: 'WS',
     optionA: {
-      text: "Step-by-step instructions and practical examples",
-      trait: 'S'
+      text: "Create templates and batch processes to generate them efficiently",
+      trait: 'A'
     },
     optionB: {
-      text: "Understanding the big picture and underlying concepts",
-      trait: 'N'
+      text: "Build each scenario individually to maintain full control",
+      trait: 'M'
     }
   },
-  // T/F Dimension (3 questions)
+  // PS - Problem Solving (2 questions)
   {
     id: 6,
-    text: "When making decisions, you prioritize...",
-    dimension: 'TF',
+    text: "When your model won't converge, you...",
+    dimension: 'PS',
     optionA: {
-      text: "Logic, fairness, and objective analysis",
-      trait: 'T'
+      text: "Systematically isolate sections and check parameters methodically",
+      trait: 'S' // Systematic
     },
     optionB: {
-      text: "Harmony, empathy, and how others will feel",
-      trait: 'F'
+      text: "Trust your instincts—you often know where the problem is",
+      trait: 'I' // Intuitive
     }
   },
   {
     id: 7,
-    text: "In a disagreement, you tend to...",
-    dimension: 'TF',
+    text: "During calibration, you rely more on...",
+    dimension: 'PS',
     optionA: {
-      text: "Focus on what's correct and finding the truth",
-      trait: 'T'
+      text: "Statistical metrics (NSE, RMSE, peak error percentages)",
+      trait: 'S'
     },
     optionB: {
-      text: "Focus on maintaining the relationship",
-      trait: 'F'
+      text: "Visual comparison and your experience with similar catchments",
+      trait: 'I'
     }
   },
-  // J/P Dimension (2 questions)
+  // DQ - Data Quality Approach (3 questions)
   {
     id: 8,
-    text: "Your workspace and schedule are usually...",
-    dimension: 'JP',
+    text: "When you receive survey data with gaps, you...",
+    dimension: 'DQ',
     optionA: {
-      text: "Organized with plans and to-do lists",
-      trait: 'J'
+      text: "Request resurvey or use GIS interpolation methods",
+      trait: 'P' // Perfectionist
     },
     optionB: {
-      text: "Flexible and adapted as things come up",
-      trait: 'P'
+      text: "Make reasonable assumptions and note them—the model needs to progress",
+      trait: 'R' // Pragmatic
     }
   },
   {
     id: 9,
-    text: "When starting a project, you...",
-    dimension: 'JP',
+    text: "Your validation flags in the model are typically...",
+    dimension: 'DQ',
     optionA: {
-      text: "Plan thoroughly before beginning",
-      trait: 'J'
+      text: "All resolved—zero warnings or errors before delivery",
+      trait: 'P'
     },
     optionB: {
-      text: "Dive in and figure it out as you go",
-      trait: 'P'
+      text: "Reviewed and justified—some flags are acceptable in context",
+      trait: 'R'
     }
   },
   {
     id: 10,
-    text: "Deadlines make you feel...",
-    dimension: 'JP',
+    text: "When project deadlines are tight, you...",
+    dimension: 'DQ',
     optionA: {
-      text: "Motivated—you finish well ahead of time",
-      trait: 'J'
+      text: "Push back to ensure data quality isn't compromised",
+      trait: 'P'
     },
     optionB: {
-      text: "Energized—you do your best work last minute",
-      trait: 'P'
+      text: "Deliver what's achievable with clear caveats and limitations",
+      trait: 'R'
     }
   }
 ];

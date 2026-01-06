@@ -13,32 +13,28 @@ const Index = () => {
   const [gameState, setGameState] = useState<GameState>("welcome");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({
-    E: 0, I: 0,
-    S: 0, N: 0,
-    T: 0, F: 0,
-    J: 0, P: 0,
+    D: 0, B: 0, // Detail vs Big-picture
+    A: 0, M: 0, // Automated vs Manual
+    S: 0, I: 0, // Systematic vs Intuitive
+    P: 0, R: 0, // Perfectionist vs Pragmatic
   });
 
   const handleStart = useCallback(() => {
     setGameState("quiz");
     setCurrentQuestion(0);
-    setScores({ E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 });
+    setScores({ D: 0, B: 0, A: 0, M: 0, S: 0, I: 0, P: 0, R: 0 });
   }, []);
 
   const handleAnswer = useCallback((traitA: string, traitB: string, intensity: number) => {
     // intensity: -2 (strongly A), -1 (slightly A), 0 (neutral), 1 (slightly B), 2 (strongly B)
-    // Convert to points for each trait
     setScores(prev => {
       const newScores = { ...prev };
       
       if (intensity < 0) {
-        // Favors option A
         newScores[traitA] += Math.abs(intensity);
       } else if (intensity > 0) {
-        // Favors option B
         newScores[traitB] += intensity;
       } else {
-        // Neutral - give 0.5 points to each
         newScores[traitA] += 0.5;
         newScores[traitB] += 0.5;
       }
@@ -55,12 +51,12 @@ const Index = () => {
 
   const getPersonalityType = useCallback(() => {
     const type = [
-      scores.E >= scores.I ? 'E' : 'I',
-      scores.S >= scores.N ? 'S' : 'N',
-      scores.T >= scores.F ? 'T' : 'F',
-      scores.J >= scores.P ? 'J' : 'P',
+      scores.D >= scores.B ? 'D' : 'B',
+      scores.A >= scores.M ? 'A' : 'M',
+      scores.S >= scores.I ? 'S' : 'I',
+      scores.P >= scores.R ? 'P' : 'R',
     ].join('');
-    return personalities[type] || personalities['INFJ'];
+    return personalities[type] || personalities['DASP'];
   }, [scores]);
 
   return (

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Users, RotateCcw } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw } from "lucide-react";
 
 interface ResultCardProps {
   personality: PersonalityType;
@@ -9,17 +9,11 @@ interface ResultCardProps {
 }
 
 export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) => {
-  const getDimensionLabel = (dim: string, value: number) => {
-    const total = scores[`${dim[0]}`] + scores[`${dim[1]}`];
-    const percentage = Math.round((scores[dim[0]] / total) * 100);
-    return { letter: dim[0], percentage, opposing: dim[1] };
-  };
-
   const dimensions = [
-    { key: 'EI', labels: ['Extrovert', 'Introvert'] },
-    { key: 'SN', labels: ['Sensing', 'Intuition'] },
-    { key: 'TF', labels: ['Thinking', 'Feeling'] },
-    { key: 'JP', labels: ['Judging', 'Perceiving'] },
+    { key: 'DB', labels: ['Detail-Focused', 'Big-Picture'], traits: ['D', 'B'] },
+    { key: 'AM', labels: ['Automated', 'Manual'], traits: ['A', 'M'] },
+    { key: 'SI', labels: ['Systematic', 'Intuitive'], traits: ['S', 'I'] },
+    { key: 'PR', labels: ['Perfectionist', 'Pragmatic'], traits: ['P', 'R'] },
   ];
 
   return (
@@ -39,7 +33,7 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
             transition={{ delay: 0.2 }}
           >
             <span className="text-white/80 text-sm font-medium tracking-widest uppercase mb-2 block">
-              Your Personality Type
+              Your ICM Modeler Type
             </span>
             <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-3">
               {personality.type}
@@ -71,12 +65,12 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
         className="bg-card rounded-2xl shadow-card border border-border p-8 mb-8"
       >
         <h3 className="font-display text-xl font-semibold text-foreground mb-6 text-center">
-          Your Dimension Scores
+          Your Modeling Style Breakdown
         </h3>
         <div className="space-y-6">
-          {dimensions.map(({ key, labels }) => {
-            const first = key[0];
-            const second = key[1];
+          {dimensions.map(({ key, labels, traits }) => {
+            const first = traits[0];
+            const second = traits[1];
             const firstScore = scores[first] || 0;
             const secondScore = scores[second] || 0;
             const total = firstScore + secondScore;
@@ -86,10 +80,10 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
               <div key={key} className="space-y-2">
                 <div className="flex justify-between text-sm font-medium">
                   <span className={firstPercent > 50 ? 'text-primary' : 'text-muted-foreground'}>
-                    {labels[0]} ({first})
+                    {labels[0]}
                   </span>
                   <span className={firstPercent < 50 ? 'text-primary' : 'text-muted-foreground'}>
-                    {labels[1]} ({second})
+                    {labels[1]}
                   </span>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden flex">
@@ -128,7 +122,7 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
             <div className="w-10 h-10 rounded-xl gradient-cool flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-display text-lg font-semibold text-foreground">Strengths</h3>
+            <h3 className="font-display text-lg font-semibold text-foreground">Your Strengths</h3>
           </div>
           <ul className="space-y-2">
             {personality.strengths.map((strength, i) => (
@@ -163,7 +157,7 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
         </motion.div>
       </div>
 
-      {/* Famous People */}
+      {/* Recommended Tools */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -172,14 +166,14 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
       >
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
-            <Users className="w-5 h-5 text-foreground" />
+            <Wrench className="w-5 h-5 text-foreground" />
           </div>
-          <h3 className="font-display text-lg font-semibold text-foreground">Famous {personality.type}s</h3>
+          <h3 className="font-display text-lg font-semibold text-foreground">Your Go-To Tools & Approaches</h3>
         </div>
         <div className="flex flex-wrap gap-3">
-          {personality.famous.map((person, i) => (
+          {personality.tools.map((tool, i) => (
             <span key={i} className="px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm font-medium">
-              {person}
+              {tool}
             </span>
           ))}
         </div>
