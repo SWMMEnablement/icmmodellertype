@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Brain, Clock, Sparkles } from "lucide-react";
+import { Droplets, Clock, Sparkles } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -26,21 +26,21 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           className="w-20 h-20 mx-auto mb-8 rounded-2xl gradient-cool shadow-glow flex items-center justify-center"
         >
-          <Brain className="w-10 h-10 text-primary-foreground" />
+          <Droplets className="w-10 h-10 text-primary-foreground" />
         </motion.div>
 
         {/* Title */}
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
-          Discover Your
+          What's Your
           <span className="block mt-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Personality Type
+            ICM Modeler Type?
           </span>
         </h1>
 
         {/* Description */}
         <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-          Take our quick 10-question assessment to uncover your Myers-Briggs personality type 
-          and gain insights into your unique strengths and tendencies.
+          Discover your hydraulic modeling personality. Are you a detail-driven perfectionist 
+          or a big-picture strategist? Do you automate everything or trust your hands-on instincts?
         </p>
 
         {/* Features */}
@@ -62,12 +62,12 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           onClick={onStart}
           className="px-10 py-5 rounded-xl gradient-cool text-primary-foreground font-semibold text-lg shadow-glow hover:opacity-90 transition-opacity"
         >
-          Start the Test
+          Start the Assessment
         </motion.button>
 
         {/* Disclaimer */}
         <p className="mt-8 text-sm text-muted-foreground/70">
-          This is a simplified assessment for self-reflection, not a clinical diagnosis.
+          For ICM InfoWorks users. Just for fun—embrace your modeling style!
         </p>
       </motion.div>
     </motion.div>
