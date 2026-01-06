@@ -10,31 +10,35 @@ export interface PersonalityType {
   isHybrid?: boolean; // True for hybrid personality types
 }
 
-// Dimension descriptions for Option C (hybrid) choices
+// Dimension descriptions for Option C (hybrid) and Option D (context-dependent) choices
 export const dimensionDescriptions = {
   MA: {
     name: "Modeling Approach",
     optionA: { trait: 'D', label: "Detail-Focused", description: "You model every component with precision, ensuring nothing is overlooked." },
     optionB: { trait: 'B', label: "Big-Picture", description: "You focus on system behavior and strategic simplifications." },
-    optionC: { trait: 'H', label: "Context-Adaptive", description: "You apply full detail where it matters most (critical assets, sensitive areas) while using strategic simplifications elsewhere. Your approach adapts to the specific requirements of each project zone." }
+    optionC: { trait: 'H', label: "Context-Adaptive", description: "You apply full detail where it matters most (critical assets, sensitive areas) while using strategic simplifications elsewhere. Your approach adapts to the specific requirements of each project zone." },
+    optionD: { trait: 'MA_CTX', label: "Context-Dependent", description: "Your modeling approach is driven by project requirements—scope, budget, data availability, and client needs determine whether you go detailed or simplified." }
   },
   WS: {
     name: "Workflow Style", 
     optionA: { trait: 'A', label: "Automated", description: "You leverage scripts and batch processes for efficiency and consistency." },
     optionB: { trait: 'M', label: "Manual", description: "You prefer hands-on control at every step of the process." },
-    optionC: { trait: 'X', label: "Hybrid Workflow", description: "You use automation for bulk operations and repetitive tasks, but maintain manual oversight and review at critical checkpoints. This gives you efficiency without sacrificing control over quality-critical decisions." }
+    optionC: { trait: 'X', label: "Hybrid Workflow", description: "You use automation for bulk operations and repetitive tasks, but maintain manual oversight and review at critical checkpoints. This gives you efficiency without sacrificing control over quality-critical decisions." },
+    optionD: { trait: 'WS_CTX', label: "Context-Dependent", description: "Your choice between automation and manual work depends on task complexity, team capabilities, and project constraints." }
   },
   PS: {
     name: "Problem Solving",
     optionA: { trait: 'S', label: "Systematic", description: "You follow methodical approaches with documented procedures." },
     optionB: { trait: 'I', label: "Intuitive", description: "You trust experience and pattern recognition to guide decisions." },
-    optionC: { trait: 'Y', label: "Integrated Approach", description: "You combine intuition with systematic verification—starting with your best hypothesis based on experience, then methodically validating or refining it. This dual approach catches both obvious issues and subtle problems." }
+    optionC: { trait: 'Y', label: "Integrated Approach", description: "You combine intuition with systematic verification—starting with your best hypothesis based on experience, then methodically validating or refining it. This dual approach catches both obvious issues and subtle problems." },
+    optionD: { trait: 'PS_CTX', label: "Context-Dependent", description: "How you solve problems depends on your familiarity with the system, time pressure, and the nature of the issue." }
   },
   DQ: {
     name: "Data Quality",
     optionA: { trait: 'P', label: "Perfectionist", description: "You maintain the highest standards with zero tolerance for gaps or errors." },
     optionB: { trait: 'R', label: "Pragmatic", description: "You make practical trade-offs to keep projects moving forward." },
-    optionC: { trait: 'Z', label: "Risk-Based Quality", description: "You apply rigorous standards where data quality critically impacts results, while accepting pragmatic assumptions in lower-risk areas. Your effort is prioritized based on sensitivity and consequence." }
+    optionC: { trait: 'Z', label: "Risk-Based Quality", description: "You apply rigorous standards where data quality critically impacts results, while accepting pragmatic assumptions in lower-risk areas. Your effort is prioritized based on sensitivity and consequence." },
+    optionD: { trait: 'DQ_CTX', label: "Context-Dependent", description: "Your quality standards flex based on project risk, client expectations, timeline, and the consequences of potential errors." }
   }
 };
 
@@ -79,7 +83,25 @@ export const getHybridType = (scores: Record<string, number>): string | null => 
     Z: scores.Z || 0, // DQ hybrid
   };
   
+  const contextScores = {
+    MA_CTX: scores.MA_CTX || 0,
+    WS_CTX: scores.WS_CTX || 0,
+    PS_CTX: scores.PS_CTX || 0,
+    DQ_CTX: scores.DQ_CTX || 0,
+  };
+  
   const totalHybrid = hybridScores.H + hybridScores.X + hybridScores.Y + hybridScores.Z;
+  const totalContext = contextScores.MA_CTX + contextScores.WS_CTX + contextScores.PS_CTX + contextScores.DQ_CTX;
+  
+  // If 10+ context-dependent answers (50%+), they're a strong contextual type
+  if (totalContext >= 10) {
+    return 'CONTEXT_MASTER';
+  }
+  
+  // If 6-9 context-dependent answers, they're moderately contextual
+  if (totalContext >= 6) {
+    return 'CONTEXT_NAVIGATOR';
+  }
   
   // If 12+ hybrid answers (60%+), they're a strong hybrid type
   if (totalHybrid >= 12) {
@@ -96,10 +118,32 @@ export const getHybridType = (scores: Record<string, number>): string | null => 
     return 'HYBRID_FLEXIBLE';
   }
   
-  return null; // Not hybrid-dominant
+  return null; // Not hybrid-dominant or context-dominant
 };
 
 export const personalities: Record<string, PersonalityType> = {
+  // === CONTEXT-DEPENDENT PERSONALITY TYPES ===
+  CONTEXT_MASTER: {
+    type: "CONTEXT",
+    name: "The Context Master",
+    description: "You're the ultimate project-driven modeller. Rather than having fixed preferences, you read each situation and adapt your approach accordingly. Project scope, client needs, data quality, timeline, and budget all factor into your decisions. Your flexibility makes you invaluable for diverse project portfolios.",
+    strengths: ["Exceptional situational awareness", "Client-focused delivery", "Resource optimization", "Risk-based prioritization", "Stakeholder management", "Portfolio versatility"],
+    growth: ["Develop strong default preferences for faster decisions", "Document your decision criteria", "Help juniors understand your contextual logic", "Build reusable frameworks for common situations"],
+    tools: ["Project assessment frameworks", "Decision matrices", "Scalable templates", "Stakeholder analysis tools"],
+    color: "from-amber-500 to-orange-600",
+    isHybrid: true
+  },
+  CONTEXT_NAVIGATOR: {
+    type: "NAVIGATOR",
+    name: "The Context Navigator",
+    description: "You balance personal preferences with project realities. While you have your go-to approaches, you readily adjust based on client requirements, budget constraints, and project scope. Your ability to navigate competing demands makes you effective across varied project types.",
+    strengths: ["Adaptive planning", "Budget awareness", "Client responsiveness", "Scope management", "Practical flexibility", "Delivery focus"],
+    growth: ["Strengthen core technical preferences", "Push back when context compromises quality", "Build clearer decision boundaries", "Develop signature approaches for key situations"],
+    tools: ["Scope assessment tools", "Budget-quality tradeoff matrices", "Client requirement templates", "Flexible QA processes"],
+    color: "from-orange-500 to-amber-600",
+    isHybrid: true
+  },
+
   // === HYBRID PERSONALITY TYPES ===
   HYBRID_INTEGRATOR: {
     type: "HYBRID",

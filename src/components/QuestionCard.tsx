@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Question } from "@/data/questions";
 import { dimensionDescriptions } from "@/data/personalities";
-import { ArrowLeft, Blend } from "lucide-react";
+import { ArrowLeft, Blend, Settings2 } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -19,23 +19,26 @@ interface QuestionCardProps {
 }
 
 export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, totalQuestions, canGoBack }: QuestionCardProps) => {
-  const handleOptionClick = (optionKey: 'A' | 'B' | 'C') => {
+  const handleOptionClick = (optionKey: 'A' | 'B' | 'C' | 'D') => {
     const trait = optionKey === 'A' 
       ? question.optionA.trait 
       : optionKey === 'B' 
         ? question.optionB.trait 
-        : question.optionC.trait;
+        : optionKey === 'C'
+          ? question.optionC.trait
+          : question.optionD.trait;
     
     onAnswer(trait);
   };
 
-  // Get dimension info for Option C tooltip
+  // Get dimension info for Option C and D tooltips
   const dimensionInfo = dimensionDescriptions[question.dimension];
 
   const options = [
     { key: 'A' as const, data: question.optionA, gradient: 'gradient-cool', label: dimensionInfo.optionA.label },
     { key: 'B' as const, data: question.optionB, gradient: 'gradient-warm', label: dimensionInfo.optionB.label },
     { key: 'C' as const, data: question.optionC, gradient: 'gradient-hybrid', label: dimensionInfo.optionC.label, isHybrid: true },
+    { key: 'D' as const, data: question.optionD, gradient: 'gradient-context', label: dimensionInfo.optionD.label, isContext: true },
   ];
 
   return (
@@ -96,6 +99,9 @@ export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, tot
                         {option.isHybrid && (
                           <Blend className="w-3 h-3 text-purple-500" />
                         )}
+                        {option.isContext && (
+                          <Settings2 className="w-3 h-3 text-amber-500" />
+                        )}
                       </div>
                       <p className="text-foreground font-medium text-sm leading-relaxed">
                         {option.data.text}
@@ -109,6 +115,14 @@ export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, tot
                   <p className="text-sm">
                     <strong className="text-purple-400">{dimensionInfo.optionC.label}:</strong>{" "}
                     {dimensionInfo.optionC.description}
+                  </p>
+                </TooltipContent>
+              )}
+              {option.isContext && (
+                <TooltipContent side="left" className="max-w-xs">
+                  <p className="text-sm">
+                    <strong className="text-amber-400">{dimensionInfo.optionD.label}:</strong>{" "}
+                    {dimensionInfo.optionD.description}
                   </p>
                 </TooltipContent>
               )}
