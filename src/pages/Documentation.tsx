@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight } from "lucide-react";
+import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2 } from "lucide-react";
 import { personalities, PersonalityType } from "@/data/personalities";
 
 type TabType = "icm" | "mbti" | "methodology" | "compare";
@@ -45,7 +45,17 @@ const Documentation = () => {
     { id: "methodology" as TabType, label: "Methodology & Code", icon: Code2 },
   ];
 
+  // Check if a type is a special type (hybrid or context)
+  const isSpecialType = (code: string) => {
+    return code.startsWith('HYBRID_') || code.startsWith('CONTEXT_');
+  };
+
   const getSharedTraits = (type1: string, type2: string) => {
+    // For special types, comparison doesn't apply in the same way
+    if (isSpecialType(type1) || isSpecialType(type2)) {
+      return { shared: [], different: [0, 1, 2, 3], isSpecialComparison: true };
+    }
+    
     const shared: number[] = [];
     const different: number[] = [];
     for (let i = 0; i < 4; i++) {
@@ -55,7 +65,7 @@ const Documentation = () => {
         different.push(i);
       }
     }
-    return { shared, different };
+    return { shared, different, isSpecialComparison: false };
   };
 
   const getTraitLabel = (type: string, index: number): string => {
@@ -188,7 +198,8 @@ const Documentation = () => {
             <div className="prose prose-slate max-w-none">
               <h2 className="font-display text-3xl font-bold text-foreground mb-4">ICM Modeller Personality Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Based on four dimensions of modeling workflow preferences, there are 10 distinct ICM modeller types. 
+                Based on four dimensions of modeling workflow preferences, there are 10 core ICM modeller types, 
+                plus 5 special types for those who prefer hybrid or context-dependent approaches.
                 A 20-question assessment (5 per dimension) determines your unique combination of approaches to hydraulic modelling in InfoWorks ICM.
               </p>
             </div>
@@ -211,61 +222,140 @@ const Documentation = () => {
               ))}
             </div>
 
-            {/* All 10 Types */}
-            <div className="space-y-3">
-              {Object.entries(personalities).map(([code, type]) => (
-                <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
-                  <button
-                    onClick={() => setExpandedType(expandedType === code ? null : code)}
-                    className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className={`px-3 py-1.5 rounded-lg text-white font-mono font-bold text-sm bg-gradient-to-r ${type.color}`}>
-                        {code}
-                      </span>
-                      <div>
-                        <h3 className="font-semibold text-foreground">{type.name}</h3>
-                        <p className="text-sm text-muted-foreground line-clamp-1">{type.description.slice(0, 80)}...</p>
-                      </div>
-                    </div>
-                    {expandedType === code ? (
-                      <ChevronUp className="w-5 h-5 text-muted-foreground shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />
-                    )}
-                  </button>
-                  
-                  {expandedType === code && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      className="border-t border-border p-4 bg-muted/20"
+            {/* Special Types Section */}
+            <div className="mb-8">
+              <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Blend className="w-5 h-5 text-purple-500" />
+                <Settings2 className="w-5 h-5 text-amber-500" />
+                Special Types
+              </h3>
+              <p className="text-muted-foreground text-sm mb-4">
+                These types are assigned to modellers who consistently choose hybrid (Option C) or context-dependent (Option D) answers.
+              </p>
+              <div className="space-y-3">
+                {Object.entries(personalities)
+                  .filter(([code]) => isSpecialType(code))
+                  .map(([code, type]) => (
+                  <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
+                    <button
+                      onClick={() => setExpandedType(expandedType === code ? null : code)}
+                      className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
                     >
-                      <p className="text-muted-foreground mb-4">{type.description}</p>
-                      <div className="grid md:grid-cols-3 gap-4">
+                      <div className="flex items-center gap-4">
+                        <span className={`px-3 py-1.5 rounded-lg text-white font-mono font-bold text-sm bg-gradient-to-r ${type.color} flex items-center gap-2`}>
+                          {code.startsWith('CONTEXT_') ? (
+                            <Settings2 className="w-4 h-4" />
+                          ) : (
+                            <Blend className="w-4 h-4" />
+                          )}
+                          {type.type}
+                        </span>
                         <div>
-                          <h4 className="text-sm font-semibold text-foreground mb-2">Strengths</h4>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {type.strengths.map((s, i) => <li key={i}>• {s}</li>)}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-foreground mb-2">Growth Areas</h4>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {type.growth.map((g, i) => <li key={i}>• {g}</li>)}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-foreground mb-2">Go-To Tools</h4>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {type.tools.map((t, i) => <li key={i}>• {t}</li>)}
-                          </ul>
+                          <h3 className="font-semibold text-foreground">{type.name}</h3>
+                          <p className="text-sm text-muted-foreground line-clamp-1">{type.description.slice(0, 80)}...</p>
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </div>
-              ))}
+                      {expandedType === code ? (
+                        <ChevronUp className="w-5 h-5 text-muted-foreground shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />
+                      )}
+                    </button>
+                    
+                    {expandedType === code && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        className="border-t border-border p-4 bg-muted/20"
+                      >
+                        <p className="text-muted-foreground mb-4">{type.description}</p>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Strengths</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.strengths.map((s, i) => <li key={i}>• {s}</li>)}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Growth Areas</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.growth.map((g, i) => <li key={i}>• {g}</li>)}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Go-To Tools</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.tools.map((t, i) => <li key={i}>• {t}</li>)}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Core Types Section */}
+            <div>
+              <h3 className="font-display text-xl font-semibold text-foreground mb-4">Core Types</h3>
+              <div className="space-y-3">
+                {Object.entries(personalities)
+                  .filter(([code]) => !isSpecialType(code))
+                  .map(([code, type]) => (
+                  <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
+                    <button
+                      onClick={() => setExpandedType(expandedType === code ? null : code)}
+                      className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className={`px-3 py-1.5 rounded-lg text-white font-mono font-bold text-sm bg-gradient-to-r ${type.color}`}>
+                          {code}
+                        </span>
+                        <div>
+                          <h3 className="font-semibold text-foreground">{type.name}</h3>
+                          <p className="text-sm text-muted-foreground line-clamp-1">{type.description.slice(0, 80)}...</p>
+                        </div>
+                      </div>
+                      {expandedType === code ? (
+                        <ChevronUp className="w-5 h-5 text-muted-foreground shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />
+                      )}
+                    </button>
+                    
+                    {expandedType === code && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        className="border-t border-border p-4 bg-muted/20"
+                      >
+                        <p className="text-muted-foreground mb-4">{type.description}</p>
+                        <div className="grid md:grid-cols-3 gap-4">
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Strengths</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.strengths.map((s, i) => <li key={i}>• {s}</li>)}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Growth Areas</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.growth.map((g, i) => <li key={i}>• {g}</li>)}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Go-To Tools</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              {type.tools.map((t, i) => <li key={i}>• {t}</li>)}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
@@ -292,58 +382,78 @@ const Documentation = () => {
             {/* Similarity Summary */}
             <div className="bg-card rounded-2xl border border-border p-6">
               <div className="flex items-center justify-center gap-4 mb-6">
-                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type1.color}`}>
-                  {compareType1}
+                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type1.color} flex items-center gap-2`}>
+                  {isSpecialType(compareType1) && (
+                    compareType1.startsWith('CONTEXT_') ? <Settings2 className="w-4 h-4" /> : <Blend className="w-4 h-4" />
+                  )}
+                  {isSpecialType(compareType1) ? type1.type : compareType1}
                 </span>
                 <ArrowLeftRight className="w-6 h-6 text-muted-foreground" />
-                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type2.color}`}>
-                  {compareType2}
+                <span className={`px-4 py-2 rounded-xl text-white font-mono font-bold bg-gradient-to-r ${type2.color} flex items-center gap-2`}>
+                  {isSpecialType(compareType2) && (
+                    compareType2.startsWith('CONTEXT_') ? <Settings2 className="w-4 h-4" /> : <Blend className="w-4 h-4" />
+                  )}
+                  {isSpecialType(compareType2) ? type2.type : compareType2}
                 </span>
               </div>
 
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold text-foreground mb-1">
-                  {Math.round((comparison.shared.length / 4) * 100)}%
+              {comparison.isSpecialComparison ? (
+                <div className="text-center mb-6">
+                  <div className="text-lg font-medium text-muted-foreground mb-2">
+                    Special Type Comparison
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Special types (Hybrid and Context-Dependent) don't map to the standard 4-dimension system. 
+                    Compare their unique strengths and approaches below.
+                  </p>
                 </div>
-                <div className="text-sm text-muted-foreground">Similarity</div>
-              </div>
-
-              {/* Dimension Comparison */}
-              <div className="space-y-3">
-                {[0, 1, 2, 3].map((i) => {
-                  const isShared = comparison.shared.includes(i);
-                  return (
-                    <div
-                      key={i}
-                      className={`flex items-center justify-between p-4 rounded-xl ${
-                        isShared ? "bg-primary/10" : "bg-muted/50"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        {isShared ? (
-                          <Check className="w-5 h-5 text-primary" />
-                        ) : (
-                          <X className="w-5 h-5 text-muted-foreground" />
-                        )}
-                        <span className="font-medium text-foreground">{dimensionLabels[i].name}</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-sm">
-                        <span className={isShared ? "text-primary font-medium" : "text-muted-foreground"}>
-                          {getTraitLabel(compareType1, i)}
-                        </span>
-                        {!isShared && (
-                          <>
-                            <span className="text-muted-foreground/50">vs</span>
-                            <span className="text-muted-foreground">
-                              {getTraitLabel(compareType2, i)}
-                            </span>
-                          </>
-                        )}
-                      </div>
+              ) : (
+                <>
+                  <div className="text-center mb-6">
+                    <div className="text-4xl font-bold text-foreground mb-1">
+                      {Math.round((comparison.shared.length / 4) * 100)}%
                     </div>
-                  );
-                })}
-              </div>
+                    <div className="text-sm text-muted-foreground">Similarity</div>
+                  </div>
+
+                  {/* Dimension Comparison */}
+                  <div className="space-y-3">
+                    {[0, 1, 2, 3].map((i) => {
+                      const isShared = comparison.shared.includes(i);
+                      return (
+                        <div
+                          key={i}
+                          className={`flex items-center justify-between p-4 rounded-xl ${
+                            isShared ? "bg-primary/10" : "bg-muted/50"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            {isShared ? (
+                              <Check className="w-5 h-5 text-primary" />
+                            ) : (
+                              <X className="w-5 h-5 text-muted-foreground" />
+                            )}
+                            <span className="font-medium text-foreground">{dimensionLabels[i].name}</span>
+                          </div>
+                          <div className="flex items-center gap-3 text-sm">
+                            <span className={isShared ? "text-primary font-medium" : "text-muted-foreground"}>
+                              {getTraitLabel(compareType1, i)}
+                            </span>
+                            {!isShared && (
+                              <>
+                                <span className="text-muted-foreground/50">vs</span>
+                                <span className="text-muted-foreground">
+                                  {getTraitLabel(compareType2, i)}
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Side by Side Cards */}
@@ -355,7 +465,23 @@ const Documentation = () => {
             {/* Collaboration Insights */}
             <div className="bg-muted/50 rounded-2xl p-6">
               <h3 className="font-display text-lg font-semibold text-foreground mb-4">Working Together</h3>
-              {comparison.shared.length === 4 ? (
+              {comparison.isSpecialComparison ? (
+                <p className="text-muted-foreground">
+                  {isSpecialType(compareType1) && isSpecialType(compareType2) ? (
+                    <>Both types share adaptive, flexible approaches to modeling. They excel at reading project contexts 
+                    and adjusting their methods accordingly. Together, they can handle highly variable project portfolios 
+                    but may benefit from establishing clear decision frameworks.</>
+                  ) : isSpecialType(compareType1) ? (
+                    <><strong>{type1.name}</strong> brings adaptability and contextual awareness, while <strong>{type2.name}</strong> provides 
+                    consistent, reliable approaches. This pairing combines flexibility with stability—ideal for projects 
+                    that need both structure and the ability to pivot.</>
+                  ) : (
+                    <><strong>{type1.name}</strong> provides consistent, reliable approaches, while <strong>{type2.name}</strong> brings 
+                    adaptability and contextual awareness. This pairing combines stability with flexibility—ideal for 
+                    projects that need both structure and the ability to pivot.</>
+                  )}
+                </p>
+              ) : comparison.shared.length === 4 ? (
                 <p className="text-muted-foreground">
                   These types are identical! Great for consistency, but consider bringing in diverse perspectives 
                   for challenging projects.
