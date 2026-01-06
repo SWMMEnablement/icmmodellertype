@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Droplets, Clock, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Droplets, Clock, Sparkles, BookOpen } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -65,8 +66,17 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           Start the Assessment
         </motion.button>
 
+        {/* Documentation Link */}
+        <Link
+          to="/docs"
+          className="mt-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>View Documentation & Personality Types</span>
+        </Link>
+
         {/* Disclaimer */}
-        <p className="mt-8 text-sm text-muted-foreground/70">
+        <p className="mt-4 text-sm text-muted-foreground/70">
           For ICM InfoWorks users. Just for fun—embrace your modeling style!
         </p>
       </motion.div>
