@@ -48,11 +48,11 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         <div className="flex flex-wrap justify-center gap-6 mb-12">
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium">2 minutes</span>
+            <span className="text-sm font-medium">5 minutes</span>
           </div>
           <div className="flex items-center gap-2 text-muted-foreground">
             <Sparkles className="w-5 h-5 text-secondary" />
-            <span className="text-sm font-medium">10 questions</span>
+            <span className="text-sm font-medium">20 questions</span>
           </div>
         </div>
 
