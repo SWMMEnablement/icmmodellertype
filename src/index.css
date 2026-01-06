@@ -127,13 +127,13 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.04;
+    opacity: 0.09;
     pointer-events: none;
     z-index: -1;
   }
 
   .dark #root::before {
-    opacity: 0.06;
+    opacity: 0.12;
     filter: invert(1);
   }
 }
