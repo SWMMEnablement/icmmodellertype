@@ -12,6 +12,7 @@ type GameState = "welcome" | "quiz" | "result";
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>("welcome");
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answerHistory, setAnswerHistory] = useState<string[]>([]);
   const [scores, setScores] = useState<Record<string, number>>({
     D: 0, B: 0, H: 0, // Detail vs Big-picture vs Hybrid
     A: 0, M: 0, X: 0, // Automated vs Manual vs Hybrid
@@ -22,10 +23,14 @@ const Index = () => {
   const handleStart = useCallback(() => {
     setGameState("quiz");
     setCurrentQuestion(0);
+    setAnswerHistory([]);
     setScores({ D: 0, B: 0, H: 0, A: 0, M: 0, X: 0, S: 0, I: 0, Y: 0, P: 0, R: 0, Z: 0 });
   }, []);
 
   const handleAnswer = useCallback((selectedTrait: string) => {
+    // Store the answer for this question (so we can undo it)
+    setAnswerHistory(prev => [...prev.slice(0, currentQuestion), selectedTrait]);
+    
     setScores(prev => ({
       ...prev,
       [selectedTrait]: prev[selectedTrait] + 1
@@ -37,6 +42,21 @@ const Index = () => {
       setGameState("result");
     }
   }, [currentQuestion]);
+
+  const handleGoBack = useCallback(() => {
+    if (currentQuestion > 0) {
+      const previousAnswer = answerHistory[currentQuestion - 1];
+      if (previousAnswer) {
+        // Remove the score from the previous answer
+        setScores(prev => ({
+          ...prev,
+          [previousAnswer]: prev[previousAnswer] - 1
+        }));
+      }
+      setCurrentQuestion(prev => prev - 1);
+      setAnswerHistory(prev => prev.slice(0, -1));
+    }
+  }, [currentQuestion, answerHistory]);
 
   const getPersonalityType = useCallback(() => {
     // First check if the user is hybrid-dominant
@@ -87,8 +107,10 @@ const Index = () => {
                 key={currentQuestion}
                 question={questions[currentQuestion]}
                 onAnswer={(trait) => handleAnswer(trait)}
+                onGoBack={handleGoBack}
                 questionNumber={currentQuestion + 1}
                 totalQuestions={questions.length}
+                canGoBack={currentQuestion > 0}
               />
             </AnimatePresence>
           </div>
