@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { questions } from "@/data/questions";
-import { personalities } from "@/data/personalities";
+import { personalities, resolveType } from "@/data/personalities";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { QuestionCard } from "@/components/QuestionCard";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -50,13 +50,14 @@ const Index = () => {
   }, [currentQuestion]);
 
   const getPersonalityType = useCallback(() => {
-    const type = [
+    const rawType = [
       scores.D >= scores.B ? 'D' : 'B',
       scores.A >= scores.M ? 'A' : 'M',
       scores.S >= scores.I ? 'S' : 'I',
       scores.P >= scores.R ? 'P' : 'R',
     ].join('');
-    return personalities[type] || personalities['DASP'];
+    const resolvedType = resolveType(rawType);
+    return personalities[resolvedType] || personalities['DASP'];
   }, [scores]);
 
   return (
