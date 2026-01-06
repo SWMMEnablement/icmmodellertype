@@ -11,6 +11,15 @@ interface Message {
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/icm-chat`;
 
+const SUGGESTED_QUESTIONS = [
+  "How do I set up RTC logic in ICM?",
+  "What's the difference between Horton and Green-Ampt infiltration?",
+  "How do I calibrate a SWMM model?",
+  "Explain the Manning's equation in pipe flow",
+  "What are the best practices for model validation?",
+  "How do I import GIS data into InfoWorks?",
+];
+
 export const ICMChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -25,6 +34,10 @@ export const ICMChatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleSuggestedQuestion = (question: string) => {
+    setInput(question);
+  };
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -147,14 +160,19 @@ export const ICMChatbot = () => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.length === 0 && (
-                <div className="text-center text-muted-foreground text-sm py-8">
-                  <Bot className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p>Ask me anything about ICM InfoWorks or SWMM5!</p>
-                  <p className="mt-2 text-xs">Examples:</p>
-                  <div className="mt-2 space-y-1 text-xs">
-                    <p>"How do I set up RTC logic?"</p>
-                    <p>"What's the difference between Horton and Green-Ampt?"</p>
-                    <p>"Help me calibrate my model"</p>
+                <div className="text-center text-muted-foreground text-sm py-4">
+                  <Bot className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                  <p className="mb-4">Ask me anything about ICM InfoWorks or SWMM5!</p>
+                  <div className="flex flex-wrap gap-2 justify-center px-2">
+                    {SUGGESTED_QUESTIONS.map((question, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSuggestedQuestion(question)}
+                        className="text-xs px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors text-left"
+                      >
+                        {question}
+                      </button>
+                    ))}
                   </div>
                 </div>
               )}
