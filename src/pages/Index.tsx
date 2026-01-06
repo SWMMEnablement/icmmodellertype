@@ -25,11 +25,26 @@ const Index = () => {
     setScores({ E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 });
   }, []);
 
-  const handleAnswer = useCallback((trait: string) => {
-    setScores(prev => ({
-      ...prev,
-      [trait]: prev[trait] + 1
-    }));
+  const handleAnswer = useCallback((traitA: string, traitB: string, intensity: number) => {
+    // intensity: -2 (strongly A), -1 (slightly A), 0 (neutral), 1 (slightly B), 2 (strongly B)
+    // Convert to points for each trait
+    setScores(prev => {
+      const newScores = { ...prev };
+      
+      if (intensity < 0) {
+        // Favors option A
+        newScores[traitA] += Math.abs(intensity);
+      } else if (intensity > 0) {
+        // Favors option B
+        newScores[traitB] += intensity;
+      } else {
+        // Neutral - give 0.5 points to each
+        newScores[traitA] += 0.5;
+        newScores[traitB] += 0.5;
+      }
+      
+      return newScores;
+    });
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
