@@ -13,34 +13,23 @@ const Index = () => {
   const [gameState, setGameState] = useState<GameState>("welcome");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({
-    D: 0, B: 0, // Detail vs Big-picture
-    A: 0, M: 0, // Automated vs Manual
-    S: 0, I: 0, // Systematic vs Intuitive
-    P: 0, R: 0, // Perfectionist vs Pragmatic
+    D: 0, B: 0, H: 0, // Detail vs Big-picture vs Hybrid
+    A: 0, M: 0, X: 0, // Automated vs Manual vs Hybrid
+    S: 0, I: 0, Y: 0, // Systematic vs Intuitive vs Hybrid
+    P: 0, R: 0, Z: 0, // Perfectionist vs Pragmatic vs Hybrid
   });
 
   const handleStart = useCallback(() => {
     setGameState("quiz");
     setCurrentQuestion(0);
-    setScores({ D: 0, B: 0, A: 0, M: 0, S: 0, I: 0, P: 0, R: 0 });
+    setScores({ D: 0, B: 0, H: 0, A: 0, M: 0, X: 0, S: 0, I: 0, Y: 0, P: 0, R: 0, Z: 0 });
   }, []);
 
-  const handleAnswer = useCallback((traitA: string, traitB: string, intensity: number) => {
-    // intensity: -2 (strongly A), -1 (slightly A), 0 (neutral), 1 (slightly B), 2 (strongly B)
-    setScores(prev => {
-      const newScores = { ...prev };
-      
-      if (intensity < 0) {
-        newScores[traitA] += Math.abs(intensity);
-      } else if (intensity > 0) {
-        newScores[traitB] += intensity;
-      } else {
-        newScores[traitA] += 0.5;
-        newScores[traitB] += 0.5;
-      }
-      
-      return newScores;
-    });
+  const handleAnswer = useCallback((selectedTrait: string) => {
+    setScores(prev => ({
+      ...prev,
+      [selectedTrait]: prev[selectedTrait] + 1
+    }));
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
@@ -50,12 +39,30 @@ const Index = () => {
   }, [currentQuestion]);
 
   const getPersonalityType = useCallback(() => {
+    // For each dimension, find the winning trait (D/B/H, A/M/X, S/I/Y, P/R/Z)
+    const getDimensionWinner = (traits: [string, string, string]) => {
+      const [a, b, c] = traits;
+      const scoreA = scores[a] || 0;
+      const scoreB = scores[b] || 0;
+      const scoreC = scores[c] || 0;
+      
+      // If hybrid (C) wins or ties with max, use hybrid logic
+      const max = Math.max(scoreA, scoreB, scoreC);
+      if (scoreC === max && scoreC > 0) {
+        // Hybrid wins - map to the stronger of A/B, or default to A if tied
+        return scoreA >= scoreB ? a : b;
+      }
+      // Otherwise, winner between A and B (A wins ties)
+      return scoreA >= scoreB ? a : b;
+    };
+
     const rawType = [
-      scores.D >= scores.B ? 'D' : 'B',
-      scores.A >= scores.M ? 'A' : 'M',
-      scores.S >= scores.I ? 'S' : 'I',
-      scores.P >= scores.R ? 'P' : 'R',
+      getDimensionWinner(['D', 'B', 'H']),
+      getDimensionWinner(['A', 'M', 'X']),
+      getDimensionWinner(['S', 'I', 'Y']),
+      getDimensionWinner(['P', 'R', 'Z']),
     ].join('');
+    
     const resolvedType = resolveType(rawType);
     return personalities[resolvedType] || personalities['DASP'];
   }, [scores]);
@@ -74,7 +81,7 @@ const Index = () => {
               <QuestionCard
                 key={currentQuestion}
                 question={questions[currentQuestion]}
-                onAnswer={handleAnswer}
+                onAnswer={(trait) => handleAnswer(trait)}
                 questionNumber={currentQuestion + 1}
                 totalQuestions={questions.length}
               />
