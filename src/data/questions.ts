@@ -1,9 +1,9 @@
 export type Dimension = 'MA' | 'WS' | 'PS' | 'DQ';
 
-// MA = Modeling Approach (Detail vs BigPicture)
-// WS = Workflow Style (Automated vs Manual)
-// PS = Problem Solving (Systematic vs Intuitive)
-// DQ = Data Quality (Perfectionist vs Pragmatic)
+// MA = Modeling Approach (Detail vs BigPicture vs Hybrid)
+// WS = Workflow Style (Automated vs Manual vs Hybrid)
+// PS = Problem Solving (Systematic vs Intuitive vs Hybrid)
+// DQ = Data Quality (Perfectionist vs Pragmatic vs Hybrid)
 
 export interface Question {
   id: number;
@@ -14,6 +14,10 @@ export interface Question {
     trait: string;
   };
   optionB: {
+    text: string;
+    trait: string;
+  };
+  optionC: {
     text: string;
     trait: string;
   };
@@ -32,6 +36,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Build a simplified skeleton model to understand system behavior first",
       trait: 'B'
+    },
+    optionC: {
+      text: "Start with key assets at full detail, then add strategic simplifications elsewhere",
+      trait: 'H'
     }
   },
   {
@@ -45,6 +53,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Strategic simplifications—aggregate subcatchments, key trunk sewers only",
       trait: 'B'
+    },
+    optionC: {
+      text: "Full detail in critical areas, aggregated elsewhere based on sensitivity analysis",
+      trait: 'H'
     }
   },
   {
@@ -58,6 +70,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Run scenarios and analyze overall system response patterns",
       trait: 'B'
+    },
+    optionC: {
+      text: "Spot-check critical assets in detail, then verify overall system behavior",
+      trait: 'H'
     }
   },
   {
@@ -71,6 +87,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Larger aggregated catchments that capture key runoff behavior",
       trait: 'B'
+    },
+    optionC: {
+      text: "Detailed delineation in sensitive areas, aggregated in stable zones",
+      trait: 'H'
     }
   },
   {
@@ -84,6 +104,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Simplified storage representations that match overall system response",
       trait: 'B'
+    },
+    optionC: {
+      text: "Full detail for critical storage assets, simplified for minor ones",
+      trait: 'H'
     }
   },
 
@@ -99,6 +123,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Do it manually—you know exactly what's happening at each step",
       trait: 'M'
+    },
+    optionC: {
+      text: "Use automation for bulk tasks but manually review outputs before applying",
+      trait: 'X'
     }
   },
   {
@@ -112,6 +140,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Build each scenario individually to maintain full control",
       trait: 'M'
+    },
+    optionC: {
+      text: "Template the common elements but manually configure unique aspects",
+      trait: 'X'
     }
   },
   {
@@ -125,6 +157,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Manual import with hands-on review of each data field",
       trait: 'M'
+    },
+    optionC: {
+      text: "Automated import with manual spot-checks and exception handling",
+      trait: 'X'
     }
   },
   {
@@ -138,6 +174,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Manually compare and update each affected asset",
       trait: 'M'
+    },
+    optionC: {
+      text: "Use scripts to flag changes, then manually verify critical updates",
+      trait: 'X'
     }
   },
   {
@@ -151,6 +191,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Manual extraction with custom analysis for each deliverable",
       trait: 'M'
+    },
+    optionC: {
+      text: "Templated extraction with manual customization for client-specific needs",
+      trait: 'X'
     }
   },
 
@@ -166,6 +210,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Trust your instincts—you often know where the problem is",
       trait: 'I'
+    },
+    optionC: {
+      text: "Start with your best guess, then systematically verify or rule it out",
+      trait: 'Y'
     }
   },
   {
@@ -179,6 +227,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Visual comparison and your experience with similar catchments",
       trait: 'I'
+    },
+    optionC: {
+      text: "Statistical targets validated by visual checks and engineering judgment",
+      trait: 'Y'
     }
   },
   {
@@ -192,6 +244,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Adjust based on what you know works for this type of catchment",
       trait: 'I'
+    },
+    optionC: {
+      text: "Use guidelines as a starting point, adjusted by local experience",
+      trait: 'Y'
     }
   },
   {
@@ -205,6 +261,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Jump to the likely culprit based on experience and model behavior",
       trait: 'I'
+    },
+    optionC: {
+      text: "Check your hunches first, then systematically verify the full flow path",
+      trait: 'Y'
     }
   },
   {
@@ -218,6 +278,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Tell the story of what's happening and why it makes sense",
       trait: 'I'
+    },
+    optionC: {
+      text: "Lead with the narrative, backed by key statistics and evidence",
+      trait: 'Y'
     }
   },
 
@@ -233,6 +297,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Make reasonable assumptions and note them—the model needs to progress",
       trait: 'R'
+    },
+    optionC: {
+      text: "Fill critical gaps rigorously, use justified assumptions for minor ones",
+      trait: 'Z'
     }
   },
   {
@@ -246,6 +314,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Reviewed and justified—some flags are acceptable in context",
       trait: 'R'
+    },
+    optionC: {
+      text: "Critical flags resolved, minor flags documented with justification",
+      trait: 'Z'
     }
   },
   {
@@ -259,6 +331,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Deliver what's achievable with clear caveats and limitations",
       trait: 'R'
+    },
+    optionC: {
+      text: "Protect quality on critical elements while accepting pragmatic shortcuts elsewhere",
+      trait: 'Z'
     }
   },
   {
@@ -272,6 +348,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Focused on key assumptions that actually affect results",
       trait: 'R'
+    },
+    optionC: {
+      text: "Thorough for significant assumptions, summarized for minor ones",
+      trait: 'Z'
     }
   },
   {
@@ -285,6 +365,10 @@ export const questions: Question[] = [
     optionB: {
       text: "Spot-check critical areas and use it if it seems reasonable",
       trait: 'R'
+    },
+    optionC: {
+      text: "Audit high-risk areas thoroughly, accept lower-risk areas with spot-checks",
+      trait: 'Z'
     }
   }
 ];
