@@ -33,7 +33,7 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
             transition={{ delay: 0.2 }}
           >
             <span className="text-white/80 text-sm font-medium tracking-widest uppercase mb-2 block">
-              Your ICM Modeler Type
+              Your ICM Modeller Type
             </span>
             <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-3">
               {personality.type}

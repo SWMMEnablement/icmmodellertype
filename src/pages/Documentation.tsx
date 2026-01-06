@@ -39,7 +39,7 @@ const Documentation = () => {
   const [compareType2, setCompareType2] = useState<string>("BMSR");
 
   const tabs = [
-    { id: "icm" as TabType, label: "ICM Modeler Types", icon: Droplets },
+    { id: "icm" as TabType, label: "ICM Modeller Types", icon: Droplets },
     { id: "compare" as TabType, label: "Compare Types", icon: GitCompare },
     { id: "mbti" as TabType, label: "Myers-Briggs Types", icon: Brain },
     { id: "methodology" as TabType, label: "Methodology & Code", icon: Code2 },
@@ -186,10 +186,10 @@ const Documentation = () => {
             className="space-y-8"
           >
             <div className="prose prose-slate max-w-none">
-              <h2 className="font-display text-3xl font-bold text-foreground mb-4">ICM Modeler Personality Types</h2>
+              <h2 className="font-display text-3xl font-bold text-foreground mb-4">ICM Modeller Personality Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Based on four dimensions of modeling workflow preferences, there are 10 distinct ICM modeler types. 
-                A 20-question assessment (5 per dimension) determines your unique combination of approaches to hydraulic modeling in InfoWorks ICM.
+                Based on four dimensions of modeling workflow preferences, there are 10 distinct ICM modeller types. 
+                A 20-question assessment (5 per dimension) determines your unique combination of approaches to hydraulic modelling in InfoWorks ICM.
               </p>
             </div>
 
@@ -277,9 +277,9 @@ const Documentation = () => {
             className="space-y-8"
           >
             <div className="prose prose-slate max-w-none">
-              <h2 className="font-display text-3xl font-bold text-foreground mb-4">Compare Modeler Types</h2>
+              <h2 className="font-display text-3xl font-bold text-foreground mb-4">Compare Modeller Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Select two ICM modeler types to see how they compare. Discover shared strengths and key differences.
+                Select two ICM modeller types to see how they compare. Discover shared strengths and key differences.
               </p>
             </div>
 
@@ -362,7 +362,7 @@ const Documentation = () => {
                 </p>
               ) : comparison.shared.length >= 3 ? (
                 <p className="text-muted-foreground">
-                  High compatibility! These modelers will likely collaborate smoothly with shared approaches. 
+                  High compatibility! These modellers will likely collaborate smoothly with shared approaches. 
                   The one difference in <strong>{dimensionLabels[comparison.different[0]].name.toLowerCase()}</strong> can 
                   provide valuable balance.
                 </p>
@@ -374,7 +374,7 @@ const Documentation = () => {
                 </p>
               ) : comparison.shared.length === 1 ? (
                 <p className="text-muted-foreground">
-                  Diverse pairing! These modelers approach work very differently. This can create powerful 
+                  Diverse pairing! These modellers approach work very differently. This can create powerful 
                   collaboration if both respect each other&apos;s styles, but may require clear communication 
                   about workflows and expectations.
                 </p>

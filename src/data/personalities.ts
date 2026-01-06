@@ -81,7 +81,7 @@ export const personalities: Record<string, PersonalityType> = {
   },
   DMSR: {
     type: "DMSR",
-    name: "The Pragmatic Modeler",
+    name: "The Pragmatic Modeller",
     description: "You're the backbone of project delivery. Detail-oriented but deadline-aware, you manually craft quality models while making practical trade-offs. Your experience guides efficient, defensible decisions. You know exactly where to focus your effort for maximum impact.",
     strengths: ["Reliable delivery", "Practical solutions", "Clear documentation", "Balanced judgment", "Fast turnaround", "Client rapport"],
     growth: ["Automate common workflows", "Push back on impossible deadlines", "Standardize your methods", "Document assumptions better"],
@@ -121,7 +121,7 @@ export const personalities: Record<string, PersonalityType> = {
   BMSR: {
     type: "BMSR",
     name: "The Practical Strategist",
-    description: "You're the go-to modeler for strategic projects with real deadlines. Big-picture thinking with hands-on delivery means you answer the questions that matter without getting lost in details. Crisis response and tight turnarounds are your specialty.",
+    description: "You're the go-to modeller for strategic projects with real deadlines. Big-picture thinking with hands-on delivery means you answer the questions that matter without getting lost in details. Crisis response and tight turnarounds are your specialty.",
     strengths: ["Practical strategy", "Deadline delivery", "Scope management", "Clear communication", "Speed", "Crisis response"],
     growth: ["Automate routine tasks", "Document your simplifications", "Build quality checks", "Slow down for complex projects"],
     tools: ["Manual strategic modeling", "Practical QC", "Clear reporting", "Rapid reporting"],
@@ -130,7 +130,7 @@ export const personalities: Record<string, PersonalityType> = {
   },
   BMIP: {
     type: "BMIP",
-    name: "The Master Modeler",
+    name: "The Master Modeller",
     description: "Years of experience have given you strategic intuition backed by quality standards. You build big-picture models with systematic validation, guided by pattern recognition only experience brings. You're often the one mentoring the next generation.",
     strengths: ["Expert judgment", "Strategic quality", "Pattern recognition", "Mentoring ability", "Experience-based insight"],
     growth: ["Transfer knowledge to automation", "Document your intuition", "Train the next generation", "Share your mental models"],

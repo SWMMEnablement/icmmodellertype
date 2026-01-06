@@ -34,7 +34,7 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
           What's Your
           <span className="block mt-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            ICM Modeler Type?
+            ICM Modeller Type?
           </span>
         </h1>
 

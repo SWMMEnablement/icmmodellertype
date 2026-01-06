@@ -276,7 +276,7 @@ export const questions: Question[] = [
   },
   {
     id: 20,
-    text: "When inheriting a model from another modeler, you...",
+    text: "When inheriting a model from another modeller, you...",
     dimension: 'DQ',
     optionA: {
       text: "Rebuild or fully audit it to your standards before use",
