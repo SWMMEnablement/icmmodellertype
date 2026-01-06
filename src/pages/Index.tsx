@@ -6,6 +6,7 @@ import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { QuestionCard } from "@/components/QuestionCard";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ResultCard } from "@/components/ResultCard";
+import { ICMChatbot } from "@/components/ICMChatbot";
 
 type GameState = "welcome" | "quiz" | "result";
 
@@ -111,6 +112,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ICMChatbot />
       <AnimatePresence mode="wait">
         {gameState === "welcome" && (
           <WelcomeScreen key="welcome" onStart={handleStart} />
