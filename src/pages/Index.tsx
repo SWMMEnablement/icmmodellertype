@@ -58,6 +58,22 @@ const Index = () => {
     }
   }, [currentQuestion, answerHistory]);
 
+  const handleJumpToQuestion = useCallback((targetIndex: number) => {
+    if (targetIndex < currentQuestion && targetIndex >= 0) {
+      // Remove scores for all questions from target to current
+      const answersToRemove = answerHistory.slice(targetIndex);
+      const newScores = { ...scores };
+      answersToRemove.forEach(answer => {
+        if (answer) {
+          newScores[answer] = (newScores[answer] || 1) - 1;
+        }
+      });
+      setScores(newScores);
+      setCurrentQuestion(targetIndex);
+      setAnswerHistory(prev => prev.slice(0, targetIndex));
+    }
+  }, [currentQuestion, answerHistory, scores]);
+
   const getPersonalityType = useCallback(() => {
     // First check if the user is hybrid-dominant
     const hybridType = getHybridType(scores);
@@ -100,8 +116,13 @@ const Index = () => {
         )}
 
         {gameState === "quiz" && (
-          <div key="quiz" className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
-            <ProgressBar current={currentQuestion + 1} total={questions.length} />
+          <div key="quiz" className="min-h-screen flex flex-col items-center justify-center px-6 py-8">
+            <ProgressBar 
+              current={currentQuestion + 1} 
+              total={questions.length} 
+              answeredQuestions={answerHistory.map((_, i) => i)}
+              onJumpToQuestion={handleJumpToQuestion}
+            />
             <AnimatePresence mode="wait">
               <QuestionCard
                 key={currentQuestion}
