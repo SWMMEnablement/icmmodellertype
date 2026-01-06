@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Question } from "@/data/questions";
-import { ArrowRight, Check } from "lucide-react";
+import { dimensionDescriptions } from "@/data/personalities";
+import { ArrowRight, Check, Blend } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface QuestionCardProps {
   question: Question;
@@ -26,10 +33,13 @@ export const QuestionCard = ({ question, onAnswer, questionNumber, totalQuestion
     setSelectedOption(null);
   };
 
+  // Get dimension info for Option C tooltip
+  const dimensionInfo = dimensionDescriptions[question.dimension];
+
   const options = [
-    { key: 'A' as const, data: question.optionA, gradient: 'gradient-cool', color: 'hsl(175 45% 30%)' },
-    { key: 'B' as const, data: question.optionB, gradient: 'gradient-warm', color: 'hsl(35 80% 55%)' },
-    { key: 'C' as const, data: question.optionC, gradient: 'gradient-hybrid', color: 'hsl(270 50% 50%)' },
+    { key: 'A' as const, data: question.optionA, gradient: 'gradient-cool', label: dimensionInfo.optionA.label },
+    { key: 'B' as const, data: question.optionB, gradient: 'gradient-warm', label: dimensionInfo.optionB.label },
+    { key: 'C' as const, data: question.optionC, gradient: 'gradient-hybrid', label: dimensionInfo.optionC.label, isHybrid: true },
   ];
 
   return (
@@ -52,34 +62,57 @@ export const QuestionCard = ({ question, onAnswer, questionNumber, totalQuestion
       </h2>
 
       {/* Option Cards */}
-      <div className="flex flex-col gap-4 mb-8">
-        {options.map((option) => (
-          <motion.button
-            key={option.key}
-            onClick={() => setSelectedOption(option.key)}
-            whileHover={{ scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            className={`relative p-5 rounded-xl bg-card shadow-soft border-2 transition-all text-left ${
-              selectedOption === option.key 
-                ? option.key === 'A' 
-                  ? 'border-primary ring-2 ring-primary/30' 
-                  : option.key === 'B'
-                    ? 'border-secondary ring-2 ring-secondary/30'
-                    : 'border-purple-500 ring-2 ring-purple-500/30'
-                : 'border-border hover:border-muted-foreground/50'
-            }`}
-          >
-            <div className="flex items-start gap-4">
-              <span className={`w-10 h-10 rounded-full ${option.gradient} flex items-center justify-center text-primary-foreground font-semibold text-sm shrink-0`}>
-                {selectedOption === option.key ? <Check className="w-5 h-5" /> : option.key}
-              </span>
-              <p className="text-foreground font-medium text-sm leading-relaxed pt-2">
-                {option.data.text}
-              </p>
-            </div>
-          </motion.button>
-        ))}
-      </div>
+      <TooltipProvider>
+        <div className="flex flex-col gap-4 mb-8">
+          {options.map((option) => (
+            <Tooltip key={option.key}>
+              <TooltipTrigger asChild>
+                <motion.button
+                  onClick={() => setSelectedOption(option.key)}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
+                  className={`relative p-5 rounded-xl bg-card shadow-soft border-2 transition-all text-left ${
+                    selectedOption === option.key 
+                      ? option.key === 'A' 
+                        ? 'border-primary ring-2 ring-primary/30' 
+                        : option.key === 'B'
+                          ? 'border-secondary ring-2 ring-secondary/30'
+                          : 'border-purple-500 ring-2 ring-purple-500/30'
+                      : 'border-border hover:border-muted-foreground/50'
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <span className={`w-10 h-10 rounded-full ${option.gradient} flex items-center justify-center text-primary-foreground font-semibold text-sm shrink-0`}>
+                      {selectedOption === option.key ? <Check className="w-5 h-5" /> : option.key}
+                    </span>
+                    <div className="flex-1 pt-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                          {option.label}
+                        </span>
+                        {option.isHybrid && (
+                          <Blend className="w-3 h-3 text-purple-500" />
+                        )}
+                      </div>
+                      <p className="text-foreground font-medium text-sm leading-relaxed">
+                        {option.data.text}
+                      </p>
+                    </div>
+                  </div>
+                </motion.button>
+              </TooltipTrigger>
+              {option.isHybrid && (
+                <TooltipContent side="left" className="max-w-xs">
+                  <p className="text-sm">
+                    <strong className="text-purple-400">{dimensionInfo.optionC.label}:</strong>{" "}
+                    {dimensionInfo.optionC.description}
+                  </p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          ))}
+        </div>
+      </TooltipProvider>
 
       {/* Selection indicator */}
       <div className="text-center mb-6">

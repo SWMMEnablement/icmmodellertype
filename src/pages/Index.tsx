@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { questions } from "@/data/questions";
-import { personalities, resolveType } from "@/data/personalities";
+import { personalities, resolveType, getHybridType } from "@/data/personalities";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { QuestionCard } from "@/components/QuestionCard";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -39,6 +39,12 @@ const Index = () => {
   }, [currentQuestion]);
 
   const getPersonalityType = useCallback(() => {
+    // First check if the user is hybrid-dominant
+    const hybridType = getHybridType(scores);
+    if (hybridType) {
+      return personalities[hybridType];
+    }
+
     // For each dimension, find the winning trait (D/B/H, A/M/X, S/I/Y, P/R/Z)
     const getDimensionWinner = (traits: [string, string, string]) => {
       const [a, b, c] = traits;
@@ -46,10 +52,9 @@ const Index = () => {
       const scoreB = scores[b] || 0;
       const scoreC = scores[c] || 0;
       
-      // If hybrid (C) wins or ties with max, use hybrid logic
+      // If hybrid (C) wins, map to the stronger of A/B
       const max = Math.max(scoreA, scoreB, scoreC);
       if (scoreC === max && scoreC > 0) {
-        // Hybrid wins - map to the stronger of A/B, or default to A if tied
         return scoreA >= scoreB ? a : b;
       }
       // Otherwise, winner between A and B (A wins ties)
