@@ -111,6 +111,31 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
+
+  #root {
+    position: relative;
+  }
+
+  #root::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/src/assets/icm-network-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .dark #root::before {
+    opacity: 0.06;
+    filter: invert(1);
+  }
 }
 
 @layer utilities {
