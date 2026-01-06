@@ -7,40 +7,132 @@ export interface PersonalityType {
   tools: string[];
   color: string;
   aliases?: string[]; // Types that map to this one
+  isHybrid?: boolean; // True for hybrid personality types
 }
 
-// Type resolution: maps the 16 possible combinations to 10 distinct types
+// Dimension descriptions for Option C (hybrid) choices
+export const dimensionDescriptions = {
+  MA: {
+    name: "Modeling Approach",
+    optionA: { trait: 'D', label: "Detail-Focused", description: "You model every component with precision, ensuring nothing is overlooked." },
+    optionB: { trait: 'B', label: "Big-Picture", description: "You focus on system behavior and strategic simplifications." },
+    optionC: { trait: 'H', label: "Context-Adaptive", description: "You apply full detail where it matters most (critical assets, sensitive areas) while using strategic simplifications elsewhere. Your approach adapts to the specific requirements of each project zone." }
+  },
+  WS: {
+    name: "Workflow Style", 
+    optionA: { trait: 'A', label: "Automated", description: "You leverage scripts and batch processes for efficiency and consistency." },
+    optionB: { trait: 'M', label: "Manual", description: "You prefer hands-on control at every step of the process." },
+    optionC: { trait: 'X', label: "Hybrid Workflow", description: "You use automation for bulk operations and repetitive tasks, but maintain manual oversight and review at critical checkpoints. This gives you efficiency without sacrificing control over quality-critical decisions." }
+  },
+  PS: {
+    name: "Problem Solving",
+    optionA: { trait: 'S', label: "Systematic", description: "You follow methodical approaches with documented procedures." },
+    optionB: { trait: 'I', label: "Intuitive", description: "You trust experience and pattern recognition to guide decisions." },
+    optionC: { trait: 'Y', label: "Integrated Approach", description: "You combine intuition with systematic verification—starting with your best hypothesis based on experience, then methodically validating or refining it. This dual approach catches both obvious issues and subtle problems." }
+  },
+  DQ: {
+    name: "Data Quality",
+    optionA: { trait: 'P', label: "Perfectionist", description: "You maintain the highest standards with zero tolerance for gaps or errors." },
+    optionB: { trait: 'R', label: "Pragmatic", description: "You make practical trade-offs to keep projects moving forward." },
+    optionC: { trait: 'Z', label: "Risk-Based Quality", description: "You apply rigorous standards where data quality critically impacts results, while accepting pragmatic assumptions in lower-risk areas. Your effort is prioritized based on sensitivity and consequence." }
+  }
+};
+
+// Type resolution: maps combinations to personality types
+// Now includes detection for hybrid-dominant modellers
 export const typeMapping: Record<string, string> = {
   // Detail + Automated types
-  DASP: 'DASP', // Keep as-is
-  DASR: 'DASR', // Keep as-is (absorbs DAIR)
-  DAIP: 'DAIP', // Keep as-is
-  DAIR: 'DASR', // → Maps to DASR
+  DASP: 'DASP',
+  DASR: 'DASR',
+  DAIP: 'DAIP',
+  DAIR: 'DASR',
   
   // Detail + Manual types
-  DMSP: 'DMSP', // Keep as-is (absorbs DMIP)
-  DMSR: 'DMSR', // Keep as-is (absorbs DMIR)
-  DMIP: 'DMSP', // → Maps to DMSP
-  DMIR: 'DMSR', // → Maps to DMSR
+  DMSP: 'DMSP',
+  DMSR: 'DMSR',
+  DMIP: 'DMSP',
+  DMIR: 'DMSR',
   
   // Big-Picture + Automated types
-  BASP: 'BASP', // Keep as-is (absorbs BAIP)
-  BASR: 'BASR', // Keep as-is (absorbs BAIR)
-  BAIP: 'BASP', // → Maps to BASP
-  BAIR: 'BASR', // → Maps to BASR
+  BASP: 'BASP',
+  BASR: 'BASR',
+  BAIP: 'BASP',
+  BAIR: 'BASR',
   
   // Big-Picture + Manual types
-  BMSP: 'BMSP', // Keep as-is
-  BMSR: 'BMSR', // Keep as-is (absorbs BMIR)
-  BMIP: 'BMIP', // Keep as-is
-  BMIR: 'BMSR', // → Maps to BMSR
+  BMSP: 'BMSP',
+  BMSR: 'BMSR',
+  BMIP: 'BMIP',
+  BMIR: 'BMSR',
 };
 
 export const resolveType = (rawType: string): string => {
   return typeMapping[rawType] || rawType;
 };
 
+// Check if a modeller is hybrid-dominant (chose hybrid options frequently)
+export const getHybridType = (scores: Record<string, number>): string | null => {
+  const hybridScores = {
+    H: scores.H || 0, // MA hybrid
+    X: scores.X || 0, // WS hybrid
+    Y: scores.Y || 0, // PS hybrid
+    Z: scores.Z || 0, // DQ hybrid
+  };
+  
+  const totalHybrid = hybridScores.H + hybridScores.X + hybridScores.Y + hybridScores.Z;
+  
+  // If 12+ hybrid answers (60%+), they're a strong hybrid type
+  if (totalHybrid >= 12) {
+    return 'HYBRID_INTEGRATOR';
+  }
+  
+  // If 8-11 hybrid answers (40-55%), they're a moderate hybrid type
+  if (totalHybrid >= 8) {
+    return 'HYBRID_ADAPTIVE';
+  }
+  
+  // If 5-7 hybrid answers (25-35%), they're a flexible hybrid
+  if (totalHybrid >= 5) {
+    return 'HYBRID_FLEXIBLE';
+  }
+  
+  return null; // Not hybrid-dominant
+};
+
 export const personalities: Record<string, PersonalityType> = {
+  // === HYBRID PERSONALITY TYPES ===
+  HYBRID_INTEGRATOR: {
+    type: "HYBRID",
+    name: "The Integrator",
+    description: "You're the rare modeller who naturally adapts your approach to each situation. You seamlessly blend detail and big-picture thinking, automation and manual control, systematic rigor and intuitive insight. Your flexibility makes you invaluable for complex, multi-stakeholder projects where one-size-fits-all approaches fail.",
+    strengths: ["Exceptional adaptability", "Multi-perspective thinking", "Balanced trade-offs", "Stakeholder management", "Context-sensitive quality", "Bridge between specialists"],
+    growth: ["Develop deeper expertise in specific approaches", "Document your decision frameworks", "Help others understand your adaptive logic", "Build templates for common contexts"],
+    tools: ["Adaptive workflows", "Context assessment checklists", "Flexible QA frameworks", "Multi-approach templates"],
+    color: "from-purple-500 to-violet-700",
+    isHybrid: true
+  },
+  HYBRID_ADAPTIVE: {
+    type: "ADAPTIVE",
+    name: "The Adaptive Specialist",
+    description: "You combine specialist depth with contextual flexibility. While you have preferred approaches, you readily adjust your methods based on project needs, client requirements, and data quality. Your ability to shift gears makes you effective across diverse project types.",
+    strengths: ["Contextual awareness", "Flexible methodology", "Client responsiveness", "Practical adaptability", "Balanced delivery", "Risk-aware quality"],
+    growth: ["Codify your adaptation triggers", "Share context-reading skills", "Balance flexibility with consistency", "Build adaptive team capabilities"],
+    tools: ["Situational assessment tools", "Scalable QA processes", "Flexible templates", "Context-based checklists"],
+    color: "from-violet-500 to-purple-700",
+    isHybrid: true
+  },
+  HYBRID_FLEXIBLE: {
+    type: "FLEX",
+    name: "The Flexible Practitioner",
+    description: "You blend traditional approaches with adaptive thinking. While you have core preferences, you're comfortable adjusting your style when the situation demands it. This flexibility allows you to handle unexpected challenges and work effectively with diverse team members.",
+    strengths: ["Practical flexibility", "Team collaboration", "Situational awareness", "Adaptable standards", "Effective communication", "Cross-functional skills"],
+    growth: ["Strengthen your core specialties", "Develop systematic adaptation criteria", "Document successful adaptations", "Mentor others in flexibility"],
+    tools: ["Hybrid workflows", "Adaptive checklists", "Flexible reporting", "Collaborative tools"],
+    color: "from-fuchsia-500 to-purple-600",
+    isHybrid: true
+  },
+
+  // === ORIGINAL PERSONALITY TYPES ===
   DASP: {
     type: "DASP",
     name: "The Precision Engineer",
