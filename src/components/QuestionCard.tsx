@@ -35,10 +35,10 @@ export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, tot
   const dimensionInfo = dimensionDescriptions[question.dimension];
 
   const options = [
-    { key: 'A' as const, data: question.optionA, gradient: 'gradient-cool', label: dimensionInfo.optionA.label },
-    { key: 'B' as const, data: question.optionB, gradient: 'gradient-warm', label: dimensionInfo.optionB.label },
-    { key: 'C' as const, data: question.optionC, gradient: 'gradient-hybrid', label: dimensionInfo.optionC.label, isHybrid: true },
-    { key: 'D' as const, data: question.optionD, gradient: 'gradient-context', label: dimensionInfo.optionD.label, isContext: true },
+    { key: 'A' as const, data: question.optionA, gradient: 'gradient-cool', label: dimensionInfo.optionA.label, description: dimensionInfo.optionA.description, colorClass: 'text-primary' },
+    { key: 'B' as const, data: question.optionB, gradient: 'gradient-warm', label: dimensionInfo.optionB.label, description: dimensionInfo.optionB.description, colorClass: 'text-secondary' },
+    { key: 'C' as const, data: question.optionC, gradient: 'gradient-hybrid', label: dimensionInfo.optionC.label, description: dimensionInfo.optionC.description, isHybrid: true, colorClass: 'text-purple-400' },
+    { key: 'D' as const, data: question.optionD, gradient: 'gradient-context', label: dimensionInfo.optionD.label, description: dimensionInfo.optionD.description, isContext: true, colorClass: 'text-amber-400' },
   ];
 
   return (
@@ -110,22 +110,12 @@ export const QuestionCard = ({ question, onAnswer, onGoBack, questionNumber, tot
                   </div>
                 </motion.button>
               </TooltipTrigger>
-              {option.isHybrid && (
-                <TooltipContent side="left" className="max-w-xs">
-                  <p className="text-sm">
-                    <strong className="text-purple-400">{dimensionInfo.optionC.label}:</strong>{" "}
-                    {dimensionInfo.optionC.description}
-                  </p>
-                </TooltipContent>
-              )}
-              {option.isContext && (
-                <TooltipContent side="left" className="max-w-xs">
-                  <p className="text-sm">
-                    <strong className="text-amber-400">{dimensionInfo.optionD.label}:</strong>{" "}
-                    {dimensionInfo.optionD.description}
-                  </p>
-                </TooltipContent>
-              )}
+              <TooltipContent side="left" className="max-w-xs">
+                <p className="text-sm">
+                  <strong className={option.colorClass}>{option.label}:</strong>{" "}
+                  {option.description}
+                </p>
+              </TooltipContent>
             </Tooltip>
           ))}
         </div>
