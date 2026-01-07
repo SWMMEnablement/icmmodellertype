@@ -1,6 +1,31 @@
 import ReactMarkdown from "react-markdown";
 import { Copy, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import hljs from "highlight.js/lib/core";
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
+import python from "highlight.js/lib/languages/python";
+import sql from "highlight.js/lib/languages/sql";
+import bash from "highlight.js/lib/languages/bash";
+import json from "highlight.js/lib/languages/json";
+import xml from "highlight.js/lib/languages/xml";
+import css from "highlight.js/lib/languages/css";
+import "highlight.js/styles/github-dark.css";
+
+// Register languages
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("js", javascript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("ts", typescript);
+hljs.registerLanguage("python", python);
+hljs.registerLanguage("py", python);
+hljs.registerLanguage("sql", sql);
+hljs.registerLanguage("bash", bash);
+hljs.registerLanguage("sh", bash);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("xml", xml);
+hljs.registerLanguage("html", xml);
+hljs.registerLanguage("css", css);
 
 interface MarkdownRendererProps {
   content: string;
@@ -9,7 +34,14 @@ interface MarkdownRendererProps {
 
 const CodeBlock = ({ children, className }: { children: string; className?: string }) => {
   const [copied, setCopied] = useState(false);
+  const codeRef = useRef<HTMLElement>(null);
   const language = className?.replace("language-", "") || "";
+
+  useEffect(() => {
+    if (codeRef.current && language) {
+      hljs.highlightElement(codeRef.current);
+    }
+  }, [children, language]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(children);
@@ -19,7 +51,7 @@ const CodeBlock = ({ children, className }: { children: string; className?: stri
 
   return (
     <div className="relative group my-2">
-      <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute right-2 top-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleCopy}
           className="p-1 rounded bg-muted-foreground/20 hover:bg-muted-foreground/30 transition-colors"
@@ -33,12 +65,12 @@ const CodeBlock = ({ children, className }: { children: string; className?: stri
         </button>
       </div>
       {language && (
-        <div className="absolute left-2 top-1 text-[10px] text-muted-foreground/70 uppercase">
+        <div className="absolute left-2 top-1 text-[10px] text-muted-foreground/70 uppercase z-10">
           {language}
         </div>
       )}
-      <pre className="bg-background/50 rounded-lg p-3 pt-6 overflow-x-auto text-xs">
-        <code className={className}>{children}</code>
+      <pre className="bg-[#0d1117] rounded-lg p-3 pt-6 overflow-x-auto text-xs">
+        <code ref={codeRef} className={className}>{children}</code>
       </pre>
     </div>
   );
