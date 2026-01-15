@@ -9,9 +9,11 @@ import { ResultCard } from "@/components/ResultCard";
 import { ICMChatbot } from "@/components/ICMChatbot";
 
 type GameState = "welcome" | "quiz" | "result";
+export type QuizMode = "self" | "manager";
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>("welcome");
+  const [quizMode, setQuizMode] = useState<QuizMode>("self");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answerHistory, setAnswerHistory] = useState<string[]>([]);
   const [scores, setScores] = useState<Record<string, number>>({
@@ -22,7 +24,8 @@ const Index = () => {
     MA_CTX: 0, WS_CTX: 0, PS_CTX: 0, DQ_CTX: 0, // Context-dependent
   });
 
-  const handleStart = useCallback(() => {
+  const handleStart = useCallback((mode: QuizMode = "self") => {
+    setQuizMode(mode);
     setGameState("quiz");
     setCurrentQuestion(0);
     setAnswerHistory([]);
@@ -120,6 +123,13 @@ const Index = () => {
 
         {gameState === "quiz" && (
           <div key="quiz" className="min-h-screen flex flex-col items-center justify-center px-6 py-8">
+            {quizMode === "manager" && (
+              <div className="mb-4 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-full">
+                <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
+                  👔 Manager Mode — Answer as your manager would
+                </span>
+              </div>
+            )}
             <ProgressBar 
               current={currentQuestion + 1} 
               total={questions.length} 
@@ -145,7 +155,8 @@ const Index = () => {
             <ResultCard
               personality={getPersonalityType()}
               scores={scores}
-              onRestart={handleStart}
+              onRestart={() => handleStart("self")}
+              quizMode={quizMode}
             />
           </div>
         )}

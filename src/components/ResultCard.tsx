@@ -2,14 +2,17 @@ import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
 import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2 } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
+import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
   personality: PersonalityType;
   scores: Record<string, number>;
   onRestart: () => void;
+  quizMode?: QuizMode;
 }
 
-export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) => {
+export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }: ResultCardProps) => {
+  const isManagerMode = quizMode === "manager";
   const isHybrid = personality.isHybrid && personality.type !== 'CONTEXT' && personality.type !== 'NAVIGATOR';
   const isContext = personality.type === 'CONTEXT' || personality.type === 'NAVIGATOR';
   const isSpecial = isHybrid || isContext;
@@ -142,8 +145,16 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
             className="relative z-10"
           >
             <span className="text-white/80 text-sm font-medium tracking-widest uppercase mb-2 block">
-              {isContext ? 'Your Context-Driven ICM Modeller Type' : isHybrid ? 'Your Adaptive ICM Modeller Type' : 'Your ICM Modeller Type'}
+              {isManagerMode 
+                ? (isContext ? "Your Manager's Context-Driven Type" : isHybrid ? "Your Manager's Adaptive Type" : "Your Manager's ICM Modeller Type")
+                : (isContext ? 'Your Context-Driven ICM Modeller Type' : isHybrid ? 'Your Adaptive ICM Modeller Type' : 'Your ICM Modeller Type')
+              }
             </span>
+            {isManagerMode && (
+              <div className="mb-3 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">
+                <span className="text-white text-xs">👔 Manager Mode</span>
+              </div>
+            )}
             <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-3">
               {personality.type}
             </h1>
@@ -422,12 +433,17 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
           <div className="w-10 h-10 rounded-xl gradient-cool flex items-center justify-center">
             <Share2 className="w-5 h-5 text-primary-foreground" />
           </div>
-          <h3 className="font-display text-lg font-semibold text-foreground">Share Your Results</h3>
+          <h3 className="font-display text-lg font-semibold text-foreground">
+            {isManagerMode ? "Share Your Manager's Results" : "Share Your Results"}
+          </h3>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          Show off your ICM modeller personality! Download or share your result card on social media.
+          {isManagerMode 
+            ? "Share your manager's ICM modeller personality on social media!"
+            : "Show off your ICM modeller personality! Download or share your result card on social media."
+          }
         </p>
-        <ShareableResultCard personality={personality} scores={scores} />
+        <ShareableResultCard personality={personality} scores={scores} isManagerMode={isManagerMode} />
       </motion.div>
 
       {/* Restart Button */}
