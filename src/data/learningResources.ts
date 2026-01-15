@@ -11,35 +11,41 @@ export const learningResources: Record<string, LearningResource[]> = {
   // Context-Driven Types
   CONTEXT_MASTER: [
     {
-      title: "Project Scoping Best Practices",
-      description: "Learn how to assess project requirements and adapt your modelling approach",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-ICM-Overview",
-      type: "documentation"
-    },
-    {
-      title: "Client Communication for Modellers",
-      description: "Strategies for managing stakeholder expectations across diverse projects",
-      url: "https://boards.autodesk.com/icm",
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Comprehensive course covering model building, version control, and troubleshooting",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
       type: "course"
     },
     {
-      title: "Flexible Model Configuration",
-      description: "Configure models to meet varying project specifications",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Model-Configuration",
-      type: "tutorial"
+      title: "Water Talk: Modelling Basics",
+      description: "50-minute walkthrough of importing data and setting up models from scratch",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
+      type: "webinar"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Connect with other modellers to discuss project-specific challenges",
+      url: "https://boards.autodesk.com/icm",
+      type: "documentation"
     }
   ],
   CONTEXT_NAVIGATOR: [
     {
-      title: "Balancing Quality and Delivery",
-      description: "Practical approaches to meeting deadlines without compromising results",
-      url: "https://boards.autodesk.com/icm",
+      title: "Getting Started with InfoWorks ICM",
+      description: "Curated tutorials for new users covering basic routines and navigation",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
       type: "course"
     },
     {
-      title: "Scope Management Techniques",
-      description: "How to manage project scope effectively in hydraulic modelling",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-ICM-Overview",
+      title: "Water Talk: Getting Started & Navigation",
+      description: "Video guide to navigating InfoWorks ICM efficiently",
+      url: "https://www.youtube.com/watch?v=blCEg7HWBhY",
+      type: "video"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Discuss scope management and practical approaches with peers",
+      url: "https://boards.autodesk.com/icm",
       type: "documentation"
     }
   ],
@@ -47,252 +53,270 @@ export const learningResources: Record<string, LearningResource[]> = {
   // Hybrid Types
   HYBRID_INTEGRATOR: [
     {
-      title: "Advanced Workflow Integration",
-      description: "Combine multiple modelling approaches for complex projects",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Workflows",
-      type: "tutorial"
+      title: "InfoWorks ICM & Civil 3D: Flood Modeller's Guide",
+      description: "AU 2022 session on data exchange, scenarios, and cross-team collaboration (1hr 16min)",
+      url: "https://www.autodesk.com/autodesk-university/class/InfoWorks-ICM-and-Civil3D-Flood-Modelers-guide-Project-Impacts-2022",
+      type: "webinar"
     },
     {
-      title: "Multi-Stakeholder Project Management",
-      description: "Coordinate diverse team members with different modelling styles",
-      url: "https://boards.autodesk.com/icm",
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Complete course covering multiple modelling approaches and workflows",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
       type: "course"
+    },
+    {
+      title: "2D Flood Modelling in InfoWorks ICM",
+      description: "Learn to integrate 1D and 2D modelling approaches",
+      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-2D-Modelling",
+      type: "tutorial"
     }
   ],
   HYBRID_ADAPTIVE: [
     {
-      title: "Adaptive Modelling Strategies",
-      description: "Learn to flex your approach based on project needs",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Best-Practices",
-      type: "documentation"
+      title: "Getting Started with InfoWorks ICM",
+      description: "Build a strong foundation across all modelling approaches",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "course"
     },
     {
-      title: "InfoWorks ICM Community Discussions",
+      title: "Water Talk: Modelling Basics",
+      description: "Learn flexible approaches to model setup and configuration",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
+      type: "webinar"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
       description: "Connect with other adaptive modellers and share techniques",
       url: "https://boards.autodesk.com/icm",
-      type: "course"
+      type: "documentation"
     }
   ],
   HYBRID_FLEXIBLE: [
     {
       title: "Getting Started with InfoWorks ICM",
-      description: "Build a strong foundation across all modelling approaches",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Getting-Started",
-      type: "tutorial"
+      description: "Curated tutorials covering basic routines and navigation",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "course"
     },
     {
-      title: "Team Collaboration Best Practices",
-      description: "Work effectively with colleagues who have different styles",
+      title: "Running Simulations in InfoWorks ICM",
+      description: "Bite-sized video tutorial on running and managing simulations",
+      url: "https://www.youtube.com/watch?v=JiWfb0Ow8b4",
+      type: "video"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Learn from colleagues with different modelling styles",
       url: "https://boards.autodesk.com/icm",
-      type: "course"
+      type: "documentation"
     }
   ],
 
   // Detail + Automated Types
   DASP: [
     {
-      title: "Ruby Scripting in InfoWorks ICM",
-      description: "Master automation with Ruby scripts for validation and data processing",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Ruby-Scripting",
+      title: "Ruby Scripting for InfoWorks ICM",
+      description: "Community guide to building custom GUIs and automating workflows with Ruby API",
+      url: "https://gist.github.com/sancarn/00e44231eba3ac20123e10601f236175",
       type: "tutorial"
     },
     {
-      title: "Model Validation Techniques",
-      description: "Systematic approaches to comprehensive model validation",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Validation",
+      title: "InfoWorks ICM Exchange API Documentation",
+      description: "Official documentation for the Ruby scripting interface",
+      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Ruby-API",
       type: "documentation"
     },
     {
-      title: "Automated QA/QC Workflows",
-      description: "Build reproducible quality assurance processes",
-      url: "https://boards.autodesk.com/icm",
-      type: "webinar"
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Comprehensive course including validation and quality assurance workflows",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
+      type: "course"
     }
   ],
   DASR: [
     {
-      title: "Open Data Import Centre (ODIC)",
-      description: "Efficiently import and manage large datasets",
+      title: "Open Data Import Centre (ODIC) Guide",
+      description: "Master efficient data import and export workflows",
       url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-ODIC",
-      type: "tutorial"
-    },
-    {
-      title: "Rapid Calibration Techniques",
-      description: "Calibrate models quickly while maintaining accuracy",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Calibration",
       type: "documentation"
     },
     {
-      title: "Batch Processing Workflows",
-      description: "Automate repetitive tasks for faster delivery",
-      url: "https://boards.autodesk.com/icm",
+      title: "Water Talk: Modelling Basics",
+      description: "Practical walkthrough of model setup and calibration techniques",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
       type: "webinar"
+    },
+    {
+      title: "Running Simulations in InfoWorks ICM",
+      description: "Quick video guide to running efficient batch simulations",
+      url: "https://www.youtube.com/watch?v=JiWfb0Ow8b4",
+      type: "video"
     }
   ],
   DAIP: [
     {
-      title: "Advanced Ruby Automation",
-      description: "Create sophisticated scripts for quality enforcement",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Ruby-Advanced",
+      title: "Ruby Scripting for InfoWorks ICM",
+      description: "Advanced guide to building sophisticated automation scripts",
+      url: "https://gist.github.com/sancarn/00e44231eba3ac20123e10601f236175",
       type: "tutorial"
     },
     {
-      title: "Pattern-Based Validation",
-      description: "Use pattern recognition to identify model issues",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Patterns",
-      type: "documentation"
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Complete course covering automated QA/QC workflows",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
+      type: "course"
     },
     {
-      title: "Building Team Standards",
-      description: "Establish and enforce modelling standards across your organisation",
-      url: "https://boards.autodesk.com/icm",
-      type: "course"
+      title: "InfoWorks ICM Exchange API",
+      description: "Build pattern-based validation using the Ruby API",
+      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Ruby-API",
+      type: "documentation"
     }
   ],
 
   // Detail + Manual Types
   DMSP: [
     {
-      title: "Detailed Network Building",
-      description: "Best practices for building comprehensive network models",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Network-Building",
-      type: "tutorial"
+      title: "Getting Started with InfoWorks ICM",
+      description: "Step-by-step tutorials for hands-on network building",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "course"
     },
     {
-      title: "Manual Data Quality Checks",
-      description: "Systematic approaches to hands-on data validation",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Data-Quality",
+      title: "Water Talk: Getting Started & Navigation",
+      description: "Visual guide to navigating and inspecting model components",
+      url: "https://www.youtube.com/watch?v=blCEg7HWBhY",
+      type: "video"
+    },
+    {
+      title: "Data Quality & Validation",
+      description: "Documentation on manual data quality checks and validation",
+      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Validation",
       type: "documentation"
-    },
-    {
-      title: "Visual Model Inspection",
-      description: "Techniques for thorough visual review of model components",
-      url: "https://boards.autodesk.com/icm",
-      type: "webinar"
     }
   ],
   DMSR: [
     {
-      title: "Pragmatic Modelling Approaches",
-      description: "Balance detail with delivery timelines effectively",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Pragmatic",
-      type: "documentation"
-    },
-    {
-      title: "Assumption Documentation",
-      description: "How to document and justify modelling assumptions",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Assumptions",
-      type: "tutorial"
-    },
-    {
-      title: "Crisis Response Modelling",
-      description: "Rapid model development for urgent situations",
-      url: "https://boards.autodesk.com/icm",
+      title: "Water Talk: Modelling Basics",
+      description: "Practical approaches to building models efficiently",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
       type: "webinar"
+    },
+    {
+      title: "Getting Started with InfoWorks ICM",
+      description: "Learn pragmatic modelling techniques quickly",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "course"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Share practical tips and rapid modelling techniques",
+      url: "https://boards.autodesk.com/icm",
+      type: "documentation"
     }
   ],
 
   // Big-Picture + Automated Types
   BASP: [
     {
-      title: "Master Planning with InfoWorks ICM",
-      description: "Strategic modelling for large-scale infrastructure planning",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Master-Planning",
-      type: "tutorial"
-    },
-    {
-      title: "Scenario Management",
-      description: "Efficiently manage and compare multiple scenarios",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Scenarios",
-      type: "documentation"
-    },
-    {
-      title: "Strategic Model Simplification",
-      description: "When and how to simplify models for strategic analysis",
-      url: "https://boards.autodesk.com/icm",
+      title: "InfoWorks ICM & Civil 3D: Flood Modeller's Guide",
+      description: "Strategic modelling for infrastructure planning and flood analysis (AU 2022)",
+      url: "https://www.autodesk.com/autodesk-university/class/InfoWorks-ICM-and-Civil3D-Flood-Modelers-guide-Project-Impacts-2022",
       type: "webinar"
+    },
+    {
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Learn scenario management and strategic model configuration",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
+      type: "course"
+    },
+    {
+      title: "2D Flood Modelling Documentation",
+      description: "Strategic approaches to 2D surface water modelling",
+      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-2D-Modelling",
+      type: "documentation"
     }
   ],
   BASR: [
     {
-      title: "Feasibility Study Modelling",
-      description: "Quick-turnaround modelling for options appraisals",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Feasibility",
-      type: "tutorial"
-    },
-    {
-      title: "Executive Reporting",
-      description: "Create impactful reports for non-technical stakeholders",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Reporting",
-      type: "documentation"
-    },
-    {
-      title: "Rapid Scenario Analysis",
-      description: "Fast scenario comparison techniques",
-      url: "https://boards.autodesk.com/icm",
+      title: "Water Talk: Modelling Basics",
+      description: "Rapid model development techniques for feasibility studies",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
       type: "webinar"
+    },
+    {
+      title: "Running Simulations in InfoWorks ICM",
+      description: "Quick scenario comparison and results extraction",
+      url: "https://www.youtube.com/watch?v=JiWfb0Ow8b4",
+      type: "video"
+    },
+    {
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Fast-track your strategic modelling skills",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
+      type: "course"
     }
   ],
 
   // Big-Picture + Manual Types
   BMSP: [
     {
-      title: "Strategic Documentation Standards",
-      description: "Comprehensive documentation for strategic models",
+      title: "InfoWorks ICM & Civil 3D: Flood Modeller's Guide",
+      description: "Comprehensive documentation and collaboration approaches (AU 2022)",
+      url: "https://www.autodesk.com/autodesk-university/class/InfoWorks-ICM-and-Civil3D-Flood-Modelers-guide-Project-Impacts-2022",
+      type: "webinar"
+    },
+    {
+      title: "Getting Started with InfoWorks ICM",
+      description: "Build a systematic foundation for strategic modelling",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "course"
+    },
+    {
+      title: "Model Documentation Best Practices",
+      description: "Standards for documenting strategic model simplifications",
       url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Documentation",
       type: "documentation"
-    },
-    {
-      title: "Justified Simplification Techniques",
-      description: "Document and defend strategic model simplifications",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Simplification",
-      type: "tutorial"
-    },
-    {
-      title: "Systematic Quality for Strategic Models",
-      description: "Maintain quality standards in big-picture modelling",
-      url: "https://boards.autodesk.com/icm",
-      type: "webinar"
     }
   ],
   BMSR: [
     {
-      title: "Rapid Strategic Modelling",
-      description: "Deliver strategic insights on tight timelines",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Rapid-Modelling",
-      type: "tutorial"
-    },
-    {
-      title: "Clear Communication of Results",
-      description: "Present complex results in accessible formats",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Communication",
-      type: "documentation"
-    },
-    {
-      title: "Emergency Response Modelling",
-      description: "Fast modelling for emergency and crisis situations",
-      url: "https://boards.autodesk.com/icm",
+      title: "Water Talk: Modelling Basics",
+      description: "Rapid strategic modelling for tight deadlines",
+      url: "https://www.autodesk.com/blogs/water/2022/05/23/water-talk-modeling-basics-in-infoworks-icm/",
       type: "webinar"
+    },
+    {
+      title: "Running Simulations in InfoWorks ICM",
+      description: "Fast scenario runs and quick result extraction",
+      url: "https://www.youtube.com/watch?v=JiWfb0Ow8b4",
+      type: "video"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Connect with modellers for rapid response techniques",
+      url: "https://boards.autodesk.com/icm",
+      type: "documentation"
     }
   ],
   BMIP: [
     {
-      title: "Experience-Based Modelling",
-      description: "Leverage your expertise for efficient model development",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Expert-Modelling",
+      title: "InfoWorks ICM & Civil 3D: Flood Modeller's Guide",
+      description: "Leverage experience for strategic analysis (AU 2022 session)",
+      url: "https://www.autodesk.com/autodesk-university/class/InfoWorks-ICM-and-Civil3D-Flood-Modelers-guide-Project-Impacts-2022",
+      type: "webinar"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Share expertise and mentor the next generation of modellers",
+      url: "https://boards.autodesk.com/icm",
       type: "documentation"
     },
     {
-      title: "Mentoring Junior Modellers",
-      description: "Share your knowledge with the next generation",
-      url: "https://boards.autodesk.com/icm",
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Refresh your skills and discover new features",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
       type: "course"
-    },
-    {
-      title: "Pattern Recognition in Models",
-      description: "Use experience to identify issues and opportunities",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Patterns",
-      type: "tutorial"
     }
   ]
 };
@@ -307,21 +331,21 @@ export const getResourcesForType = (typeCode: string): LearningResource[] => {
   // Fallback general resources
   return [
     {
-      title: "InfoWorks ICM Getting Started",
-      description: "Comprehensive introduction to InfoWorks ICM",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/?guid=GUID-Getting-Started",
-      type: "tutorial"
-    },
-    {
-      title: "InfoWorks ICM Community",
-      description: "Connect with other modellers and share experiences",
-      url: "https://boards.autodesk.com/icm",
+      title: "InfoWorks ICM On-Demand Learning",
+      description: "Comprehensive course covering all aspects of InfoWorks ICM",
+      url: "https://www.autodesk.com/learn/ondemand/course/infoworks-icm",
       type: "course"
     },
     {
-      title: "InfoWorks ICM Documentation",
-      description: "Complete reference documentation",
-      url: "https://help.autodesk.com/view/IWICMS/ENU/",
+      title: "Getting Started with InfoWorks ICM",
+      description: "Curated tutorials for building your modelling foundation",
+      url: "https://app.learn-one.autodesk.com/learn/ondemand/curated/getting-started-with-infoworks-icm",
+      type: "tutorial"
+    },
+    {
+      title: "InfoWorks ICM Community Forum",
+      description: "Connect with other modellers and share experiences",
+      url: "https://boards.autodesk.com/icm",
       type: "documentation"
     }
   ];
