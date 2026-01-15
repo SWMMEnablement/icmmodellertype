@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "ICM Modeller Personality Quiz Questions",
-    "description": "20 questions across 4 dimensions to determine your ICM/SWMM modelling personality type",
+    "title": "InfoWorks ICM Modeller Personality Quiz Questions",
+    "description": "20 questions across 4 dimensions to determine your InfoWorks ICM/SWMM modelling personality type",
     "dimensions": {
-      "MA": "Modeling Approach - Detail-oriented vs Big-picture thinking",
+      "MA": "Modelling Approach - Detail-oriented vs Big-picture thinking",
       "WS": "Workflow Style - Automated vs Manual processes",
       "PS": "Problem Solving - Systematic vs Intuitive methods",
       "DQ": "Data Quality - Perfectionist vs Pragmatic standards"

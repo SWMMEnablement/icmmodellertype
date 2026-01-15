@@ -109,12 +109,12 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
         >
           <Sparkles className="w-4 h-4" />
-          <span>Become a better ICM Modeler →</span>
+          <span>Become a better InfoWorks ICM Modeller →</span>
         </a>
 
         {/* Disclaimer */}
         <p className="mt-8 text-sm text-muted-foreground/70">
-          For ICM InfoWorks users. Just for fun—embrace your modeling style!
+          For InfoWorks ICM users. Just for fun—embrace your modelling style!
         </p>
       </motion.div>
     </motion.div>

@@ -146,8 +146,8 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
           >
             <span className="text-white/80 text-sm font-medium tracking-widest uppercase mb-2 block">
               {isManagerMode 
-                ? (isContext ? "Your Manager's Context-Driven Type" : isHybrid ? "Your Manager's Adaptive Type" : "Your Manager's ICM Modeller Type")
-                : (isContext ? 'Your Context-Driven ICM Modeller Type' : isHybrid ? 'Your Adaptive ICM Modeller Type' : 'Your ICM Modeller Type')
+                ? (isContext ? "Your Manager's Context-Driven Type" : isHybrid ? "Your Manager's Adaptive Type" : "Your Manager's InfoWorks ICM Modeller Type")
+                : (isContext ? "Your Context-Driven InfoWorks ICM Modeller Type" : isHybrid ? "Your Adaptive InfoWorks ICM Modeller Type" : "Your InfoWorks ICM Modeller Type")
               }
             </span>
             {isManagerMode && (
@@ -439,8 +439,8 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
         </div>
         <p className="text-sm text-muted-foreground mb-4">
           {isManagerMode 
-            ? "Share your manager's ICM modeller personality on social media!"
-            : "Show off your ICM modeller personality! Download or share your result card on social media."
+            ? "Share your manager's InfoWorks ICM modeller personality on social media!"
+            : "Show off your InfoWorks ICM modeller personality! Download or share your result card on social media."
           }
         </p>
         <ShareableResultCard personality={personality} scores={scores} isManagerMode={isManagerMode} />

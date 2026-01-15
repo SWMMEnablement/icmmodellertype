@@ -97,8 +97,8 @@ export const ShareableResultCard = ({ personality, scores, isManagerMode = false
 
   const handleShareTwitter = async () => {
     const text = isManagerMode
-      ? `My manager is ${personality.name} (${personality.type})! 👔🌊\n\nWhat's YOUR manager's ICM Modeller type?\n\n#ICMModeller #HydraulicModeling #WaterIndustry`
-      : `I'm ${personality.name} (${personality.type})! 🌊\n\nTake the ICM Modeller Personality Quiz to discover your hydraulic modeling style:\n\n#ICMModeller #HydraulicModeling #WaterIndustry`;
+      ? `My manager is ${personality.name} (${personality.type})! 👔🌊\n\nWhat's YOUR manager's InfoWorks ICM Modeller type?\n\n#InfoWorksICM #HydraulicModeling #WaterIndustry`
+      : `I'm ${personality.name} (${personality.type})! 🌊\n\nTake the InfoWorks ICM Modeller Personality Quiz to discover your hydraulic modelling style:\n\n#InfoWorksICM #HydraulicModeling #WaterIndustry`;
     const url = window.location.origin;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
@@ -122,8 +122,8 @@ export const ShareableResultCard = ({ personality, scores, isManagerMode = false
         await navigator.share({
           title: isManagerMode ? `My manager is ${personality.name}!` : `I'm ${personality.name}!`,
           text: isManagerMode 
-            ? `My manager's ICM Modeller type: ${personality.type} - ${personality.name}`
-            : `I discovered my ICM Modeller type: ${personality.type} - ${personality.name}`,
+            ? `My manager's InfoWorks ICM Modeller type: ${personality.type} - ${personality.name}`
+            : `I discovered my InfoWorks ICM Modeller type: ${personality.type} - ${personality.name}`,
           files: [file],
         });
       } catch (error) {
@@ -164,7 +164,7 @@ export const ShareableResultCard = ({ personality, scores, isManagerMode = false
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-white/70 text-sm font-medium tracking-widest uppercase">
-                  {isManagerMode ? "My Manager's Type" : "My ICM Modeller Type"}
+                  {isManagerMode ? "My Manager's Type" : "My InfoWorks ICM Modeller Type"}
                 </span>
                 {isManagerMode && (
                   <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs text-white">
@@ -178,7 +178,7 @@ export const ShareableResultCard = ({ personality, scores, isManagerMode = false
                 )}
               </div>
               <div className="text-white/80 text-sm font-medium">
-                🌊 ICM Personality Quiz
+                🌊 InfoWorks ICM Quiz
               </div>
             </div>
 

@@ -222,8 +222,8 @@ export const ICMChatbot = () => {
                   <Droplets className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">ICM & SWMM Expert</h3>
-                  <p className="text-xs text-white/70">Ask about hydraulic modeling</p>
+                  <h3 className="font-semibold text-white">InfoWorks ICM & SWMM Expert</h3>
+                  <p className="text-xs text-white/70">Ask about hydraulic modelling</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -250,7 +250,7 @@ export const ICMChatbot = () => {
               {messages.length === 0 && (
                 <div className="text-center text-muted-foreground text-sm py-4">
                   <Bot className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                  <p className="mb-4">Ask me anything about ICM InfoWorks or SWMM5!</p>
+                  <p className="mb-4">Ask me anything about InfoWorks ICM or SWMM5!</p>
                   <div className="flex flex-wrap gap-2 justify-center px-2">
                     {SUGGESTED_QUESTIONS.map((question, idx) => (
                       <button
@@ -315,7 +315,7 @@ export const ICMChatbot = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-                  placeholder="Ask about ICM or SWMM..."
+                  placeholder="Ask about InfoWorks ICM or SWMM..."
                   className="flex-1 px-4 py-2 rounded-xl bg-muted border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                   disabled={isLoading}
                 />

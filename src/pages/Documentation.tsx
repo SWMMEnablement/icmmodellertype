@@ -39,7 +39,7 @@ const Documentation = () => {
   const [compareType2, setCompareType2] = useState<string>("BMSR");
 
   const tabs = [
-    { id: "icm" as TabType, label: "ICM Modeller Types", icon: Droplets },
+    { id: "icm" as TabType, label: "InfoWorks ICM Modeller Types", icon: Droplets },
     { id: "compare" as TabType, label: "Compare Types", icon: GitCompare },
     { id: "mbti" as TabType, label: "Myers-Briggs Types", icon: Brain },
     { id: "methodology" as TabType, label: "Methodology & Code", icon: Code2 },
@@ -196,9 +196,9 @@ const Documentation = () => {
             className="space-y-8"
           >
             <div className="prose prose-slate max-w-none">
-              <h2 className="font-display text-3xl font-bold text-foreground mb-4">ICM Modeller Personality Types</h2>
+              <h2 className="font-display text-3xl font-bold text-foreground mb-4">InfoWorks ICM Modeller Personality Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Based on four dimensions of modeling workflow preferences, there are 10 core ICM modeller types, 
+                Based on four dimensions of modelling workflow preferences, there are 10 core InfoWorks ICM modeller types, 
                 plus 5 special types for those who prefer hybrid or context-dependent approaches.
                 A 20-question assessment (5 per dimension) determines your unique combination of approaches to hydraulic modelling in InfoWorks ICM.
               </p>
@@ -369,7 +369,7 @@ const Documentation = () => {
             <div className="prose prose-slate max-w-none">
               <h2 className="font-display text-3xl font-bold text-foreground mb-4">Compare Modeller Types</h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Select two ICM modeller types to see how they compare. Discover shared strengths and key differences.
+                Select two InfoWorks ICM modeller types to see how they compare. Discover shared strengths and key differences.
               </p>
             </div>
 
