@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2 } from "lucide-react";
+import { ShareableResultCard } from "./ShareableResultCard";
 
 interface ResultCardProps {
   personality: PersonalityType;
@@ -408,6 +409,25 @@ export const ResultCard = ({ personality, scores, onRestart }: ResultCardProps) 
             </span>
           ))}
         </div>
+      </motion.div>
+
+      {/* Share Your Results */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.75 }}
+        className="bg-card rounded-2xl shadow-card border border-border p-6 mb-8"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl gradient-cool flex items-center justify-center">
+            <Share2 className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <h3 className="font-display text-lg font-semibold text-foreground">Share Your Results</h3>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          Show off your ICM modeller personality! Download or share your result card on social media.
+        </p>
+        <ShareableResultCard personality={personality} scores={scores} />
       </motion.div>
 
       {/* Restart Button */}
