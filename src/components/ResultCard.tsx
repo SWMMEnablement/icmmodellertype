@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2 } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
+import { getResourcesForType, LearningResource } from "@/data/learningResources";
 import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
@@ -419,6 +420,77 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
               {tool}
             </span>
           ))}
+        </div>
+      </motion.div>
+
+      {/* Learning Resources */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.72 }}
+        className={`bg-card rounded-2xl shadow-card border p-6 mb-8 ${accent.borderLight}`}
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <GraduationCap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-semibold text-foreground">
+              {isManagerMode ? "Resources for This Type" : "Recommended Learning"}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              Curated resources to enhance your modelling skills
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          {getResourcesForType(personality.type === "CONTEXT" ? "CONTEXT_MASTER" : personality.type === "NAVIGATOR" ? "CONTEXT_NAVIGATOR" : personality.type === "HYBRID" ? "HYBRID_INTEGRATOR" : personality.type === "ADAPTIVE" ? "HYBRID_ADAPTIVE" : personality.type === "FLEX" ? "HYBRID_FLEXIBLE" : personality.type).map((resource: LearningResource, i: number) => {
+            const IconComponent = resource.type === "webinar" ? Video 
+              : resource.type === "tutorial" ? BookOpen 
+              : resource.type === "documentation" ? FileText 
+              : resource.type === "course" ? GraduationCap 
+              : Play;
+            
+            return (
+              <a
+                key={i}
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border transition-all"
+              >
+                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                  resource.type === "webinar" ? "bg-red-500/10 text-red-500" 
+                  : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-500"
+                  : resource.type === "documentation" ? "bg-amber-500/10 text-amber-500"
+                  : resource.type === "course" ? "bg-purple-500/10 text-purple-500"
+                  : "bg-green-500/10 text-green-500"
+                }`}>
+                  <IconComponent className="w-4 h-4" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">
+                      {resource.title}
+                    </span>
+                    <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                    {resource.description}
+                  </p>
+                </div>
+                <span className={`flex-shrink-0 text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded ${
+                  resource.type === "webinar" ? "bg-red-500/10 text-red-600 dark:text-red-400" 
+                  : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  : resource.type === "documentation" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                  : resource.type === "course" ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                  : "bg-green-500/10 text-green-600 dark:text-green-400"
+                }`}>
+                  {resource.type}
+                </span>
+              </a>
+            );
+          })}
         </div>
       </motion.div>
 
