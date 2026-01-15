@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Droplets, Clock, Sparkles, BookOpen } from "lucide-react";
+import { SampleQuestion } from "./SampleQuestion";
 
 interface WelcomeScreenProps {
   onStart: () => void;
@@ -66,10 +67,15 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           Start the Assessment
         </motion.button>
 
+        {/* Sample Question */}
+        <div className="mt-12 mb-8">
+          <SampleQuestion onStart={onStart} />
+        </div>
+
         {/* Separator */}
-        <div className="mt-12 mb-8 flex items-center gap-4 max-w-xs mx-auto">
+        <div className="mb-8 flex items-center gap-4 max-w-xs mx-auto">
           <div className="flex-1 h-px bg-border" />
-          <span className="text-xs text-muted-foreground/60 uppercase tracking-wider">or</span>
+          <span className="text-xs text-muted-foreground/60 uppercase tracking-wider">or explore</span>
           <div className="flex-1 h-px bg-border" />
         </div>
 
