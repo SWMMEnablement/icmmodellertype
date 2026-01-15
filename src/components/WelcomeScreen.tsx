@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Droplets, Clock, Sparkles, BookOpen } from "lucide-react";
+import { Droplets, Clock, Sparkles, BookOpen, Users } from "lucide-react";
 import { SampleQuestion } from "./SampleQuestion";
+import type { QuizMode } from "@/pages/Index";
 
 interface WelcomeScreenProps {
-  onStart: () => void;
+  onStart: (mode?: QuizMode) => void;
 }
 
 export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
@@ -57,15 +58,27 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           </div>
         </div>
 
-        {/* CTA Button */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onStart}
-          className="px-10 py-5 rounded-xl gradient-cool text-primary-foreground font-semibold text-lg shadow-glow hover:opacity-90 transition-opacity"
-        >
-          Start the Assessment
-        </motion.button>
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onStart("self")}
+            className="px-10 py-5 rounded-xl gradient-cool text-primary-foreground font-semibold text-lg shadow-glow hover:opacity-90 transition-opacity"
+          >
+            Start the Assessment
+          </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onStart("manager")}
+            className="px-10 py-5 rounded-xl bg-amber-500/10 border-2 border-amber-500/50 text-amber-600 dark:text-amber-400 font-semibold text-lg hover:bg-amber-500/20 transition-colors flex items-center justify-center gap-2"
+          >
+            <Users className="w-5 h-5" />
+            What's My Manager's Type?
+          </motion.button>
+        </div>
 
         {/* Sample Question */}
         <div className="mt-12 mb-8">

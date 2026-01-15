@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { MessageCircle, ChevronRight } from "lucide-react";
+import type { QuizMode } from "@/pages/Index";
 
 interface SampleQuestionProps {
-  onStart: () => void;
+  onStart: (mode?: QuizMode) => void;
 }
 
 export const SampleQuestion = ({ onStart }: SampleQuestionProps) => {
@@ -105,7 +106,7 @@ export const SampleQuestion = ({ onStart }: SampleQuestionProps) => {
               {sampleQuestion.options.find(o => o.key === selectedOption)?.feedback}
             </p>
             <motion.button
-              onClick={onStart}
+              onClick={() => onStart("self")}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full py-3 rounded-lg gradient-cool text-primary-foreground font-semibold text-sm flex items-center justify-center gap-2"
