@@ -82,6 +82,17 @@ export const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           <span>View Documentation & Personality Types</span>
         </Link>
 
+        {/* External Resource Link */}
+        <a
+          href="https://boards.autodesk.com/icm"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span>Become a better ICM Modeler →</span>
+        </a>
+
         {/* Disclaimer */}
         <p className="mt-8 text-sm text-muted-foreground/70">
           For ICM InfoWorks users. Just for fun—embrace your modeling style!
