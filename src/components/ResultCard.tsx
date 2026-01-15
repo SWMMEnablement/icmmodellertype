@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
 import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
-import { getResourcesForType, LearningResource } from "@/data/learningResources";
+import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
 import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
@@ -11,6 +12,191 @@ interface ResultCardProps {
   onRestart: () => void;
   quizMode?: QuizMode;
 }
+
+// Helper function to get the resource type code
+const getResourceTypeCode = (type: string): string => {
+  switch (type) {
+    case "CONTEXT": return "CONTEXT_MASTER";
+    case "NAVIGATOR": return "CONTEXT_NAVIGATOR";
+    case "HYBRID": return "HYBRID_INTEGRATOR";
+    case "ADAPTIVE": return "HYBRID_ADAPTIVE";
+    case "FLEX": return "HYBRID_FLEXIBLE";
+    default: return type;
+  }
+};
+
+// Learning Resources Section Component
+const LearningResourcesSection = ({ 
+  personality, 
+  isManagerMode,
+  accentBorderLight 
+}: { 
+  personality: PersonalityType;
+  isManagerMode: boolean;
+  accentBorderLight: string;
+}) => {
+  const [selectedLevel, setSelectedLevel] = useState<ExperienceLevel | null>(null);
+  
+  const typeCode = getResourceTypeCode(personality.type);
+  const resources = getResourcesForType(typeCode, selectedLevel || undefined);
+  
+  // Group resources by level for display
+  const groupedResources = selectedLevel 
+    ? { [selectedLevel]: resources }
+    : resources.reduce((acc, resource) => {
+        if (!acc[resource.level]) acc[resource.level] = [];
+        acc[resource.level].push(resource);
+        return acc;
+      }, {} as Record<ExperienceLevel, LearningResource[]>);
+
+  const levelOrder: ExperienceLevel[] = ['beginner', 'intermediate', 'advanced'];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.72 }}
+      className={`bg-card rounded-2xl shadow-card border p-6 mb-8 ${accentBorderLight}`}
+    >
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <GraduationCap className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="font-display text-lg font-semibold text-foreground">
+              {isManagerMode ? "Resources for This Type" : "Recommended Learning Path"}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              Select your experience level for personalized recommendations
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Experience Level Selector */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        <button
+          onClick={() => setSelectedLevel(null)}
+          className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+            selectedLevel === null
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'bg-muted text-muted-foreground hover:bg-muted/80'
+          }`}
+        >
+          All Levels
+        </button>
+        {levelOrder.map((level) => (
+          <button
+            key={level}
+            onClick={() => setSelectedLevel(level)}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+              selectedLevel === level
+                ? level === 'beginner' 
+                  ? 'bg-emerald-500 text-white shadow-sm'
+                  : level === 'intermediate'
+                    ? 'bg-blue-500 text-white shadow-sm'
+                    : 'bg-violet-500 text-white shadow-sm'
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            }`}
+          >
+            <span>{experienceLevels[level].icon}</span>
+            <span>{experienceLevels[level].label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Resources grouped by level */}
+      <div className="space-y-4">
+        {levelOrder
+          .filter(level => groupedResources[level]?.length > 0)
+          .map((level, levelIndex) => (
+            <div key={level}>
+              {!selectedLevel && (
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-sm">{experienceLevels[level].icon}</span>
+                  <span className={`text-xs font-semibold uppercase tracking-wider ${
+                    level === 'beginner' 
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : level === 'intermediate'
+                        ? 'text-blue-600 dark:text-blue-400'
+                        : 'text-violet-600 dark:text-violet-400'
+                  }`}>
+                    {experienceLevels[level].label}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    — {experienceLevels[level].description}
+                  </span>
+                </div>
+              )}
+              <div className="grid gap-2">
+                {groupedResources[level].map((resource: LearningResource, i: number) => {
+                  const IconComponent = resource.type === "webinar" ? Video 
+                    : resource.type === "tutorial" ? BookOpen 
+                    : resource.type === "documentation" ? FileText 
+                    : resource.type === "course" ? GraduationCap 
+                    : Play;
+                  
+                  return (
+                    <a
+                      key={`${level}-${i}`}
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border transition-all"
+                    >
+                      {/* Order number */}
+                      <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                        level === 'beginner' 
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                          : level === 'intermediate'
+                            ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                            : 'bg-violet-500/10 text-violet-600 dark:text-violet-400'
+                      }`}>
+                        {selectedLevel ? i + 1 : resource.order}
+                      </div>
+                      <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                        resource.type === "webinar" ? "bg-red-500/10 text-red-500" 
+                        : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-500"
+                        : resource.type === "documentation" ? "bg-amber-500/10 text-amber-500"
+                        : resource.type === "course" ? "bg-purple-500/10 text-purple-500"
+                        : "bg-green-500/10 text-green-500"
+                      }`}>
+                        <IconComponent className="w-4 h-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">
+                            {resource.title}
+                          </span>
+                          <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                          {resource.description}
+                        </p>
+                      </div>
+                      <span className={`flex-shrink-0 text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded ${
+                        resource.type === "webinar" ? "bg-red-500/10 text-red-600 dark:text-red-400" 
+                        : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                        : resource.type === "documentation" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                        : resource.type === "course" ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                        : "bg-green-500/10 text-green-600 dark:text-green-400"
+                      }`}>
+                        {resource.type}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+              {!selectedLevel && levelIndex < levelOrder.filter(l => groupedResources[l]?.length > 0).length - 1 && (
+                <div className="border-t border-border/50 mt-4" />
+              )}
+            </div>
+          ))}
+      </div>
+    </motion.div>
+  );
+};
 
 export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }: ResultCardProps) => {
   const isManagerMode = quizMode === "manager";
@@ -424,75 +610,11 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
       </motion.div>
 
       {/* Learning Resources */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.72 }}
-        className={`bg-card rounded-2xl shadow-card border p-6 mb-8 ${accent.borderLight}`}
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-            <GraduationCap className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h3 className="font-display text-lg font-semibold text-foreground">
-              {isManagerMode ? "Resources for This Type" : "Recommended Learning"}
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              Curated resources to enhance your modelling skills
-            </p>
-          </div>
-        </div>
-        <div className="grid gap-3">
-          {getResourcesForType(personality.type === "CONTEXT" ? "CONTEXT_MASTER" : personality.type === "NAVIGATOR" ? "CONTEXT_NAVIGATOR" : personality.type === "HYBRID" ? "HYBRID_INTEGRATOR" : personality.type === "ADAPTIVE" ? "HYBRID_ADAPTIVE" : personality.type === "FLEX" ? "HYBRID_FLEXIBLE" : personality.type).map((resource: LearningResource, i: number) => {
-            const IconComponent = resource.type === "webinar" ? Video 
-              : resource.type === "tutorial" ? BookOpen 
-              : resource.type === "documentation" ? FileText 
-              : resource.type === "course" ? GraduationCap 
-              : Play;
-            
-            return (
-              <a
-                key={i}
-                href={resource.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 border border-transparent hover:border-border transition-all"
-              >
-                <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
-                  resource.type === "webinar" ? "bg-red-500/10 text-red-500" 
-                  : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-500"
-                  : resource.type === "documentation" ? "bg-amber-500/10 text-amber-500"
-                  : resource.type === "course" ? "bg-purple-500/10 text-purple-500"
-                  : "bg-green-500/10 text-green-500"
-                }`}>
-                  <IconComponent className="w-4 h-4" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">
-                      {resource.title}
-                    </span>
-                    <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                    {resource.description}
-                  </p>
-                </div>
-                <span className={`flex-shrink-0 text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded ${
-                  resource.type === "webinar" ? "bg-red-500/10 text-red-600 dark:text-red-400" 
-                  : resource.type === "tutorial" ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-                  : resource.type === "documentation" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                  : resource.type === "course" ? "bg-purple-500/10 text-purple-600 dark:text-purple-400"
-                  : "bg-green-500/10 text-green-600 dark:text-green-400"
-                }`}>
-                  {resource.type}
-                </span>
-              </a>
-            );
-          })}
-        </div>
-      </motion.div>
+      <LearningResourcesSection 
+        personality={personality}
+        isManagerMode={isManagerMode}
+        accentBorderLight={accent.borderLight}
+      />
 
       {/* Share Your Results */}
       <motion.div
