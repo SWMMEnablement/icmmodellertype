@@ -232,7 +232,7 @@ const Documentation = () => {
               <p className="text-muted-foreground text-sm mb-4">
                 These types are assigned to modellers who consistently choose hybrid (Option C) or context-dependent (Option D) answers.
               </p>
-              <div className="space-y-3">
+              <div className="grid md:grid-cols-2 gap-3">
                 {Object.entries(personalities)
                   .filter(([code]) => isSpecialType(code))
                   .map(([code, type]) => (
@@ -299,7 +299,7 @@ const Documentation = () => {
             {/* Core Types Section */}
             <div>
               <h3 className="font-display text-xl font-semibold text-foreground mb-4">Core Types</h3>
-              <div className="space-y-3">
+              <div className="grid md:grid-cols-2 gap-3">
                 {Object.entries(personalities)
                   .filter(([code]) => !isSpecialType(code))
                   .map(([code, type]) => (
