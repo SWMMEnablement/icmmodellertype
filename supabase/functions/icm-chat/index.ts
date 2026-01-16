@@ -1,9 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const MessageSchema = z.object({
+  role: z.enum(["user", "assistant", "system"]),
+  content: z.string().min(1, "Message content cannot be empty").max(4000, "Message content too long"),
+});
+
+const RequestSchema = z.object({
+  messages: z.array(MessageSchema).min(1, "At least one message required").max(50, "Too many messages"),
+});
 
 const systemPrompt = `You are an expert hydraulic modeling assistant specializing in InfoWorks ICM and EPA SWMM5. You have deep knowledge of:
 
@@ -42,7 +53,22 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    // Parse and validate request body
+    const body = await req.json();
+    const validationResult = RequestSchema.safeParse(body);
+    
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: "Invalid request format", 
+          details: validationResult.error.errors.map(e => e.message).join(", ")
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+    
+    const { messages } = validationResult.data;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
