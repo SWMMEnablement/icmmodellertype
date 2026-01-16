@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2 } from "lucide-react";
+import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { personalities, PersonalityType } from "@/data/personalities";
 
 type TabType = "icm" | "mbti" | "methodology" | "compare";
@@ -37,6 +38,30 @@ const Documentation = () => {
   const [expandedType, setExpandedType] = useState<string | null>(null);
   const [compareType1, setCompareType1] = useState<string>("DASP");
   const [compareType2, setCompareType2] = useState<string>("BMSR");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Filter personalities based on search query
+  const filterPersonalities = (code: string, type: PersonalityType) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      code.toLowerCase().includes(query) ||
+      type.name.toLowerCase().includes(query) ||
+      type.type.toLowerCase().includes(query) ||
+      type.description.toLowerCase().includes(query) ||
+      type.strengths.some(s => s.toLowerCase().includes(query)) ||
+      type.growth.some(g => g.toLowerCase().includes(query)) ||
+      type.tools.some(t => t.toLowerCase().includes(query))
+    );
+  };
+
+  const filteredSpecialTypes = Object.entries(personalities).filter(
+    ([code, type]) => isSpecialType(code) && filterPersonalities(code, type)
+  );
+
+  const filteredCoreTypes = Object.entries(personalities).filter(
+    ([code, type]) => !isSpecialType(code) && filterPersonalities(code, type)
+  );
 
   const tabs = [
     { id: "icm" as TabType, label: "InfoWorks ICM Modeller Types", icon: Droplets },
@@ -222,6 +247,18 @@ const Documentation = () => {
               ))}
             </div>
 
+            {/* Search Filter */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search by name, code, strengths, tools..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-card border-border"
+              />
+            </div>
+
             {/* Special Types Section */}
             <div className="mb-8">
               <h3 className="font-display text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
@@ -232,10 +269,11 @@ const Documentation = () => {
               <p className="text-muted-foreground text-sm mb-4">
                 These types are assigned to modellers who consistently choose hybrid (Option C) or context-dependent (Option D) answers.
               </p>
+              {filteredSpecialTypes.length === 0 && searchQuery ? (
+                <p className="text-muted-foreground text-sm py-4">No special types match your search.</p>
+              ) : (
               <div className="grid md:grid-cols-2 gap-3">
-                {Object.entries(personalities)
-                  .filter(([code]) => isSpecialType(code))
-                  .map(([code, type]) => (
+                {filteredSpecialTypes.map(([code, type]) => (
                   <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
                     <button
                       onClick={() => setExpandedType(expandedType === code ? null : code)}
@@ -294,15 +332,17 @@ const Documentation = () => {
                   </div>
                 ))}
               </div>
+              )}
             </div>
 
             {/* Core Types Section */}
             <div>
               <h3 className="font-display text-xl font-semibold text-foreground mb-4">Core Types</h3>
+              {filteredCoreTypes.length === 0 && searchQuery ? (
+                <p className="text-muted-foreground text-sm py-4">No core types match your search.</p>
+              ) : (
               <div className="grid md:grid-cols-2 gap-3">
-                {Object.entries(personalities)
-                  .filter(([code]) => !isSpecialType(code))
-                  .map(([code, type]) => (
+                {filteredCoreTypes.map(([code, type]) => (
                   <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
                     <button
                       onClick={() => setExpandedType(expandedType === code ? null : code)}
@@ -356,6 +396,7 @@ const Documentation = () => {
                   </div>
                 ))}
               </div>
+              )}
             </div>
           </motion.div>
         )}
