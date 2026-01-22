@@ -6,6 +6,7 @@ import { ShareableResultCard } from "./ShareableResultCard";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
 import { AchievementsSection } from "./AchievementsSection";
 import { PersonalizedTipsSection } from "./PersonalizedTipsSection";
+import { QuickCompareSection } from "./QuickCompareSection";
 import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
 import { QuizHistory } from "@/data/achievements";
 import type { QuizMode } from "@/pages/Index";
@@ -628,6 +629,12 @@ export const ResultCard = ({
       <PersonalizedTipsSection
         personality={personality}
         isManagerMode={isManagerMode}
+        accentBorderLight={accent.borderLight}
+      />
+
+      {/* Quick Compare */}
+      <QuickCompareSection
+        personality={personality}
         accentBorderLight={accent.borderLight}
       />
 
