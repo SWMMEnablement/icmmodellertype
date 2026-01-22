@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
 import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
+import { TeamDynamicsSection } from "./TeamDynamicsSection";
 import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
 import type { QuizMode } from "@/pages/Index";
 
@@ -608,6 +609,13 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
           ))}
         </div>
       </motion.div>
+
+      {/* Team Dynamics */}
+      <TeamDynamicsSection
+        personalityType={personality.type}
+        isManagerMode={isManagerMode}
+        accentBorderLight={accent.borderLight}
+      />
 
       {/* Learning Resources */}
       <LearningResourcesSection 
