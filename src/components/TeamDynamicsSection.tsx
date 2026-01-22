@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Users, Handshake, AlertTriangle, Lightbulb, Trophy, UserCheck } from "lucide-react";
-import { getTeamDynamics, getTypeDisplayName, TeamDynamicsData } from "@/data/teamDynamics";
+import { Users, Handshake, AlertTriangle, Lightbulb, Trophy, UserCheck, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
+import { getTeamDynamics, getTypeDisplayName } from "@/data/teamDynamics";
 
 interface TeamDynamicsSectionProps {
   personalityType: string;
@@ -72,12 +73,14 @@ export const TeamDynamicsSection = ({ personalityType, isManagerMode, accentBord
         </div>
         <div className="flex flex-wrap gap-2">
           {dynamics.idealPartners.map((partner) => (
-            <span
+            <Link
               key={partner}
-              className="px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-sm font-medium border border-emerald-500/20"
+              to={`/docs?type=${partner}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-sm font-medium border border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-colors group"
             >
               {partner} — {getTypeDisplayName(partner)}
-            </span>
+              <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </Link>
           ))}
         </div>
       </div>
@@ -92,18 +95,20 @@ export const TeamDynamicsSection = ({ personalityType, isManagerMode, accentBord
         </div>
         <div className="space-y-3">
           {dynamics.worksWith.map((collab, i) => (
-            <div
+            <Link
               key={i}
-              className="p-3 rounded-lg bg-muted/30 border border-transparent hover:border-border transition-colors"
+              to={`/docs?type=${collab.type}`}
+              className="block p-3 rounded-lg bg-muted/30 border border-transparent hover:border-border hover:bg-muted/50 transition-colors group"
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-sm text-foreground">{collab.type}</span>
+                <span className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{collab.type}</span>
                 <span className="text-muted-foreground text-sm">—</span>
                 <span className="text-sm text-muted-foreground">{getTypeDisplayName(collab.type)}</span>
                 <CompatibilityBadge compatibility={collab.compatibility} />
+                <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto" />
               </div>
               <p className="text-sm text-muted-foreground">{collab.description}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -121,7 +126,13 @@ export const TeamDynamicsSection = ({ personalityType, isManagerMode, accentBord
               className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10"
             >
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-sm text-foreground">{challenge.type}</span>
+                <Link
+                  to={`/docs?type=${challenge.type}`}
+                  className="font-semibold text-sm text-foreground hover:text-primary transition-colors inline-flex items-center gap-1.5 group"
+                >
+                  {challenge.type}
+                  <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
                 <span className="text-muted-foreground text-sm">—</span>
                 <span className="text-sm text-muted-foreground">{getTypeDisplayName(challenge.type)}</span>
               </div>

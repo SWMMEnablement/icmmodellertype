@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { personalities, PersonalityType } from "@/data/personalities";
@@ -34,11 +34,28 @@ const dimensionLabels: Record<number, { name: string; options: [string, string] 
 };
 
 const Documentation = () => {
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabType>("icm");
   const [expandedType, setExpandedType] = useState<string | null>(null);
   const [compareType1, setCompareType1] = useState<string>("DASP");
   const [compareType2, setCompareType2] = useState<string>("BMSR");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Handle type query parameter to auto-expand a specific type
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    if (typeParam && personalities[typeParam]) {
+      setActiveTab("icm");
+      setExpandedType(typeParam);
+      // Scroll to the type after a short delay to allow rendering
+      setTimeout(() => {
+        const element = document.getElementById(`type-${typeParam}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 100);
+    }
+  }, [searchParams]);
 
   // Filter personalities based on search query
   const filterPersonalities = (code: string, type: PersonalityType) => {
@@ -274,7 +291,7 @@ const Documentation = () => {
               ) : (
               <div className="grid md:grid-cols-2 gap-3">
                 {filteredSpecialTypes.map(([code, type]) => (
-                  <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
+                  <div key={code} id={`type-${code}`} className="bg-card rounded-xl border border-border overflow-hidden">
                     <button
                       onClick={() => setExpandedType(expandedType === code ? null : code)}
                       className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
@@ -343,7 +360,7 @@ const Documentation = () => {
               ) : (
               <div className="grid md:grid-cols-2 gap-3">
                 {filteredCoreTypes.map(([code, type]) => (
-                  <div key={code} className="bg-card rounded-xl border border-border overflow-hidden">
+                  <div key={code} id={`type-${code}`} className="bg-card rounded-xl border border-border overflow-hidden">
                     <button
                       onClick={() => setExpandedType(expandedType === code ? null : code)}
                       className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/30 transition-colors"
