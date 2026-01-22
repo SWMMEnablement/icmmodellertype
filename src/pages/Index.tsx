@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { questions } from "@/data/questions";
 import { personalities, resolveType, getHybridType } from "@/data/personalities";
@@ -7,7 +7,7 @@ import { QuestionCard } from "@/components/QuestionCard";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ResultCard } from "@/components/ResultCard";
 import { ICMChatbot } from "@/components/ICMChatbot";
-
+import { useQuizHistory } from "@/hooks/useQuizHistory";
 type GameState = "welcome" | "quiz" | "result";
 export type QuizMode = "self" | "manager";
 
@@ -16,6 +16,7 @@ const Index = () => {
   const [quizMode, setQuizMode] = useState<QuizMode>("self");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answerHistory, setAnswerHistory] = useState<string[]>([]);
+  const [hasRecorded, setHasRecorded] = useState(false);
   const [scores, setScores] = useState<Record<string, number>>({
     D: 0, B: 0, H: 0, // Detail vs Big-picture vs Hybrid
     A: 0, M: 0, X: 0, // Automated vs Manual vs Hybrid
@@ -23,12 +24,20 @@ const Index = () => {
     P: 0, R: 0, Z: 0, // Perfectionist vs Pragmatic vs Hybrid
     MA_CTX: 0, WS_CTX: 0, PS_CTX: 0, DQ_CTX: 0, // Context-dependent
   });
-
+  
+  const { 
+    history, 
+    hasHistory, 
+    newAchievements, 
+    recordQuizResult, 
+    clearNewAchievements 
+  } = useQuizHistory();
   const handleStart = useCallback((mode: QuizMode = "self") => {
     setQuizMode(mode);
     setGameState("quiz");
     setCurrentQuestion(0);
     setAnswerHistory([]);
+    setHasRecorded(false);
     setScores({ D: 0, B: 0, H: 0, A: 0, M: 0, X: 0, S: 0, I: 0, Y: 0, P: 0, R: 0, Z: 0, MA_CTX: 0, WS_CTX: 0, PS_CTX: 0, DQ_CTX: 0 });
   }, []);
 
@@ -113,6 +122,20 @@ const Index = () => {
     return personalities[resolvedType] || personalities['DASP'];
   }, [scores]);
 
+  // Record quiz result when entering result state
+  useEffect(() => {
+    if (gameState === "result" && !hasRecorded) {
+      const personality = getPersonalityType();
+      recordQuizResult({
+        type: personality.type,
+        name: personality.name,
+        scores: { ...scores },
+        mode: quizMode
+      });
+      setHasRecorded(true);
+    }
+  }, [gameState, hasRecorded, getPersonalityType, recordQuizResult, scores, quizMode]);
+
   return (
     <div className="min-h-screen bg-background">
       <ICMChatbot />
@@ -157,6 +180,9 @@ const Index = () => {
               scores={scores}
               onRestart={() => handleStart("self")}
               quizMode={quizMode}
+              history={history}
+              newAchievements={newAchievements}
+              onClearNewAchievements={clearNewAchievements}
             />
           </div>
         )}
