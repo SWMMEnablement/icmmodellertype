@@ -4,7 +4,10 @@ import { PersonalityType } from "@/data/personalities";
 import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
+import { AchievementsSection } from "./AchievementsSection";
+import { PersonalizedTipsSection } from "./PersonalizedTipsSection";
 import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
+import { QuizHistory } from "@/data/achievements";
 import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
@@ -12,6 +15,9 @@ interface ResultCardProps {
   scores: Record<string, number>;
   onRestart: () => void;
   quizMode?: QuizMode;
+  history?: QuizHistory;
+  newAchievements?: string[];
+  onClearNewAchievements?: () => void;
 }
 
 // Helper function to get the resource type code
@@ -199,7 +205,15 @@ const LearningResourcesSection = ({
   );
 };
 
-export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }: ResultCardProps) => {
+export const ResultCard = ({ 
+  personality, 
+  scores, 
+  onRestart, 
+  quizMode = "self",
+  history,
+  newAchievements = [],
+  onClearNewAchievements
+}: ResultCardProps) => {
   const isManagerMode = quizMode === "manager";
   const isHybrid = personality.isHybrid && personality.type !== 'CONTEXT' && personality.type !== 'NAVIGATOR';
   const isContext = personality.type === 'CONTEXT' || personality.type === 'NAVIGATOR';
@@ -610,12 +624,29 @@ export const ResultCard = ({ personality, scores, onRestart, quizMode = "self" }
         </div>
       </motion.div>
 
+      {/* Personalized Tips Section - Mini Consultation */}
+      <PersonalizedTipsSection
+        personality={personality}
+        isManagerMode={isManagerMode}
+        accentBorderLight={accent.borderLight}
+      />
+
       {/* Team Dynamics */}
       <TeamDynamicsSection
         personalityType={personality.type}
         isManagerMode={isManagerMode}
         accentBorderLight={accent.borderLight}
       />
+
+      {/* Achievements Section - Gamification */}
+      {history && (
+        <AchievementsSection
+          history={history}
+          newAchievements={newAchievements}
+          onClearNew={onClearNewAchievements || (() => {})}
+          accentBorderLight={accent.borderLight}
+        />
+      )}
 
       {/* Learning Resources */}
       <LearningResourcesSection 
