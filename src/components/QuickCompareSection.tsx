@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Scale, Users, Handshake, AlertTriangle, Lightbulb, Star, ChevronDown, X } from "lucide-react";
+import { Scale, Users, Handshake, AlertTriangle, Lightbulb, Star, ChevronDown, X, Download, Share2 } from "lucide-react";
 import { PersonalityType, personalities } from "@/data/personalities";
 import { teamDynamics, getTeamDynamics, getTypeDisplayName } from "@/data/teamDynamics";
 import { Button } from "@/components/ui/button";
+import { toPng } from "html-to-image";
+import { toast } from "sonner";
 
 interface QuickCompareSectionProps {
   personality: PersonalityType;
@@ -24,7 +26,8 @@ export const QuickCompareSection = ({ personality, accentBorderLight }: QuickCom
   const [isOpen, setIsOpen] = useState(false);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [isGenerating, setIsGenerating] = useState(false);
+  const comparisonCardRef = useRef<HTMLDivElement>(null);
   const availableTypes = getCompareableTypes().filter(t => t.displayCode !== personality.type);
   
   // Get the internal key for the user's type
@@ -79,6 +82,80 @@ export const QuickCompareSection = ({ personality, accentBorderLight }: QuickCom
       default:
         return <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-amber-500/20 text-amber-600 dark:text-amber-400">Moderate</span>;
     }
+  };
+
+  const getCompatibilityLabel = (compatibility: 'high' | 'medium' | 'complementary') => {
+    switch (compatibility) {
+      case 'high': return 'High Synergy';
+      case 'complementary': return 'Complementary';
+      default: return 'Moderate';
+    }
+  };
+
+  const generateComparisonImage = async () => {
+    if (!comparisonCardRef.current) return null;
+    
+    setIsGenerating(true);
+    try {
+      const dataUrl = await toPng(comparisonCardRef.current, {
+        quality: 1,
+        pixelRatio: 2,
+        backgroundColor: '#0f172a',
+      });
+      return dataUrl;
+    } catch (error) {
+      console.error('Error generating comparison image:', error);
+      toast.error('Failed to generate image');
+      return null;
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleDownloadComparison = async () => {
+    const dataUrl = await generateComparisonImage();
+    if (!dataUrl) return;
+
+    const link = document.createElement('a');
+    link.download = `icm-comparison-${personality.type.toLowerCase()}-vs-${selectedPersonality?.type.toLowerCase()}.png`;
+    link.href = dataUrl;
+    link.click();
+    toast.success('Comparison image downloaded!');
+  };
+
+  const handleNativeShareComparison = async () => {
+    const dataUrl = await generateComparisonImage();
+    if (!dataUrl) return;
+
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    const file = new File([blob], `icm-comparison-${personality.type.toLowerCase()}-vs-${selectedPersonality?.type.toLowerCase()}.png`, { type: 'image/png' });
+
+    if (navigator.share && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: `${personality.type} vs ${selectedPersonality?.type} - ICM Types Comparison`,
+          text: `Comparing ICM Modeller Types: ${personality.name} vs ${selectedPersonality?.name}`,
+          files: [file],
+        });
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') {
+          toast.error('Failed to share');
+        }
+      }
+    } else {
+      handleDownloadComparison();
+    }
+  };
+
+  const getOverallCompatibility = () => {
+    if (insights?.worksWith?.compatibility === 'high' || insights?.reverseWorksWith?.compatibility === 'high') {
+      return 'high';
+    }
+    if (insights?.worksWith?.compatibility === 'complementary' || insights?.reverseWorksWith?.compatibility === 'complementary') {
+      return 'complementary';
+    }
+    return 'medium';
   };
 
   return (
@@ -296,6 +373,147 @@ export const QuickCompareSection = ({ personality, accentBorderLight }: QuickCom
                     </p>
                   </div>
                 )}
+
+                {/* Share Comparison Section */}
+                <div className="pt-4 border-t border-border">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Share this comparison</span>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={handleDownloadComparison}
+                        disabled={isGenerating}
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        {isGenerating ? 'Generating...' : 'Download'}
+                      </Button>
+                      {navigator.share && (
+                        <Button
+                          onClick={handleNativeShareComparison}
+                          disabled={isGenerating}
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                        >
+                          <Share2 className="w-4 h-4" />
+                          Share
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Hidden Shareable Card */}
+                  <div className="absolute left-[-9999px]" aria-hidden="true">
+                    <div
+                      ref={comparisonCardRef}
+                      style={{
+                        width: '600px',
+                        height: '400px',
+                        background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                        padding: '32px',
+                        position: 'relative',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {/* Background pattern */}
+                      <div style={{ position: 'absolute', inset: 0, opacity: 0.1 }}>
+                        <svg width="600" height="400" viewBox="0 0 600 400">
+                          <pattern id="comparison-grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="white" strokeWidth="0.5" />
+                          </pattern>
+                          <rect width="100%" height="100%" fill="url(#comparison-grid)" />
+                        </svg>
+                      </div>
+
+                      <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div>
+                            <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                              ICM Type Comparison
+                            </span>
+                          </div>
+                          <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px', fontWeight: 500 }}>
+                            🌊 InfoWorks ICM Quiz
+                          </div>
+                        </div>
+
+                        {/* Types Comparison */}
+                        <div style={{ textAlign: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px' }}>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'white' }}>
+                                {personality.type}
+                              </div>
+                              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>
+                                {personality.name}
+                              </div>
+                            </div>
+                            <div style={{ fontSize: '24px', color: 'rgba(255,255,255,0.6)' }}>vs</div>
+                            <div style={{ textAlign: 'center' }}>
+                              <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'white' }}>
+                                {selectedPersonality?.type}
+                              </div>
+                              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)' }}>
+                                {selectedPersonality?.name}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Compatibility Badge */}
+                          <div style={{ marginTop: '16px' }}>
+                            <span style={{
+                              display: 'inline-block',
+                              padding: '6px 16px',
+                              borderRadius: '20px',
+                              backgroundColor: 'rgba(255,255,255,0.2)',
+                              color: 'white',
+                              fontSize: '14px',
+                              fontWeight: 500,
+                            }}>
+                              {getCompatibilityLabel(getOverallCompatibility())}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Footer with roles */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', maxWidth: '400px' }}>
+                            {insights?.userRole && (
+                              <span style={{
+                                padding: '4px 12px',
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                borderRadius: '16px',
+                                fontSize: '11px',
+                                color: 'white',
+                                fontWeight: 500,
+                              }}>
+                                {personality.type}: {insights.userRole.split(' ').slice(0, 3).join(' ')}
+                              </span>
+                            )}
+                            {insights?.partnerRole && (
+                              <span style={{
+                                padding: '4px 12px',
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                borderRadius: '16px',
+                                fontSize: '11px',
+                                color: 'white',
+                                fontWeight: 500,
+                              }}>
+                                {selectedPersonality?.type}: {insights.partnerRole.split(' ').slice(0, 3).join(' ')}
+                              </span>
+                            )}
+                          </div>
+                          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px' }}>
+                            icmmodellertype.lovable.app
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             )}
 
