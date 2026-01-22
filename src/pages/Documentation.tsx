@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2, Search } from "lucide-react";
+import { ArrowLeft, Droplets, Brain, Code2, ChevronDown, ChevronUp, GitCompare, Check, X, ArrowLeftRight, Blend, Settings2, Search, Users, Handshake, AlertTriangle, Lightbulb, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { personalities, PersonalityType } from "@/data/personalities";
+import { teamDynamics, getTeamDynamics, getTypeDisplayName, TeamDynamicsData } from "@/data/teamDynamics";
 
 type TabType = "icm" | "mbti" | "methodology" | "compare";
 
@@ -520,55 +521,203 @@ const Documentation = () => {
               <TypeCard type={type2} code={compareType2} side="right" />
             </div>
 
-            {/* Collaboration Insights */}
-            <div className="bg-muted/50 rounded-2xl p-6">
-              <h3 className="font-display text-lg font-semibold text-foreground mb-4">Working Together</h3>
-              {comparison.isSpecialComparison ? (
-                <p className="text-muted-foreground">
-                  {isSpecialType(compareType1) && isSpecialType(compareType2) ? (
-                    <>Both types share adaptive, flexible approaches to modeling. They excel at reading project contexts 
-                    and adjusting their methods accordingly. Together, they can handle highly variable project portfolios 
-                    but may benefit from establishing clear decision frameworks.</>
-                  ) : isSpecialType(compareType1) ? (
-                    <><strong>{type1.name}</strong> brings adaptability and contextual awareness, while <strong>{type2.name}</strong> provides 
-                    consistent, reliable approaches. This pairing combines flexibility with stability—ideal for projects 
-                    that need both structure and the ability to pivot.</>
-                  ) : (
-                    <><strong>{type1.name}</strong> provides consistent, reliable approaches, while <strong>{type2.name}</strong> brings 
-                    adaptability and contextual awareness. This pairing combines stability with flexibility—ideal for 
-                    projects that need both structure and the ability to pivot.</>
-                  )}
-                </p>
-              ) : comparison.shared.length === 4 ? (
-                <p className="text-muted-foreground">
-                  These types are identical! Great for consistency, but consider bringing in diverse perspectives 
-                  for challenging projects.
-                </p>
-              ) : comparison.shared.length >= 3 ? (
-                <p className="text-muted-foreground">
-                  High compatibility! These modellers will likely collaborate smoothly with shared approaches. 
-                  The one difference in <strong>{dimensionLabels[comparison.different[0]].name.toLowerCase()}</strong> can 
-                  provide valuable balance.
-                </p>
-              ) : comparison.shared.length === 2 ? (
-                <p className="text-muted-foreground">
-                  Balanced pairing with meaningful differences. These types can complement each other well—one 
-                  brings {getTraitLabel(compareType1, comparison.different[0]).toLowerCase()} while the other 
-                  brings {getTraitLabel(compareType2, comparison.different[0]).toLowerCase()} perspectives.
-                </p>
-              ) : comparison.shared.length === 1 ? (
-                <p className="text-muted-foreground">
-                  Diverse pairing! These modellers approach work very differently. This can create powerful 
-                  collaboration if both respect each other&apos;s styles, but may require clear communication 
-                  about workflows and expectations.
-                </p>
-              ) : (
-                <p className="text-muted-foreground">
-                  Opposite types! Maximum diversity in approach. This pairing can either be highly complementary 
-                  (covering all bases) or challenging (different priorities). Success depends on mutual respect 
-                  and clear role definition.
-                </p>
-              )}
+            {/* Collaboration Insights - Enhanced with Team Dynamics */}
+            <div className="space-y-6">
+              <h3 className="font-display text-xl font-semibold text-foreground flex items-center gap-2">
+                <Handshake className="w-5 h-5 text-primary" />
+                Collaboration Dynamics
+              </h3>
+
+              {/* Mutual Compatibility Check */}
+              {(() => {
+                const dynamics1 = getTeamDynamics(compareType1);
+                const dynamics2 = getTeamDynamics(compareType2);
+                
+                // Check if type1 works well with type2
+                const type1WorksWith = dynamics1?.worksWith.find(w => w.type === compareType2);
+                const type2WorksWith = dynamics2?.worksWith.find(w => w.type === compareType1);
+                
+                // Check for challenges
+                const type1ChallengesWith = dynamics1?.challengesWith.find(c => c.type === compareType2);
+                const type2ChallengesWith = dynamics2?.challengesWith.find(c => c.type === compareType1);
+                
+                const hasPositiveMatch = type1WorksWith || type2WorksWith;
+                const hasChallenges = type1ChallengesWith || type2ChallengesWith;
+
+                return (
+                  <div className="space-y-4">
+                    {/* Compatibility Overview */}
+                    <div className="bg-card rounded-2xl border border-border p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <Users className="w-5 h-5 text-primary" />
+                        <h4 className="font-semibold text-foreground">Team Compatibility</h4>
+                      </div>
+                      
+                      {comparison.isSpecialComparison ? (
+                        <p className="text-muted-foreground">
+                          {isSpecialType(compareType1) && isSpecialType(compareType2) ? (
+                            <>Both types share adaptive, flexible approaches to modeling. They excel at reading project contexts 
+                            and adjusting their methods accordingly. Together, they can handle highly variable project portfolios 
+                            but may benefit from establishing clear decision frameworks.</>
+                          ) : isSpecialType(compareType1) ? (
+                            <><strong>{type1.name}</strong> brings adaptability and contextual awareness, while <strong>{type2.name}</strong> provides 
+                            consistent, reliable approaches. This pairing combines flexibility with stability—ideal for projects 
+                            that need both structure and the ability to pivot.</>
+                          ) : (
+                            <><strong>{type1.name}</strong> provides consistent, reliable approaches, while <strong>{type2.name}</strong> brings 
+                            adaptability and contextual awareness. This pairing combines stability with flexibility—ideal for 
+                            projects that need both structure and the ability to pivot.</>
+                          )}
+                        </p>
+                      ) : comparison.shared.length === 4 ? (
+                        <p className="text-muted-foreground">
+                          These types are identical! Great for consistency, but consider bringing in diverse perspectives 
+                          for challenging projects.
+                        </p>
+                      ) : comparison.shared.length >= 3 ? (
+                        <p className="text-muted-foreground">
+                          High compatibility! These modellers will likely collaborate smoothly with shared approaches. 
+                          The one difference in <strong>{dimensionLabels[comparison.different[0]].name.toLowerCase()}</strong> can 
+                          provide valuable balance.
+                        </p>
+                      ) : comparison.shared.length === 2 ? (
+                        <p className="text-muted-foreground">
+                          Balanced pairing with meaningful differences. These types can complement each other well—one 
+                          brings {getTraitLabel(compareType1, comparison.different[0]).toLowerCase()} while the other 
+                          brings {getTraitLabel(compareType2, comparison.different[0]).toLowerCase()} perspectives.
+                        </p>
+                      ) : comparison.shared.length === 1 ? (
+                        <p className="text-muted-foreground">
+                          Diverse pairing! These modellers approach work very differently. This can create powerful 
+                          collaboration if both respect each other&apos;s styles, but may require clear communication 
+                          about workflows and expectations.
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground">
+                          Opposite types! Maximum diversity in approach. This pairing can either be highly complementary 
+                          (covering all bases) or challenging (different priorities). Success depends on mutual respect 
+                          and clear role definition.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Synergy Insights */}
+                    {hasPositiveMatch && (
+                      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Star className="w-5 h-5 text-primary" />
+                          <h4 className="font-semibold text-foreground">Natural Synergies</h4>
+                        </div>
+                        <div className="space-y-4">
+                          {type1WorksWith && (
+                            <div className="flex gap-3">
+                              <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                type1WorksWith.compatibility === 'high' 
+                                  ? 'bg-primary/20 text-primary' 
+                                  : type1WorksWith.compatibility === 'complementary'
+                                  ? 'bg-secondary/20 text-secondary'
+                                  : 'bg-muted text-muted-foreground'
+                              }`}>
+                                {type1WorksWith.compatibility}
+                              </span>
+                              <p className="text-sm text-muted-foreground">
+                                <strong className="text-foreground">{type1.name}</strong> → <strong className="text-foreground">{type2.name}</strong>: {type1WorksWith.description}
+                              </p>
+                            </div>
+                          )}
+                          {type2WorksWith && (
+                            <div className="flex gap-3">
+                              <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${
+                                type2WorksWith.compatibility === 'high' 
+                                  ? 'bg-primary/20 text-primary' 
+                                  : type2WorksWith.compatibility === 'complementary'
+                                  ? 'bg-secondary/20 text-secondary'
+                                  : 'bg-muted text-muted-foreground'
+                              }`}>
+                                {type2WorksWith.compatibility}
+                              </span>
+                              <p className="text-sm text-muted-foreground">
+                                <strong className="text-foreground">{type2.name}</strong> → <strong className="text-foreground">{type1.name}</strong>: {type2WorksWith.description}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Potential Challenges */}
+                    {hasChallenges && (
+                      <div className="bg-destructive/5 border border-destructive/20 rounded-2xl p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <AlertTriangle className="w-5 h-5 text-destructive" />
+                          <h4 className="font-semibold text-foreground">Potential Friction Points</h4>
+                        </div>
+                        <div className="space-y-4">
+                          {type1ChallengesWith && (
+                            <div className="space-y-2">
+                              <p className="text-sm text-muted-foreground">
+                                <strong className="text-foreground">{type1.name}</strong> may find: {type1ChallengesWith.challenge}
+                              </p>
+                              <div className="flex items-start gap-2 pl-4">
+                                <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                                <p className="text-sm text-amber-700 dark:text-amber-400">{type1ChallengesWith.tip}</p>
+                              </div>
+                            </div>
+                          )}
+                          {type2ChallengesWith && (
+                            <div className="space-y-2">
+                              <p className="text-sm text-muted-foreground">
+                                <strong className="text-foreground">{type2.name}</strong> may find: {type2ChallengesWith.challenge}
+                              </p>
+                              <div className="flex items-start gap-2 pl-4">
+                                <Lightbulb className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                                <p className="text-sm text-amber-700 dark:text-amber-400">{type2ChallengesWith.tip}</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Team Roles */}
+                    {(dynamics1 || dynamics2) && (
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {dynamics1 && (
+                          <div className="bg-card rounded-xl border border-border p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className={`px-2 py-1 rounded-lg text-white font-mono font-bold text-xs bg-gradient-to-r ${type1.color}`}>
+                                {compareType1}
+                              </span>
+                              <span className="text-sm font-medium text-foreground">Team Role</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{dynamics1.teamRole}</p>
+                          </div>
+                        )}
+                        {dynamics2 && (
+                          <div className="bg-card rounded-xl border border-border p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className={`px-2 py-1 rounded-lg text-white font-mono font-bold text-xs bg-gradient-to-r ${type2.color}`}>
+                                {compareType2}
+                              </span>
+                              <span className="text-sm font-medium text-foreground">Team Role</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{dynamics2.teamRole}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* No specific dynamics data message */}
+                    {!hasPositiveMatch && !hasChallenges && !dynamics1 && !dynamics2 && (
+                      <div className="bg-muted/50 rounded-2xl p-6 text-center">
+                        <p className="text-muted-foreground">
+                          No specific collaboration data available for this pairing. Use the general compatibility insights above to guide your collaboration.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </motion.div>
         )}
