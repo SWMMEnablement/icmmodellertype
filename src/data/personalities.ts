@@ -163,6 +163,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "ADAPTIVE",
     name: "The Adaptive Specialist",
     description: "You combine specialist depth with contextual flexibility. While you have preferred approaches, you readily adjust your methods based on project needs, client requirements, and data quality. Your ability to shift gears makes you effective across diverse project types.",
+    scenario: "Monday morning: you're calibrating a detailed sewer model, manually checking every flow survey location against telemetry data. Wednesday: a rush job comes in — a developer needs a quick surface water assessment by Friday. You switch gears instantly, pulling out your rapid modelling toolkit, making smart simplifications, and delivering a defensible result in two days. Your colleagues wonder how you can do both. The secret? You know exactly when precision matters and when speed wins.",
     strengths: ["Contextual awareness", "Flexible methodology", "Client responsiveness", "Practical adaptability", "Balanced delivery", "Risk-aware quality"],
     growth: ["Codify your adaptation triggers", "Share context-reading skills", "Balance flexibility with consistency", "Build adaptive team capabilities"],
     tools: ["Situational assessment tools", "Scalable QA processes", "Flexible templates", "Context-based checklists"],
