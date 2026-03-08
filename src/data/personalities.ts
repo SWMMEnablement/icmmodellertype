@@ -262,6 +262,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "BMSP",
     name: "The Strategic Perfectionist",
     description: "You take a big-picture approach but refuse to compromise on quality. Every strategic simplification is systematically justified. Your master plans are both visionary and bulletproof. Documentation is your superpower.",
+    scenario: "You're simplifying a 50,000-node model down to 5,000 nodes for a strategic study. Every simplification is documented: why you merged those subcatchments, what equivalent pipe sizes you used, how you validated the simplified model against the detailed one. When the regulator asks 'how can you justify this simplification?', you hand them a 20-page technical note with comparison plots for every key location. They approve it first time.",
     strengths: ["Justified simplifications", "Strategic quality", "Systematic documentation", "Defensible models", "Thorough validation"],
     growth: ["Automate repetitive validation", "Trust your strategic instincts", "Move faster on options", "Accept uncertainty in early stages"],
     tools: ["Manual strategic modeling", "Systematic QC", "Detailed documentation", "Comprehensive assumption logs"],
