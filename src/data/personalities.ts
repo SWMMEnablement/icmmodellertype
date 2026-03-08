@@ -128,6 +128,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "CONTEXT",
     name: "The Context Master",
     description: "You're the ultimate project-driven modeller. Rather than having fixed preferences, you read each situation and adapt your approach accordingly. Project scope, client needs, data quality, timeline, and budget all factor into your decisions. Your flexibility makes you invaluable for diverse project portfolios.",
+    scenario: "A water company asks for three different flood assessments — one for planning, one for insurance, and one for emergency response. While most modellers would apply the same methodology to all three, you immediately recognise each needs a different approach: the planning model needs regulatory precision, the insurance model needs broad coverage with defensible assumptions, and the emergency model needs speed above all. You deliver three fit-for-purpose models where others would have delivered one over-engineered one.",
     strengths: ["Exceptional situational awareness", "Client-focused delivery", "Resource optimization", "Risk-based prioritization", "Stakeholder management", "Portfolio versatility"],
     growth: ["Develop strong default preferences for faster decisions", "Document your decision criteria", "Help juniors understand your contextual logic", "Build reusable frameworks for common situations"],
     tools: ["Project assessment frameworks", "Decision matrices", "Scalable templates", "Stakeholder analysis tools"],
