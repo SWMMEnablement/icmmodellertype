@@ -174,6 +174,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "FLEX",
     name: "The Flexible Practitioner",
     description: "You blend traditional approaches with adaptive thinking. While you have core preferences, you're comfortable adjusting your style when the situation demands it. This flexibility allows you to handle unexpected challenges and work effectively with diverse team members.",
+    scenario: "You've inherited a model from another consultancy — half the network is beautifully built, and the other half is a mess. A rigid modeller would rebuild from scratch or refuse the project. You take a different approach: you preserve what works, tidy up the problem areas with a mix of automated cleanup and manual fixes, and deliver a working model that the client can actually use. You're not precious about methodology — you're precious about outcomes.",
     strengths: ["Practical flexibility", "Team collaboration", "Situational awareness", "Adaptable standards", "Effective communication", "Cross-functional skills"],
     growth: ["Strengthen your core specialties", "Develop systematic adaptation criteria", "Document successful adaptations", "Mentor others in flexibility"],
     tools: ["Hybrid workflows", "Adaptive checklists", "Flexible reporting", "Collaborative tools"],
