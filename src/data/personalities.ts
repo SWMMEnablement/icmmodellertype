@@ -2,6 +2,7 @@ export interface PersonalityType {
   type: string;
   name: string;
   description: string;
+  scenario: string; // Concrete ICM scenario description
   strengths: string[];
   growth: string[];
   tools: string[];
