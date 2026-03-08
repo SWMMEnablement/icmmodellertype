@@ -396,6 +396,52 @@ export const ResultCard = ({
         </div>
       </div>
 
+      {/* Social Proof Badge */}
+      <SocialProofBadge personalityType={personality.type} personalityName={personality.name} />
+
+      {/* Scenario - "How You Actually Work" */}
+      {personality.scenario && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className={`bg-card rounded-2xl shadow-card border p-6 mb-8 ${accent.borderLight}`}
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
+              <Quote className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="font-display text-lg font-semibold text-foreground">
+              {isManagerMode ? "How This Type Actually Works" : "How You Actually Work"}
+            </h3>
+          </div>
+          <p className="text-muted-foreground leading-relaxed italic">
+            "{personality.scenario}"
+          </p>
+        </motion.div>
+      )}
+
+      {/* Shareable URL */}
+      {shareableUrl && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38 }}
+          className="flex items-center justify-center gap-2 mb-8"
+        >
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(shareableUrl);
+              toast.success("Link copied! Share it with colleagues.");
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-muted hover:bg-muted/80 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Link2 className="w-4 h-4" />
+            Copy shareable link
+          </button>
+        </motion.div>
+      )}
+
       {/* Context-Dependent Summary - Only shown for context types */}
       {isContext && (
         <motion.div
