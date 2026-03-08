@@ -283,6 +283,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "BMIP",
     name: "The Master Modeller",
     description: "Years of experience have given you strategic intuition backed by quality standards. You build big-picture models with systematic validation, guided by pattern recognition only experience brings. You're often the one mentoring the next generation.",
+    scenario: "A graduate shows you a model that won't converge. Before they've finished explaining the problem, you've spotted it: 'That 2D mesh near the railway embankment — the triangles are too long and thin. And I bet your downstream boundary is causing a reflection.' You're right on both counts. Twenty years of staring at convergence plots has given you an instinct that no checklist can replicate. You fix it in ten minutes and spend the next hour teaching the graduate why it worked.",
     strengths: ["Expert judgment", "Strategic quality", "Pattern recognition", "Mentoring ability", "Experience-based insight"],
     growth: ["Transfer knowledge to automation", "Document your intuition", "Train the next generation", "Share your mental models"],
     tools: ["Expert manual modeling", "Experience-based QC", "Strategic validation", "Pattern recognition"],
