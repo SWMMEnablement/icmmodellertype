@@ -272,6 +272,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "BMSR",
     name: "The Practical Strategist",
     description: "You're the go-to modeller for strategic projects with real deadlines. Big-picture thinking with hands-on delivery means you answer the questions that matter without getting lost in details. Crisis response and tight turnarounds are your specialty.",
+    scenario: "Storm Ciara just hit and there's flooding across three catchments. The water company needs to know which sites are at risk of repeat flooding before the next storm arrives in 48 hours. You pull up the strategic models, run the forecast rainfall, identify the five highest-risk locations, and brief the operations team with clear maps and recommended actions — all before most people have finished their Monday morning coffee. This is what you were built for.",
     strengths: ["Practical strategy", "Deadline delivery", "Scope management", "Clear communication", "Speed", "Crisis response"],
     growth: ["Automate routine tasks", "Document your simplifications", "Build quality checks", "Slow down for complex projects"],
     tools: ["Manual strategic modeling", "Practical QC", "Clear reporting", "Rapid reporting"],
