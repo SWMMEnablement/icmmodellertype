@@ -8,6 +8,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { ResultCard } from "@/components/ResultCard";
 import { ICMChatbot } from "@/components/ICMChatbot";
 import { useQuizHistory } from "@/hooks/useQuizHistory";
+import { recordQuizToDb } from "@/hooks/useQuizStats";
 type GameState = "welcome" | "quiz" | "result";
 export type QuizMode = "self" | "manager";
 
