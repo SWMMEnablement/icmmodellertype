@@ -152,6 +152,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "HYBRID",
     name: "The Integrator",
     description: "You're the rare modeller who naturally adapts your approach to each situation. You seamlessly blend detail and big-picture thinking, automation and manual control, systematic rigor and intuitive insight. Your flexibility makes you invaluable for complex, multi-stakeholder projects where one-size-fits-all approaches fail.",
+    scenario: "You're leading a complex integrated catchment model with multiple stakeholders — the water company wants sewer capacity analysis, the council wants surface water flood mapping, and the EA wants climate change impacts. You build the core 1D network with automated scripts for the repetitive sewer data, manually craft the critical 2D mesh around key flood risk areas, use systematic checks for regulatory compliance, and apply intuitive judgment to resolve conflicting stakeholder requirements. Nobody else on the team could hold all these threads together.",
     strengths: ["Exceptional adaptability", "Multi-perspective thinking", "Balanced trade-offs", "Stakeholder management", "Context-sensitive quality", "Bridge between specialists"],
     growth: ["Develop deeper expertise in specific approaches", "Document your decision frameworks", "Help others understand your adaptive logic", "Build templates for common contexts"],
     tools: ["Adaptive workflows", "Context assessment checklists", "Flexible QA frameworks", "Multi-approach templates"],
