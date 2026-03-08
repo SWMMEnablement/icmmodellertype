@@ -187,6 +187,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "DASP",
     name: "The Precision Engineer",
     description: "You build models like Swiss watches—every detail matters. Your automated workflows ensure consistency while your systematic approach catches errors others miss. Clients trust your deliverables implicitly because they know every parameter has been verified.",
+    scenario: "When a client sends you a model with 15 years of rainfall data and asks for a quick assessment, you're the modeller who opens the rainfall data first, checks the gauge quality, compares to the FEH grid, and only then looks at the network. Your Ruby script validates every manhole cover level against LiDAR, flags discrepancies, and generates a formatted QA log before you've even opened the model. Your team knows that when you say 'the data is good,' it really is.",
     strengths: ["Exceptional accuracy", "Reproducible workflows", "Thorough validation", "Audit-trail excellence", "Quality automation"],
     growth: ["Balance detail with deadlines", "Trust simplifications when appropriate", "Delegate routine checks", "Accept 'good enough' for exploratory work"],
     tools: ["Ruby scripting", "Validation scripts", "Detailed QA checklists", "Automated testing"],
