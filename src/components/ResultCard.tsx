@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
+import { SocialProofBadge } from "./SocialProofBadge";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
 import { AchievementsSection } from "./AchievementsSection";
 import { PersonalizedTipsSection } from "./PersonalizedTipsSection";
 import { QuickCompareSection } from "./QuickCompareSection";
 import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
 import { QuizHistory } from "@/data/achievements";
+import { toast } from "sonner";
 import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
@@ -19,6 +21,7 @@ interface ResultCardProps {
   history?: QuizHistory;
   newAchievements?: string[];
   onClearNewAchievements?: () => void;
+  shareableUrl?: string;
 }
 
 // Helper function to get the resource type code
