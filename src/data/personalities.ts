@@ -240,6 +240,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "BASP",
     name: "The Strategic Architect",
     description: "You see the forest, not just the trees. Your automated master plans deliver strategic insights while maintaining systematic rigor. You build frameworks others can build upon, and your pattern recognition catches system-level issues others miss.",
+    scenario: "A water company needs a 25-year drainage strategy for a city of 500,000 people. While others start building the model, you start building the framework: automated climate change uplift scenarios, batch population growth projections, standardised reporting templates. Your model isn't just a model — it's a decision-support platform. Three years later, the water company is still using your framework for every investment decision in the region.",
     strengths: ["Strategic vision", "Scalable solutions", "Systematic planning", "Framework design", "Big-picture accuracy", "Pattern recognition"],
     growth: ["Dive into details when needed", "Ground-truth your assumptions", "Validate with field data", "Check edge cases"],
     tools: ["Model templates", "Automated scenario runs", "High-level validation", "Pattern-based validation"],
