@@ -133,9 +133,20 @@ const Index = () => {
         scores: { ...scores },
         mode: quizMode
       });
+      // Also record to database for social proof stats
+      recordQuizToDb(personality.type, quizMode);
       setHasRecorded(true);
     }
   }, [gameState, hasRecorded, getPersonalityType, recordQuizResult, scores, quizMode]);
+
+  // Generate shareable URL for current result
+  const getShareableUrl = () => {
+    if (gameState !== "result") return "";
+    const personality = getPersonalityType();
+    const scoreKeys = ['D', 'B', 'H', 'A', 'M', 'X', 'S', 'I', 'Y', 'P', 'R', 'Z', 'MA_CTX', 'WS_CTX', 'PS_CTX', 'DQ_CTX'];
+    const scoreValues = scoreKeys.map(k => scores[k] || 0).join(',');
+    return `${window.location.origin}/results/${personality.type}?s=${scoreValues}&mode=${quizMode}`;
+  };
 
   return (
     <div className="min-h-screen bg-background">
