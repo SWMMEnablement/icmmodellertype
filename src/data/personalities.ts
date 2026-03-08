@@ -208,6 +208,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "DAIP",
     name: "The Quality Automator",
     description: "You've automated quality into every workflow. Your scripts don't just save time—they enforce standards. When you deliver a model, it's been through your battle-tested quality gates. Your intuition guides what to automate next.",
+    scenario: "Your latest Ruby script automatically runs every new model through 47 quality checks — pipe gradient anomalies, missing cover levels, disconnected subcatchments, unrealistic impermeability values. Last week it caught a transposed manhole invert that would have caused a phantom flood in the 1-in-30 results. The graduate who built the network didn't even know there was a problem until your script flagged it with an exact node reference and suggested fix.",
     strengths: ["Automated QA/QC", "Zero-tolerance accuracy", "Innovative workflows", "Setting team standards", "Pattern-based validation"],
     growth: ["Accept uncertainty gracefully", "Move faster on exploratory work", "Balance intuition with documentation"],
     tools: ["Custom Ruby QA scripts", "Automated validation", "Standardized templates", "Pattern-based checks"],
