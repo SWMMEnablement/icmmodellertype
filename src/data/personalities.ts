@@ -139,6 +139,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "NAVIGATOR",
     name: "The Context Navigator",
     description: "You balance personal preferences with project realities. While you have your go-to approaches, you readily adjust based on client requirements, budget constraints, and project scope. Your ability to navigate competing demands makes you effective across varied project types.",
+    scenario: "Midway through a strategic drainage assessment, the client halves the budget. Instead of panicking, you quickly re-scope: you switch from a full 2D mesh to 1D with targeted 2D zones, swap detailed rain gauge analysis for FEH grid data, and streamline your QA to focus on the critical flood hotspots. The client still gets actionable results, and your team hits the deadline. You've done this before — reading the room is your superpower.",
     strengths: ["Adaptive planning", "Budget awareness", "Client responsiveness", "Scope management", "Practical flexibility", "Delivery focus"],
     growth: ["Strengthen core technical preferences", "Push back when context compromises quality", "Build clearer decision boundaries", "Develop signature approaches for key situations"],
     tools: ["Scope assessment tools", "Budget-quality tradeoff matrices", "Client requirement templates", "Flexible QA processes"],
