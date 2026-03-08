@@ -251,6 +251,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "BASR",
     name: "The Agile Strategist",
     description: "You deliver big-picture insights on practical timelines. Your automated workflows serve strategic goals, and you know exactly what level of detail each project actually needs. Perfect for feasibility studies, options appraisals, and quick-turnaround consulting.",
+    scenario: "A developer needs a flood risk assessment for a 200-home site by next Friday. You don't build a full verified model — you pull the existing strategic model, clip the catchment, run a quick 2D mesh with 10m triangles, overlay the site layout, and produce a clear red-amber-green risk map with three SuDS options. The developer gets exactly what they need to make a £40M investment decision. Total model time: 2 days. Value delivered: priceless.",
     strengths: ["Fast strategic delivery", "Right-sized models", "Client-focused", "Efficient scope management", "Rapid insights", "Quick turnaround"],
     growth: ["Validate simplified assumptions", "Document model limitations", "Build in detail checks", "Validate fast conclusions"],
     tools: ["Quick scenario automation", "Strategic templates", "Executive reporting", "Fast scenario runs"],
