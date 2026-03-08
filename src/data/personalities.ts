@@ -229,6 +229,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "DMSR",
     name: "The Pragmatic Modeller",
     description: "You're the backbone of project delivery. Detail-oriented but deadline-aware, you manually craft quality models while making practical trade-offs. Your experience guides efficient, defensible decisions. You know exactly where to focus your effort for maximum impact.",
+    scenario: "The planning submission deadline is Monday. The model has 47 reported flooding locations but the client only has survey data for 30 of them. A perfectionist would delay to get the missing data. You assess the 17 gaps, estimate pipe sizes from the surrounding network, add conservative assumptions, document everything clearly, and submit on time. Six months later, when the full survey data arrives, 15 of your 17 estimates were within one pipe size. Experience beats perfection.",
     strengths: ["Reliable delivery", "Practical solutions", "Clear documentation", "Balanced judgment", "Fast turnaround", "Client rapport"],
     growth: ["Automate common workflows", "Push back on impossible deadlines", "Standardize your methods", "Document assumptions better"],
     tools: ["Manual workflows", "Clear assumptions logs", "Pragmatic QC", "Quick visual checks"],
