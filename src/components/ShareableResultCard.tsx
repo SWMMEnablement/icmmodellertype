@@ -98,13 +98,22 @@ export const ShareableResultCard = ({ personality, scores, isManagerMode = false
   const handleShareTwitter = async () => {
     const text = isManagerMode
       ? `My manager is ${personality.name} (${personality.type})! 👔🌊\n\nWhat's YOUR manager's InfoWorks ICM Modeller type?\n\n#InfoWorksICM #HydraulicModeling #WaterIndustry`
-      : `I'm ${personality.name} (${personality.type})! 🌊\n\nTake the InfoWorks ICM Modeller Personality Quiz to discover your hydraulic modelling style:\n\n#InfoWorksICM #HydraulicModeling #WaterIndustry`;
+      : `I just discovered I'm ${personality.name} (${personality.type}) — the ${personality.strengths[0].toLowerCase()} specialist of InfoWorks ICM modelling. 🌊\n\nWhat's YOUR type? Take the quiz:\n\n#InfoWorksICM #HydraulicModeling #WaterIndustry`;
     const url = window.location.origin;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
   };
 
   const handleShareLinkedIn = async () => {
     const url = window.location.origin;
+    // LinkedIn doesn't support pre-filled text via URL, but we copy it to clipboard
+    const text = isManagerMode
+      ? `My manager's InfoWorks ICM Modeller type is ${personality.name} (${personality.type})! 👔🌊\n\nUnderstanding your team's modelling personalities helps build better project teams. What's YOUR manager's type?\n\n${url}`
+      : `I just discovered I'm "${personality.name}" (${personality.type}) — ${personality.description.split('.')[0].toLowerCase()}. 🌊\n\nTake the InfoWorks ICM Modeller Personality Quiz to discover your hydraulic modelling style:\n${url}`;
+    
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {}
+    
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
   };
 

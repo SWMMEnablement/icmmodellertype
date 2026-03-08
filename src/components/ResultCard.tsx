@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
+import { SocialProofBadge } from "./SocialProofBadge";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
 import { AchievementsSection } from "./AchievementsSection";
 import { PersonalizedTipsSection } from "./PersonalizedTipsSection";
 import { QuickCompareSection } from "./QuickCompareSection";
 import { getResourcesForType, LearningResource, ExperienceLevel, experienceLevels } from "@/data/learningResources";
 import { QuizHistory } from "@/data/achievements";
+import { toast } from "sonner";
 import type { QuizMode } from "@/pages/Index";
 
 interface ResultCardProps {
@@ -19,6 +21,7 @@ interface ResultCardProps {
   history?: QuizHistory;
   newAchievements?: string[];
   onClearNewAchievements?: () => void;
+  shareableUrl?: string;
 }
 
 // Helper function to get the resource type code
@@ -213,7 +216,8 @@ export const ResultCard = ({
   quizMode = "self",
   history,
   newAchievements = [],
-  onClearNewAchievements
+  onClearNewAchievements,
+  shareableUrl
 }: ResultCardProps) => {
   const isManagerMode = quizMode === "manager";
   const isHybrid = personality.isHybrid && personality.type !== 'CONTEXT' && personality.type !== 'NAVIGATOR';
@@ -391,6 +395,52 @@ export const ResultCard = ({
           </motion.p>
         </div>
       </div>
+
+      {/* Social Proof Badge */}
+      <SocialProofBadge personalityType={personality.type} personalityName={personality.name} />
+
+      {/* Scenario - "How You Actually Work" */}
+      {personality.scenario && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className={`bg-card rounded-2xl shadow-card border p-6 mb-8 ${accent.borderLight}`}
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
+              <Quote className="w-5 h-5 text-white" />
+            </div>
+            <h3 className="font-display text-lg font-semibold text-foreground">
+              {isManagerMode ? "How This Type Actually Works" : "How You Actually Work"}
+            </h3>
+          </div>
+          <p className="text-muted-foreground leading-relaxed italic">
+            "{personality.scenario}"
+          </p>
+        </motion.div>
+      )}
+
+      {/* Shareable URL */}
+      {shareableUrl && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38 }}
+          className="flex items-center justify-center gap-2 mb-8"
+        >
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(shareableUrl);
+              toast.success("Link copied! Share it with colleagues.");
+            }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-muted hover:bg-muted/80 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Link2 className="w-4 h-4" />
+            Copy shareable link
+          </button>
+        </motion.div>
+      )}
 
       {/* Context-Dependent Summary - Only shown for context types */}
       {isContext && (
