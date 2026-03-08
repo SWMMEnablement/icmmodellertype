@@ -218,6 +218,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "DMSP",
     name: "The Meticulous Craftsman",
     description: "Every node, every link, every parameter—you've checked it personally. Your hands-on approach means you know your models inside out. Nothing leaves your desk without your thorough review. Whether systematic or intuitive, your personal investment in quality shows.",
+    scenario: "You're building a sewer model from CCTV survey data. While others would batch-import the asset data and move on, you cross-reference every pipe diameter and material against the survey footage. You spot that three 225mm pipes are actually 300mm — the asset register was wrong. When the model runs, your flood predictions match the client's real-world flooding records almost perfectly. They ask how you got such good calibration. You say: 'I checked the pipes.'",
     strengths: ["Deep model knowledge", "Bulletproof quality", "Personal accountability", "Exceptional attention", "Expert calibration"],
     growth: ["Embrace automation for repetitive tasks", "Scale your quality approach", "Document your process", "Share knowledge with juniors"],
     tools: ["Manual data review", "Step-by-step validation", "Personal QC protocols", "Visual calibration"],
