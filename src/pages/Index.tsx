@@ -195,6 +195,7 @@ const Index = () => {
               history={history}
               newAchievements={newAchievements}
               onClearNewAchievements={clearNewAchievements}
+              shareableUrl={getShareableUrl()}
             />
           </div>
         )}
