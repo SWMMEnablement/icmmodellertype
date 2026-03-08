@@ -197,6 +197,7 @@ export const personalities: Record<string, PersonalityType> = {
     type: "DASR",
     name: "The Efficient Expert",
     description: "You combine technical precision with practical delivery. Your automated pipelines handle the heavy lifting while you focus on what matters most. Whether relying on metrics or intuition, you know when good enough is truly good enough and deliver consistently.",
+    scenario: "It's 3pm on a Thursday and calibration results just came back — three flow monitors are showing poor fit. Instead of spending two days rechecking every parameter, you run your automated sensitivity batch overnight, identify the two subcatchments driving the misfit by 9am, fix the runoff surfaces, and have calibration signed off before lunch. Your project manager loves you because you deliver accuracy without burning the budget.",
     strengths: ["Efficient delivery", "Smart automation", "Balanced approach", "Client-focused solutions", "Rapid calibration", "Pattern recognition"],
     growth: ["Document your shortcuts", "Share automation templates", "Build in contingency time", "Quantify your intuitive decisions"],
     tools: ["ODIC templates", "Batch processing", "Quick validation checks", "Visual calibration"],
