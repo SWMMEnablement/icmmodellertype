@@ -220,6 +220,7 @@ export const ResultCard = ({
   onClearNewAchievements,
   shareableUrl
 }: ResultCardProps) => {
+  const navigate = useNavigate();
   const isManagerMode = quizMode === "manager";
   const isHybrid = personality.isHybrid && personality.type !== 'CONTEXT' && personality.type !== 'NAVIGATOR';
   const isContext = personality.type === 'CONTEXT' || personality.type === 'NAVIGATOR';
