@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote, Target } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
 import { SocialProofBadge } from "./SocialProofBadge";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
@@ -219,6 +220,7 @@ export const ResultCard = ({
   onClearNewAchievements,
   shareableUrl
 }: ResultCardProps) => {
+  const navigate = useNavigate();
   const isManagerMode = quizMode === "manager";
   const isHybrid = personality.isHybrid && personality.type !== 'CONTEXT' && personality.type !== 'NAVIGATOR';
   const isContext = personality.type === 'CONTEXT' || personality.type === 'NAVIGATOR';
@@ -711,6 +713,33 @@ export const ResultCard = ({
         isManagerMode={isManagerMode}
         accentBorderLight={accent.borderLight}
       />
+
+      {/* Scenario Simulator CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.72 }}
+        className="bg-card rounded-2xl shadow-card border border-border p-6 mb-8"
+      >
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+            <Target className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+          </div>
+          <h3 className="font-display text-lg font-semibold text-foreground">
+            How Would You Handle This?
+          </h3>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          Test your instincts against 7 realistic ICM scenarios and see how your choices compare to your quiz type.
+        </p>
+        <button
+          onClick={() => navigate(`/scenarios?type=${personality.type}`)}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 font-medium text-sm hover:bg-amber-500/20 transition-colors"
+        >
+          <Target className="w-4 h-4" />
+          Try the Scenario Simulator
+        </button>
+      </motion.div>
 
       {/* Share Your Results */}
       <motion.div
