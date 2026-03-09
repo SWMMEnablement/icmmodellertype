@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PersonalityType } from "@/data/personalities";
-import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote } from "lucide-react";
+import { Sparkles, TrendingUp, Wrench, RotateCcw, Blend, Zap, Layers, Settings2, Compass, Share2, BookOpen, FileText, GraduationCap, Play, Video, ExternalLink, Link2, Quote, Target } from "lucide-react";
 import { ShareableResultCard } from "./ShareableResultCard";
 import { SocialProofBadge } from "./SocialProofBadge";
 import { TeamDynamicsSection } from "./TeamDynamicsSection";
