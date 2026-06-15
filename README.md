@@ -1,73 +1,103 @@
-# Welcome to your Lovable project
+# icmmodellertype
 
-## Project info
+A browser-based application for working with InfoWorks ICM model-type workflows, built with React, TypeScript, Vite, shadcn-ui, Tailwind CSS, and Supabase.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Overview
 
-## How can I edit this code?
+icmmodellertype is an actively developed repository in the SWMMEnablement organization that has grown well beyond its original Lovable-generated scaffold. The repository structure shows a modern TypeScript frontend, Supabase-backed project infrastructure, environment configuration, and project-specific handover documentation.
 
-There are several ways of editing your application.
+The visible development history suggests that the application includes domain-specific workflow support and a scenario simulator, making it more than a static reference or simple data-entry interface.
 
-**Use Lovable**
+## Repository structure
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+```text
+icmmodellertype/
+├── public/                  # Static frontend assets
+├── src/                     # Main application source code
+├── supabase/                # Supabase configuration and backend support
+├── .env                     # Environment variables
+├── handover.md              # Project handover and app notes
+├── README.md                # Project documentation
+├── package.json             # Dependencies and scripts
+├── package-lock.json        # npm lockfile
+├── bun.lock                 # Bun lockfile
+├── bun.lockb                # Bun binary lockfile
+├── components.json          # shadcn-ui config
+├── eslint.config.js         # ESLint config
+├── index.html               # Vite entry page
+├── postcss.config.js        # PostCSS config
+├── tailwind.config.ts       # Tailwind setup
+├── tsconfig.app.json        # App TypeScript config
+├── tsconfig.json            # Root TypeScript config
+├── tsconfig.node.json       # Node/tooling TypeScript config
+└── vite.config.ts           # Vite configuration
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+## Tech stack
 
-**Use your preferred IDE**
+- React
+- TypeScript
+- Vite
+- shadcn-ui
+- Tailwind CSS
+- Supabase
+- ESLint
+- npm and/or Bun
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Development workflow
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js 18+ recommended
+- npm
+- Supabase project or local Supabase environment if backend features are required
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Install dependencies
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+git clone https://github.com/SWMMEnablement/icmmodellertype.git
+cd icmmodellertype
+npm install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Start the development server
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Build for production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+### Preview the production build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run preview
+```
 
-## What technologies are used for this project?
+## Configuration
 
-This project is built with:
+This repository includes both an `.env` file and a `supabase/` directory, which indicates that local setup likely requires environment variables and backend configuration in addition to the normal frontend toolchain.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Project notes
 
-## How can I deploy this project?
+The visible commit history shows active feature development, including a scenario simulator and implementation work in the Supabase layer. The included `handover.md` file should be reviewed alongside the source code to understand the app’s workflow, main components, and intended extension points.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Recommended next documentation improvements
 
-## Can I connect a custom domain to my Lovable project?
+To make this repository much easier for engineers and contributors to understand, the next documentation pass should add:
 
-Yes, you can!
+- A one-sentence description of the exact model-type workflow the app supports
+- A summary of the main screens or routes in `src/`
+- Notes on how Supabase is used in the app
+- A description of the scenario simulator and its inputs/outputs
+- Screenshots or GIFs of the UI
+- Deployment details for the intended hosting environment
+- A GitHub About description and topics
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Status
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This repository is an active custom application rather than a template. Replacing the Lovable README is an important step toward making the project understandable, maintainable, and useful to new visitors.
